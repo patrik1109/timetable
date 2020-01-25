@@ -44,3 +44,30 @@ tr:nth-child(even){background-color: #f2f2ff}
 th {
   background-color: #4CAFFF;
   color: white;
+}
+
+#right_title
+{
+	width : 20%;
+ /* border: 1px solid green;*/
+  background: #557;
+  text-align: center;
+	
+}
+
+
+#center_title
+{
+	width : 60%;
+ /* border: 1px solid green;*/
+  background: #557;
+  text-align: center;
+	
+}
+
+#current_date_time
+{width :20%;
+background: #557;
+ /* border: 1px solid blue;*/
+  text-align: center;
+}
