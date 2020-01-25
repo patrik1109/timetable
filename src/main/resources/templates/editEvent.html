@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Редагування справи</title>
+</head>
+
+<body>
+<h1>Редагування розгляду справи </h1>
+
+<a href = "/index">Повернутися</a> <br><br>
+
+<form th:action="@{/editEvent}" th:object="${eventForm}" method="POST">
+
+    Номер справи:
+    <input required type="text" th:field="*{Number}" value=0/>
+    <br/>
+    <br/>
+    Змст справи:
+    <input required type="text" th:field="*{Description}" value=" " />
+    <br/>
+    <br/>
+    Дата розгляду справи:
+    <input required type="date" th:field="*{date}" value=0 />
+    <br/>
+    <br/>
+    Оберiть номер зали:
+       <select  th:field="*{Hall_number}">
+            <option  th:each ="hall : ${halls}" th:value="${hall.id}"><h2 th:utext="${hall.name}"></h2></option>
+        </select>
+    <br/>
+    <br/>
+
+    <input type="submit" value="Зберегти" />
+
+</form>
+</body>
+</html>

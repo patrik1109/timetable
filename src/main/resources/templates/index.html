@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+   <!-- <link rel = "stylesheet" type = "text/css" href = "style.css" />-->
+   <!-- <link rel="stylesheet" href="style.css">-->
+</head>
+<style>
+    .header {
+text-align: center;
+padding: 10px 16px;
+  background: #557;
+  color: #f1f1f1;
+}
+
+/* Page content */
+.content {
+  padding: 16px;
+}
+
+/* The sticky class is added to the header with JS when it reaches its scroll position */
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%
+}
+
+/* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
+.sticky + .content {
+  padding-top: 102px;
+}
+
+table, td, th {
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 15px;
+}
+
+
+tr:nth-child(even){background-color: #f2f2ff}
+
+th {
+  background-color: #4CAFFF;
+  color: white;
+}
+</style>
+<body>
+<div>
+    <h1 class="header sticky" id="myHeader">Оберiть номер зали:</h1>
+
+</div>
+
+<div class="content">
+    <table >
+        <tr>
+            <th> Назва зали </th>
+            <th> Видалити </th>
+            <th> Редагувати</th>
+        </tr>
+        <tr th:each ="hall : ${halls}">
+            <td ><a th:href="@{'/hallEvents/{id}'(id=${hall.id})}"><h3 th:utext="${hall.name}"></h3></a></td>
+            <td ><a th:href="@{'deleteHall/{id}'(id=${hall.id})}">Видалити</a></td>
+            <td>Редагувати</td>
+        </tr>
+    </table>
+</div>
+
+
+</body>
+</html>

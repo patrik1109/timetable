@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title> </title>
+
+    <style>
+     .fa-edit{font-size:20px}
+    .header {text-align: center; padding: 10px 16px;  background: #557;  color: #f1f1f1;}
+
+    /* Page content */
+    .content {  padding: 16px;}
+
+    /* The sticky class is added to the header with JS when it reaches its scroll position */
+    .sticky { position: fixed;  top: 0;  width: 100%}
+
+    /* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
+    .sticky + .content {  padding-top: 102px;}
+
+    table, td, th {  border: 1px solid #ddd;  text-align: left;}
+
+    table {  border-collapse: collapse;  width: 100%;}
+
+    th, td {  padding: 15px;}
+
+    tr:nth-child(even){background-color: #f2f2ff}
+
+    th {  background-color: #4CAFFF;  color: white;}
+     </style>
+</head>
+
+<body>
+    <div class="header sticky" id="myHeader">
+        <h2 th:utext="${hallName}"></h2>
+    </div>
+
+    <h1>Перелiк засiдань</h1><br>
+       <!-- <a href="findBook">Знайти засiдання по справi</a><br><br>-->
+        <a href="/AddEvent">Додати засiдання</a><br><br>
+        <a href = "/index">Повернутися</a> <br><br>
+
+<div>
+    <table border="1" class="content">
+        <tr>
+            <th>Номер справи</th>
+            <th>Опис</th>
+            <th>Дата</th>
+            <th>Статус</th>
+            <th style="width: 5%">Видалити</th>
+            <th style="width: 5%">Редагувати</th>
+        </tr>
+        <tr th:each ="event : ${events}">
+            <td th:utext="${event.number}">...</td>
+            <td th:utext="${event.description}">...</td>
+            <td th:utext="${event.date}">...</td>
+            <td th:utext="${event.status}">...</td>
+            <td ><a th:href="@{'/delete/{id}'(id=${event.id})}">Видалити</a></td>
+           <td ><a th:href="@{'/editEvent/{id}'(id=${event.id})}">Редагувати</a></td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
