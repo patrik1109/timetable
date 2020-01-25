@@ -16,6 +16,9 @@ import timetable.service.HallService;
 import timetable.thymeleaf_form.EventForm;
 
 import java.lang.reflect.Array;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -59,11 +62,29 @@ public class timeTableController {
         return  newModel;
     }
 
+    private String fromCP1251toUTF8(String input) 
+    {
+    	String output;
+
+    	Charset utf8charset = Charset.forName("UTF-8");
+    	Charset cp1251charset = Charset.forName("CP1251");
+
+    	// decode CP1251
+    	CharBuffer decodedData = cp1251charset.decode(ByteBuffer.wrap(input.getBytes()));
+    	
+    	// encode UTF-8
+        ByteBuffer outputBuffer = utf8charset.encode(decodedData);	
+    	
+    	return outputBuffer.toString();
+    }
+    
     @RequestMapping(value = { "/AddEvent" }, method = RequestMethod.POST)
     public ModelAndView addEvent(ModelAndView model, @ModelAttribute("eventForm") EventForm eventForm) {
         Event newEvent = new Event();
         newEvent.setDate(eventForm.getDate());
-        newEvent.setDescription(eventForm.getDescription());
+        
+        newEvent.setDescription(fromCP1251toUTF8(eventForm.getDescription()));
+        
         newEvent.setIdHall(eventForm.getHall_number());
         newEvent.setNumber(eventForm.getNumber());
         newEvent.setStatus(eventForm.getestatus());

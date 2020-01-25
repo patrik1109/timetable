@@ -64,10 +64,11 @@ th {
 </style>
 <body>
 <div class="header sticky" id="myHeader">
-    <h2 th:utext="${hallName}">  </h2>
-    <h2 id="current_date_time_block2"></h2>
+<table>
+<th id="right_title"><h2>&nbsp;</h2></th>
+    <th id="center_title"><h2 th:utext="${hallName}"></h2></th>
+    <th id="current_date_time"><h2 id="current_date_time_block2"></h2></th>
 </div>
-<!--<div id="current_date_time_block2"></div>-->
 <div class="content">
 
     <div>
@@ -88,8 +89,15 @@ th {
 </div>
 <script type="text/javascript">
 
-$(document).ready(function()
-{$("html, body").animate({scrollTop: $('html, body').get(0).scrollHeight}, 40000, function(){location.reload();});
+$(document).ready(function() {  
+    $("html, body").animate({ 
+        scrollTop: $('html, body').get(0).scrollHeight 
+    }, 40000, function() {
+    	setTimeout(function(){
+    		$("html, body").animate({ scrollTop:0 }, 0);   
+    		window.location.reload(true);
+    		},100);
+        }); 
 });
 
 setInterval(function () {
