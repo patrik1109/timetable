@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<h2>Додати засiдання по стравi</h2>
+<form th:action="@{/AddEvent}" th:object="${eventForm}" method="POST">
+
+    Номер справи:
+    <input required type="text" th:field="*{Number}" value=0/>
+    <br/>
+    <br/>
+    Змст справи:
+    <input required type="text" th:field="*{Description}" value=" " />
+    <br/>
+    <br/>
+    Дата розгляду справи:
+    <input required type="date" th:field="*{date}" value=0 />
+    <br/>
+    <br/>
+    Оберiть номер зали:
+    <select  th:field="*{Hall_number}">
+        <option  th:each ="hall : ${halls}" th:value="${hall.id}"><h2 th:utext="${hall.name}"></h2></option>
+    </select>
+    <br/>
+    <br/>
+    Оберить статус справи
+    <select  th:field="*{estatus}">
+        <option  th:each ="state : ${T(timetable.enums.EventStatus).values()}"
+                 th:value="${state}"><h2 th:utext="${state}"></h2></option>
+    </select>
+   <!-- <select name="color">
+        <option th:each="colorOpt : ${T(com.baeldung.thymeleaf.model.Color).values()}"
+                th:value="${colorOpt}" th:text="${colorOpt}"></option>
+    </select>-->
+
+    <input type="submit" value="Add Event" />
+
+</form>
+<br>
+</body>
+</html>
