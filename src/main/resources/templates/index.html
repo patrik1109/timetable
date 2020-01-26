@@ -69,7 +69,7 @@ th {
         <tr th:each ="hall : ${halls}">
             <td ><a th:href="@{'/hallEvents/{id}'(id=${hall.id})}"><h3 th:utext="${hall.name}"></h3></a></td>
             <td ><a th:href="@{'deleteHall/{id}'(id=${hall.id})}">Видалити</a></td>
-            <td>Редагувати</td>
+            <td ><a th:href="@{'editHall/{id}'(id=${hall.id})}">Редагувати</a></td>
         </tr>
     </table>
 </div>

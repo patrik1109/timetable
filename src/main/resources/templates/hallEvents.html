@@ -18,6 +18,12 @@
     /* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
     .sticky + .content {  padding-top: 102px;}
 
+body {
+	padding : 0;
+	margin : 0;
+	
+}
+
     table, td, th {  border: 1px solid #ddd;  text-align: left;}
 
     table {  border-collapse: collapse;  width: 100%;}
@@ -36,10 +42,10 @@
     </div>
 
     <h1>Перелiк засiдань</h1><br>
-       <!-- <a href="findBook">Знайти засiдання по справi</a><br><br>-->
-        <a href="/AddEvent">Додати засiдання</a><br><br>
-        <a href = "/index">Повернутися</a> <br><br>
 
+       <button onclick="location.href='/AddEvent'" type="button">Додати засiдання</button><br><br>
+         <button onclick="location.href='/index'" type="button">Повернутися</button><br><br>
+         
 <div>
     <table border="1" class="content">
         <tr>

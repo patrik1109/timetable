@@ -15,6 +15,7 @@ import timetable.service.EventService;
 import timetable.service.HallService;
 import timetable.thymeleaf_form.EventForm;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -62,7 +63,7 @@ public class timeTableController {
         return  newModel;
     }
 
-    private String fromCP1251toUTF8(String input) 
+    private String fromCP1251toUTF8(String input) throws UnsupportedEncodingException 
     {
     	String output;
 
@@ -75,16 +76,23 @@ public class timeTableController {
     	// encode UTF-8
         ByteBuffer outputBuffer = utf8charset.encode(decodedData);	
     	
-    	return outputBuffer.toString();
+    	return new String(outputBuffer.array(), "UTF-8");
     }
     
     @RequestMapping(value = { "/AddEvent" }, method = RequestMethod.POST)
     public ModelAndView addEvent(ModelAndView model, @ModelAttribute("eventForm") EventForm eventForm) {
         Event newEvent = new Event();
         newEvent.setDate(eventForm.getDate());
+ /*       
+        try {
+			newEvent.setDescription(fromCP1251toUTF8(eventForm.getDescription()));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+   */     
         
-        newEvent.setDescription(fromCP1251toUTF8(eventForm.getDescription()));
-        
+        newEvent.setDescription(eventForm.getDescription());
         newEvent.setIdHall(eventForm.getHall_number());
         newEvent.setNumber(eventForm.getNumber());
         newEvent.setStatus(eventForm.getestatus());
