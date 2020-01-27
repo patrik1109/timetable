@@ -13,6 +13,7 @@ public class EventResponse {
     public Date date;
     public int idHall;
     public EventStatus status;
+    public String color;
 
     public EventStatus getStatus() {
         return status;
@@ -54,9 +55,15 @@ public class EventResponse {
         this.idHall = idHall;
     }
 
+    public String getColor() {
+		return color;
+	}
 
+	public void setColor(String color) {
+		this.color = color;
+	}
 
-    public EventResponse() {
+	public EventResponse() {
     }
 
     public int getId() {
@@ -67,7 +74,7 @@ public class EventResponse {
         this.id = id;
     }
 
-    public EventResponse(String number, String description, Date date, int idHall, int id ,EventStatus status) {
+    public EventResponse(String number, String description, Date date, int idHall, int id ,EventStatus status, String color) {
         this.number = number;
         this.description = description;
         this.date = date;

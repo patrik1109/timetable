@@ -47,8 +47,8 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public void updateEvent(int id, String number, String description, Date date, int idHall, EventStatus estatus) {
-        Event newEvent = new Event(id,number,description,date,idHall,estatus);
+    public void updateEvent(int id, String number, String description, Date date, int idHall, EventStatus estatus,String color) {
+        Event newEvent = new Event(id,number,description,date,idHall,estatus,color);
         repository.save(newEvent);
     }
 

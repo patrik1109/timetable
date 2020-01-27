@@ -4,6 +4,7 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.TermVector;
 import org.springframework.format.annotation.DateTimeFormat;
+
 import timetable.enums.EventStatus;
 
 import javax.persistence.*;
@@ -30,16 +31,11 @@ public class Event {
 
     @Column(name = "status")
     EventStatus status;
-
-    private int idHall;
-
-    public EventStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(EventStatus status) {
-        this.status = status;
-    }
+    
+    @Column(name = "color")
+    String color;
+    
+	private int idHall;
 
     public int getId() {
         return id;
@@ -80,16 +76,35 @@ public class Event {
     public void setIdHall(int idHall) {
         this.idHall = idHall;
     }
+    public String getColor() {
+		return color;
+	}
 
+	public void setColor(String color) {
+		this.color = color;
+	}
+	
     public Event() {
     }
 
-    public Event(int id, String number, String description, Date date, int idHall, EventStatus estatus) {
+    public Event(int id, String number, String description, Date date, int idHall, EventStatus estatus, String color) {
         this.id = id;
         this.number = number;
         this.description = description;
         this.date = date;
         this.idHall = idHall;
         this.status = estatus;
+        this.color = color;
     }
+
+	public void setStatus(EventStatus getestatus) {
+		this.status = getestatus;
+		
+	}
+
+	public EventStatus getStatus() {
+		return status;
+	}
+	
+	
 }

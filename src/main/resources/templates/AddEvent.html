@@ -32,7 +32,10 @@
     <select  th:field="*{estatus}">
         <option  th:each ="state : ${T(timetable.enums.EventStatus).values()}"
                  th:value="${state}"><h2 th:utext="${state}"></h2></option>
-    </select>
+    </select><br>
+    
+   Color: <input type="color" th:field="*{color}" name="eventcolor" value="#ff0000"><br><br>
+   
    <!-- <select name="color">
         <option th:each="colorOpt : ${T(com.baeldung.thymeleaf.model.Color).values()}"
                 th:value="${colorOpt}" th:text="${colorOpt}"></option>

@@ -121,10 +121,10 @@ width :100%;
                 <th>Опис</th>
                 <th>Статус</th>
             </tr>
-            <tr th:each ="event : ${events}">
-                <td th:utext="${event.number}">...</td>
-                <td th:utext="${event.description}">...</td>
-                <td th:utext="${event.status}">...</td>
+            <tr  th:each ="event : ${events}">
+                <td th:style="'background-color : '+${event.color}" th:utext="${event.number}">...</td>
+                <td th:style="'background-color : '+${event.color}" th:utext="${event.description}">...</td>
+                <td th:style="'background-color : '+${event.color}" th:utext="${event.status}">...</td>
             </tr>
         </table>
     </div>

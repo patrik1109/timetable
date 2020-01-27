@@ -64,6 +64,8 @@ public class timeTableController {
         newEvent.setIdHall(eventForm.getHall_number());
         newEvent.setNumber(eventForm.getNumber());
         newEvent.setStatus(eventForm.getestatus());
+        newEvent.setColor(eventForm.getColor());
+        
         eventRepository.saveEvent(newEvent);
         int hall_Id = eventForm.getHall_number();
         return new ModelAndView("redirect:/hallEvents/"+hall_Id);
@@ -83,6 +85,7 @@ public class timeTableController {
                 response.setDescription(event.getDescription());
                 response.setNumber(event.getNumber());
                 response.setStatus(event.getStatus());
+                response.setColor(event.getColor());
                 eventsresponse.add(response);
             }
         }
@@ -135,6 +138,7 @@ public class timeTableController {
             eventForm.setHall_number(event.getIdHall());
             eventForm.setNumber(event.getNumber());
             eventForm.setestatus(event.getStatus());
+            eventForm.setColor(event.getColor());
         newModel.addObject("eventForm", eventForm);
         newModel.addObject("halls",hallResponses);
         newModel.addObject("statuses",statuses);
@@ -150,9 +154,10 @@ public class timeTableController {
         String description = (eventForm.getDescription());
         EventStatus estatus = eventForm.getestatus();
         EventStatus status = eventForm.getestatus();
+        String color = eventForm.getColor();
         Date date= eventForm.getDate();
         if (idEvent !=0   ) {
-            eventRepository.updateEvent(idEvent,numberEvent,description,date,idHall,estatus);
+            eventRepository.updateEvent(idEvent,numberEvent,description,date,idHall,estatus,color);
             return new ModelAndView("redirect:/hallEvents/"+idHall);
         }
         model.addObject("errorMessage", errorMessage);
@@ -232,4 +237,4 @@ public class timeTableController {
       return  halls;
     }
 }
-}
+

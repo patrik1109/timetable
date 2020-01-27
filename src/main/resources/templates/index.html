@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-   <!-- <link rel = "stylesheet" type = "text/css" href = "style.css" />-->
-   <!-- <link rel="stylesheet" href="style.css">-->
+  <link th:href="@{/css/style.css}" rel="stylesheet" />
 </head>
-<style>
+<!--  <style>
     .header {
 text-align: center;
 padding: 10px 16px;
@@ -52,14 +51,15 @@ th {
   background-color: #4CAFFF;
   color: white;
 }
-</style>
+</style>-->
 <body>
 <div>
-    <h1 class="header sticky" id="myHeader">Оберiть номер зали:</h1>
+    <h1 class="header_admin">Оберiть номер зали:</h1>
 
 </div>
 
 <div class="content">
+<div class="subheader_placeholder_admin">&nbsp;</div>
     <table >
         <tr>
             <th> Назва зали </th>
