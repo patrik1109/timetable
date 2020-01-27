@@ -60,8 +60,8 @@ body {
             <td th:utext="${event.description}">...</td>
             <td th:utext="${event.date}">...</td>
             <td th:utext="${event.status}">...</td>
-            <td ><a th:href="@{'/delete/{id}'(id=${event.id})}">Видалити</a></td>
-           <td ><a th:href="@{'/editEvent/{id}'(id=${event.id})}">Редагувати</a></td>
+            <td ><a th:href="@{'/delete/{id}'(id=${event.id})}" onclick="return confirm('Ви дiйсно хочите видалити засiдання ?')">Видалити</a></td>
+            <td ><a th:href="@{'/editEvent/{id}'(id=${event.id})}">Редагувати</a></td>
         </tr>
     </table>
 </div>
