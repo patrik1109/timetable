@@ -24,17 +24,19 @@
     <input required type="date" th:field="*{date}" value=0 />
     <br/>
     <br/>
+    Статус справи:
+    <select  th:field="*{estatus}">
+        <option  th:each ="status : ${statuses}" th:value="${status}"><h2 th:utext="${status}"></h2></option>
+    </select>
+    <br/>
+    <br/>
     Оберiть номер зали:
        <select  th:field="*{Hall_number}">
             <option  th:each ="hall : ${halls}" th:value="${hall.id}"><h2 th:utext="${hall.name}"></h2></option>
         </select>
     <br/>
     <br/>
- Оберіть статус справи:
-    <select  th:field="*{estatus}">
-        <option  th:each ="state : ${T(timetable.enums.EventStatus).values()}"
-                 th:value="${state}"><h2 th:utext="${state}"></h2></option>
-    </select>
+
     <input type="submit" value="Зберегти" />
 
 </form>

@@ -8,6 +8,7 @@ import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import timetable.entities.Event;
+import timetable.enums.EventStatus;
 import timetable.repository.EventRepository;
 
 import javax.persistence.EntityManager;
@@ -46,8 +47,8 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public void updateEvent(int id, String number, String description, Date date, int idHall) {
-        Event newEvent = new Event(id,number,description,date,idHall);
+    public void updateEvent(int id, String number, String description, Date date, int idHall, EventStatus estatus) {
+        Event newEvent = new Event(id,number,description,date,idHall,estatus);
         repository.save(newEvent);
     }
 
