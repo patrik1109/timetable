@@ -63,34 +63,11 @@ public class timeTableController {
         return  newModel;
     }
 
-    private String fromCP1251toUTF8(String input) throws UnsupportedEncodingException 
-    {
-    	String output;
-
-    	Charset utf8charset = Charset.forName("UTF-8");
-    	Charset cp1251charset = Charset.forName("CP1251");
-
-    	// decode CP1251
-    	CharBuffer decodedData = cp1251charset.decode(ByteBuffer.wrap(input.getBytes()));
-    	
-    	// encode UTF-8
-        ByteBuffer outputBuffer = utf8charset.encode(decodedData);	
-    	
-    	return new String(outputBuffer.array(), "UTF-8");
-    }
     
     @RequestMapping(value = { "/AddEvent" }, method = RequestMethod.POST)
     public ModelAndView addEvent(ModelAndView model, @ModelAttribute("eventForm") EventForm eventForm) {
         Event newEvent = new Event();
-        newEvent.setDate(eventForm.getDate());
- /*       
-        try {
-			newEvent.setDescription(fromCP1251toUTF8(eventForm.getDescription()));
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-   */     
+        newEvent.setDate(eventForm.getDate());   
         
         newEvent.setDescription(eventForm.getDescription());
         newEvent.setIdHall(eventForm.getHall_number());
@@ -180,6 +157,7 @@ public class timeTableController {
         Integer idHall = eventForm.getHall_number();
         String numberEvent = eventForm.getNumber();
         String description = eventForm.getDescription();
+        EventStatus status = eventForm.getestatus();
         Date date= eventForm.getDate();
         if (idEvent !=0   ) {
             eventRepository.updateEvent(idEvent,numberEvent,description,date,idHall);

@@ -30,7 +30,11 @@
         </select>
     <br/>
     <br/>
-
+ Оберіть статус справи:
+    <select  th:field="*{estatus}">
+        <option  th:each ="state : ${T(timetable.enums.EventStatus).values()}"
+                 th:value="${state}"><h2 th:utext="${state}"></h2></option>
+    </select>
     <input type="submit" value="Зберегти" />
 
 </form>

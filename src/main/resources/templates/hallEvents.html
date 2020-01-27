@@ -42,10 +42,8 @@ body {
     </div>
 
     <h1>Перелiк засiдань</h1><br>
-
-       <button onclick="location.href='/AddEvent'" type="button">Додати засiдання</button><br><br>
-         <button onclick="location.href='/index'" type="button">Повернутися</button><br><br>
-         
+       <a th:href="@{'/AddEvent'}">Додати засiдання</a><br><br>
+        <a th:href="@{'/index'}">Повернутися</a><br><br>    
 <div>
     <table border="1" class="content">
         <tr>
