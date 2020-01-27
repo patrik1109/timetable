@@ -122,10 +122,10 @@ width :100%;
                 <th>Статус</th>
             </tr>
             <tr th:each ="event,iter : ${events}">
-                <td th:style="'background-color : '+${event.color}" th:utext="${iter.count}" ></td>
-                <td th:style="'background-color : '+${event.color}" th:utext="${event.number}">...</td>
-                <td th:style="'background-color : '+${event.color}" th:utext="${event.description}">...</td>
-                <td th:style="'background-color : '+${event.color}" th:utext="${event.status}">...</td>
+                <td th:style="'background-color : '+${event.color}" th:utext="${iter.count}" class="numcol"></td>
+                <td th:style="'background-color : '+${event.color}" th:utext="${event.number}"  class="casenumcol">...</td>
+                <td th:style="'background-color : '+${event.color}" th:utext="${event.description}"  class="casedesccol">...</td>
+                <td th:style="'background-color : '+${event.color}" th:utext="${event.status}"  class="casestatuscol">...</td>
             </tr>
         </table>
     </div>

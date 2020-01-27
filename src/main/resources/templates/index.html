@@ -67,13 +67,13 @@ th {
             <th> Редагувати</th>
         </tr>
         <tr th:each ="hall : ${halls}">
-            <td ><a th:href="@{'/hallEvents/{id}'(id=${hall.id})}"><h3 th:utext="${hall.name}"></h3></a></td>
-            <td ><a th:href="@{'deleteHall/{id}'(id=${hall.id})}" onclick="return confirm('Ви дiйсно хочите видалити засiдання ?')">Видалити</a></td>
-            <td><a th:href="@{'editHall/{id}'(id=${hall.id})}">Редагувати</a></td>
+            <td class="index_hall"><a th:href="@{'/hallEvents/{id}'(id=${hall.id})}"><h3 th:utext="${hall.name}"></h3></a></td>
+            <td class="index_deletehall"><a th:href="@{'deleteHall/{id}'(id=${hall.id})}" onclick="return confirm('Ви дiйсно хочете видалити засiдання ?')">Видалити</a></td>
+            <td class="index_edithall"><a th:href="@{'editHall/{id}'(id=${hall.id})}">Редагувати</a></td>
         </tr>
     </table>
 </div>
 <br>
-<a href="/addHall"><button>Додати залу</button></a>
+<a th:href="@{'/addHall'}"><button>Додати залу</button></a>
 </body>
 </html>
