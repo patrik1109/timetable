@@ -31,8 +31,8 @@ public class timeTableController {
     @Autowired
     HallService hallRepository;
 
-    private Event event;
-    private Hall hall;
+    private volatile Event event;
+    private volatile Hall hall;
     @Value("${error.message}")
 
     private String errorMessage;
@@ -174,6 +174,28 @@ public class timeTableController {
         return  NewModel;
     }
 
+    @Transactional
+    @RequestMapping(value = { "/addHall" }, method = RequestMethod.GET )
+    public ModelAndView addHall(ModelAndView model){
+        ModelAndView newModel = new ModelAndView("addHall");
+        HallForm hallForm = new HallForm();
+        newModel.addObject("hallForm", hallForm);
+
+        return  newModel;
+    }
+
+    @RequestMapping(value = { "/addHall" }, method = RequestMethod.POST)
+    public ModelAndView addHall(ModelAndView model, @ModelAttribute("hallForm") HallForm hallForm) {
+
+        Hall newHall = new Hall();
+        newHall.setName(hallForm.getName());
+        newHall.setDate(hallForm.getDate());
+        hallRepository.saveHall(newHall);
+        return new ModelAndView("redirect:/index");
+
+    }
+
+
     @GetMapping("/deleteHall/{id}")
     public ModelAndView deleteHall(@PathVariable Integer id) {
         Hall tmphall =  hallRepository.getHallById(id);
@@ -232,4 +254,4 @@ public class timeTableController {
       return  halls;
     }
 }
-}
+

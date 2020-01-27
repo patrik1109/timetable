@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>New hall</title>
+</head>
+<body>
+
+
+<h2>Додати зал засiдань</h2>
+<form th:action="@{/addHall}" th:object="${hallForm}" method="POST">
+
+    Назва зали:
+    <input required type="text" th:field="*{name}" value=0/>
+    <br/>
+    <br/>
+    Дата:
+    <input required type="date" th:field="*{date}" value=" " />
+    <br/>
+    <br/>
+
+    <input type="submit" value="Додати зал" />
+
+</form>
+<br>
+</body>
+</html>
