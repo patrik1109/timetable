@@ -84,11 +84,12 @@ public class Event {
     public Event() {
     }
 
-    public Event(int id, String number, String description, Date date, int idHall) {
+    public Event(int id, String number, String description, Date date, int idHall, EventStatus estatus) {
         this.id = id;
         this.number = number;
         this.description = description;
         this.date = date;
         this.idHall = idHall;
+        this.status = estatus;
     }
 }

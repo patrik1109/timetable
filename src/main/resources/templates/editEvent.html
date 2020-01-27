@@ -16,12 +16,18 @@
     <input required type="text" th:field="*{Number}" value=0/>
     <br/>
     <br/>
-    Змст справи:
+    Змiст справи:
     <input required type="text" th:field="*{Description}" value=" " />
     <br/>
     <br/>
     Дата розгляду справи:
     <input required type="date" th:field="*{date}" value=0 />
+    <br/>
+    <br/>
+    Статус справи:
+    <select  th:field="*{estatus}">
+        <option  th:each ="status : ${statuses}" th:value="${status}"><h2 th:utext="${status}"></h2></option>
+    </select>
     <br/>
     <br/>
     Оберiть номер зали:
