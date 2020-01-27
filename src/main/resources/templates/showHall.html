@@ -123,9 +123,9 @@ width :100%;
             </tr>
             <tr th:each ="event,iter : ${events}">
                 <td th:utext="${iter.count}" ></td>
-                <td th:utext="${event.number}">...</td>
-                <td th:utext="${event.description}">...</td>
-                <td th:utext="${event.status}">...</td>
+                <td th:style="'background-color : '+${event.color}" th:utext="${event.number}">...</td>
+                <td th:style="'background-color : '+${event.color}" th:utext="${event.description}">...</td>
+                <td th:style="'background-color : '+${event.color}" th:utext="${event.status}">...</td>
             </tr>
         </table>
     </div>

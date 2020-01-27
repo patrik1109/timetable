@@ -10,7 +10,7 @@ public interface EventService {
     Event getEventById(Integer id);
     void saveEvent(Event event);
     void deleteEventbyId(Integer id);
-    void updateEvent(int id, String number, String description, Date date, int idHall, EventStatus estatus);
+    void updateEvent(int id, String number, String description, Date date, int idHall, EventStatus estatus, String color);
     List<Event> findAll();
     List<Event> findAllByIdHall(Integer id);
 }

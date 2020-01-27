@@ -13,8 +13,17 @@ public class EventForm {
     Date date;
     int Hall_number;
     EventStatus estatus;
+    String color;
 
-    public EventStatus getestatus() {
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public EventStatus getestatus() {
         return estatus;
     }
 
@@ -22,12 +31,13 @@ public class EventForm {
         this.estatus = status;
     }
 
-    public EventForm(String number, String description, Date date, int hall_number, EventStatus status) {
+    public EventForm(String number, String description, Date date, int hall_number, EventStatus status, String color) {
         this.Number = number;
         this.Description = description;
         this.date = date;
         this.Hall_number = hall_number;
         this.estatus = status;
+        this.color = color;
     }
 
     public EventForm() {
