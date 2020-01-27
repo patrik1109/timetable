@@ -2,19 +2,19 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>New event</title>
 </head>
 <body>
 
 
-<h2>Додати засiдання по стравi</h2>
+<h2>Додати засiдання по справi</h2>
 <form th:action="@{/AddEvent}" th:object="${eventForm}" method="POST">
 
     Номер справи:
     <input required type="text" th:field="*{Number}" value=0/>
     <br/>
     <br/>
-    Змст справи:
+    Зміст справи:
     <input required type="text" th:field="*{Description}" value=" " />
     <br/>
     <br/>
@@ -28,7 +28,7 @@
     </select>
     <br/>
     <br/>
-    Оберить статус справи
+    Оберіть статус справи:
     <select  th:field="*{estatus}">
         <option  th:each ="state : ${T(timetable.enums.EventStatus).values()}"
                  th:value="${state}"><h2 th:utext="${state}"></h2></option>

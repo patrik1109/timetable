@@ -16,6 +16,7 @@ import timetable.service.HallService;
 import timetable.thymeleaf_form.EventForm;
 import timetable.thymeleaf_form.HallForm;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -53,14 +54,13 @@ public class timeTableController {
         return  newModel;
     }
 
-
+    
     @RequestMapping(value = { "/AddEvent" }, method = RequestMethod.POST)
     public ModelAndView addEvent(ModelAndView model, @ModelAttribute("eventForm") EventForm eventForm) {
         Event newEvent = new Event();
-        newEvent.setDate(eventForm.getDate());
+        newEvent.setDate(eventForm.getDate());   
         
         newEvent.setDescription(eventForm.getDescription());
-        
         newEvent.setIdHall(eventForm.getHall_number());
         newEvent.setNumber(eventForm.getNumber());
         newEvent.setStatus(eventForm.getestatus());
@@ -149,6 +149,7 @@ public class timeTableController {
         String numberEvent = eventForm.getNumber();
         String description = (eventForm.getDescription());
         EventStatus estatus = eventForm.getestatus();
+        EventStatus status = eventForm.getestatus();
         Date date= eventForm.getDate();
         if (idEvent !=0   ) {
             eventRepository.updateEvent(idEvent,numberEvent,description,date,idHall,estatus);
@@ -230,22 +231,5 @@ public class timeTableController {
         }
       return  halls;
     }
-
-
-    private String fromCP1251toUTF8(String input)
-    {
-        String output;
-
-        Charset utf8charset = Charset.forName("UTF-8");
-        Charset cp1251charset = Charset.forName("CP1251");
-
-        // decode CP1251
-        CharBuffer decodedData = cp1251charset.decode(ByteBuffer.wrap(input.getBytes()));
-
-        // encode UTF-8
-        ByteBuffer outputBuffer = utf8charset.encode(decodedData);
-
-        return outputBuffer.toString();
-    }
-
+}
 }
