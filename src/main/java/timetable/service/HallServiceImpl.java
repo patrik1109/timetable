@@ -14,8 +14,10 @@ import timetable.repository.HallRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class HallServiceImpl implements HallService {
@@ -46,6 +48,13 @@ public class HallServiceImpl implements HallService {
     public void deleteHallbyId(Integer id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public void updateHall(int id, String name, Date date, Set<Event> events) {
+        Hall hall = new Hall(id,name,date,events);
+        repository.save(hall);
+    }
+
 
     @Override
     public List<Hall> findAll() {

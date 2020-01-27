@@ -55,10 +55,10 @@ public class Hall {
     public Hall() {
     }
 
-    public Hall(int id, String name, Date date, Set<Event> booksAuthor) {
+    public Hall(int id, String name, Date date, Set<Event> eventSet) {
         this.id = id;
         this.name = name;
         this.date = date;
-        this.eventSet = booksAuthor;
+        this.eventSet = eventSet;
     }
 }

@@ -14,15 +14,13 @@ import timetable.responses.HallResponse;
 import timetable.service.EventService;
 import timetable.service.HallService;
 import timetable.thymeleaf_form.EventForm;
+import timetable.thymeleaf_form.HallForm;
 
 import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class timeTableController {
@@ -33,57 +31,35 @@ public class timeTableController {
     HallService hallRepository;
 
     private Event event;
+    private Hall hall;
     @Value("${error.message}")
 
     private String errorMessage;
 
-    @Transactional
-    @GetMapping(value = { "/", "/index" } )
-    public ModelAndView getBooks(Map<String, Object> model){
-        List<Hall> hallList = hallRepository.findAll();
-        List<HallResponse> halls = fillResponse(hallList);
-        ModelAndView NewModel = new ModelAndView("index");
-        NewModel.addObject("halls",halls);
-        return  NewModel;
-    }
+    //
+    //EVENTS PART
+    //
+
 
     @Transactional
     @RequestMapping(value = { "/AddEvent" }, method = RequestMethod.GET )
-    public ModelAndView getBooks(ModelAndView model){
+    public ModelAndView addEvent(ModelAndView model){
         ModelAndView newModel = new ModelAndView("AddEvent");
         List<Hall> halls = hallRepository.findAll();
         List<HallResponse> hallResponses = fillResponse(halls);
-
-
         EventForm eventForm = new EventForm();
         newModel.addObject("eventForm", eventForm);
         newModel.addObject("halls",hallResponses);
-        //newModel.addObject("eventsStatus",eventsStatus);
         return  newModel;
     }
 
-    private String fromCP1251toUTF8(String input) 
-    {
-    	String output;
 
-    	Charset utf8charset = Charset.forName("UTF-8");
-    	Charset cp1251charset = Charset.forName("CP1251");
-
-    	// decode CP1251
-    	CharBuffer decodedData = cp1251charset.decode(ByteBuffer.wrap(input.getBytes()));
-    	
-    	// encode UTF-8
-        ByteBuffer outputBuffer = utf8charset.encode(decodedData);	
-    	
-    	return outputBuffer.toString();
-    }
-    
     @RequestMapping(value = { "/AddEvent" }, method = RequestMethod.POST)
     public ModelAndView addEvent(ModelAndView model, @ModelAttribute("eventForm") EventForm eventForm) {
         Event newEvent = new Event();
         newEvent.setDate(eventForm.getDate());
         
-        newEvent.setDescription(fromCP1251toUTF8(eventForm.getDescription()));
+        newEvent.setDescription(eventForm.getDescription());
         
         newEvent.setIdHall(eventForm.getHall_number());
         newEvent.setNumber(eventForm.getNumber());
@@ -150,7 +126,7 @@ public class timeTableController {
     public ModelAndView editEvent(@PathVariable Integer id) {
         ModelAndView newModel = new ModelAndView("editEvent");
         EventForm eventForm = new EventForm();
-        int idHall = 0;
+        EventStatus[] statuses =EventStatus.values();
         List<Hall> halls = hallRepository.findAll();
         List<HallResponse> hallResponses = fillResponse(halls);
         event = eventRepository.getEventById(id);
@@ -158,10 +134,10 @@ public class timeTableController {
             eventForm.setDescription(event.getDescription());
             eventForm.setHall_number(event.getIdHall());
             eventForm.setNumber(event.getNumber());
-        idHall = event.getIdHall();
-        newModel.addObject("idHall",idHall);
+            eventForm.setestatus(event.getStatus());
         newModel.addObject("eventForm", eventForm);
         newModel.addObject("halls",hallResponses);
+        newModel.addObject("statuses",statuses);
         return  newModel;
     }
 
@@ -171,16 +147,32 @@ public class timeTableController {
         Integer idEvent = event.getId();
         Integer idHall = eventForm.getHall_number();
         String numberEvent = eventForm.getNumber();
-        String description = eventForm.getDescription();
+        String description = (eventForm.getDescription());
+        EventStatus estatus = eventForm.getestatus();
         Date date= eventForm.getDate();
         if (idEvent !=0   ) {
-            eventRepository.updateEvent(idEvent,numberEvent,description,date,idHall);
+            eventRepository.updateEvent(idEvent,numberEvent,description,date,idHall,estatus);
             return new ModelAndView("redirect:/hallEvents/"+idHall);
         }
         model.addObject("errorMessage", errorMessage);
 
         return model;
     }
+
+    //
+    //   PART OF HALL CONTROLLERS
+    //
+
+    @Transactional
+    @GetMapping(value = { "/", "/index" } )
+    public ModelAndView addEvent(Map<String, Object> model){
+        List<Hall> hallList = hallRepository.findAll();
+        List<HallResponse> halls = fillResponse(hallList);
+        ModelAndView NewModel = new ModelAndView("index");
+        NewModel.addObject("halls",halls);
+        return  NewModel;
+    }
+
     @GetMapping("/deleteHall/{id}")
     public ModelAndView deleteHall(@PathVariable Integer id) {
         Hall tmphall =  hallRepository.getHallById(id);
@@ -189,6 +181,40 @@ public class timeTableController {
         return new ModelAndView("redirect:/index");
     }
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @RequestMapping(value = { "/editHall/{id}" }, method = RequestMethod.GET)
+    public ModelAndView editHall(@PathVariable Integer id) {
+        ModelAndView newModel = new ModelAndView("editHall");
+        HallForm hallForm = new HallForm();
+        hall = hallRepository.getHallById(id);
+        hallForm.setDate(hall.getDate());
+        hallForm.setName(hall.getName());
+        hallForm.setId(hall.getId());
+        newModel.addObject("hallForm", hallForm);
+        newModel.addObject("hall",hall);
+        return  newModel;
+    }
+
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @RequestMapping(value = { "/editHall" }, method = RequestMethod.POST)
+    public ModelAndView editHall(ModelAndView model,    @ModelAttribute("eventHall") HallForm hallForm) {
+        Integer idHall = hall.getId();
+        String nameHall = (hallForm.getName());
+        Date date = hallForm.getDate();
+        Set<Event> events = hall.getEventSet();
+        if (idHall !=0   ) {
+            hallRepository.updateHall(idHall,nameHall,date,events);
+            return new ModelAndView("redirect:/index");
+        }
+        model.addObject("errorMessage", errorMessage);
+
+        return model;
+    }
+
+  //
+  // SUPPORT PART OF METHODS
+  //
 
 
     private  List<HallResponse> fillResponse (List<Hall> hallList){
@@ -204,4 +230,22 @@ public class timeTableController {
         }
       return  halls;
     }
+
+
+    private String fromCP1251toUTF8(String input)
+    {
+        String output;
+
+        Charset utf8charset = Charset.forName("UTF-8");
+        Charset cp1251charset = Charset.forName("CP1251");
+
+        // decode CP1251
+        CharBuffer decodedData = cp1251charset.decode(ByteBuffer.wrap(input.getBytes()));
+
+        // encode UTF-8
+        ByteBuffer outputBuffer = utf8charset.encode(decodedData);
+
+        return outputBuffer.toString();
+    }
+
 }
