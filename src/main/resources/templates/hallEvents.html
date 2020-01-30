@@ -31,6 +31,7 @@
 <div>
     <table border="1" class="content">
         <tr>
+        <th>#</th>
             <th>Номер справи</th>
             <th>Опис</th>
             <th>Дата</th>
@@ -38,14 +39,14 @@
             <th style="width: 5%">Видалити</th>
             <th style="width: 5%">Редагувати</th>
         </tr>
-        <tr th:each ="event : ${events}">
-            <td th:utext="${event.number}">...</td>
-            <td th:utext="${event.description}">...</td>
-            <td th:utext="${event.date}">...</td>
-            <td th:utext="${event.status}">...</td>
-            <td ><a th:href="@{'/delete/{id}'(id=${event.id})}"
-                    onclick="return confirm('Ви дiйсно хочите видалити засiдання ?')"><button>Видалити</button></a></td>
-            <td ><a th:href="@{'/editEvent/{id}'(id=${event.id})}"><button>Редагувати</button></a></td>
+        <tr th:each ="event,iter : ${events}">
+            <td th:utext="${iter.count}" class="numcol_admin">...</td>
+            <td th:utext="${event.number}" class="casenumcol_admin">...</td>
+            <td th:utext="${event.description}" class="casedesccol_admin">...</td>
+            <td th:utext="${event.date}" class="casedatecol_admin">...</td>
+            <td th:utext="${event.status}" class="casestatuscol_admin">...</td>
+            <td ><a th:href="@{'/delete/{id}'(id=${event.id})}" onclick="return confirm('Ви дiйсно хочите видалити засiдання ?')" class="casedeletecol_admin">Видалити</a></td>
+            <td ><a th:href="@{'/editEvent/{id}'(id=${event.id})}" class="caseeditcol_admin">Редагувати</a></td>
         </tr>
     </table>
 </div>
