@@ -5,36 +5,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title> </title>
 <link th:href="@{/css/style.css}" rel="stylesheet" />
-  <!--    <style>
-     .fa-edit{font-size:20px}
-    .header {text-align: center; padding: 10px 16px;  background: #557;  color: #f1f1f1;}
 
-    /* Page content */
-    .content {  padding: 16px;}
-
-    /* The sticky class is added to the header with JS when it reaches its scroll position */
-    .sticky { position: fixed;  top: 0;  width: 100%}
-
-    /* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
-    .sticky + .content {  padding-top: 102px;}
-
-body {
-	padding : 0;
-	margin : 0;
-	
-}
-
-    table, td, th {  border: 1px solid #ddd;  text-align: left;}
-
-    table {  border-collapse: collapse;  width: 100%;}
-
-    th, td {  padding: 15px;}
-
-    tr:nth-child(even){background-color: #f2f2ff}
-
-    th {  background-color: #4CAFFF;  color: white;}
-     </style>
-     -->
 </head>
 
 <body>
@@ -43,8 +14,20 @@ body {
     </div>
 
     <h1>Перелiк засiдань</h1><br>
-       <a th:href="@{'/AddEvent'}">Додати засiдання</a><br><br>
-        <a th:href="@{'/index'}">Повернутися</a><br><br>    
+    <a th:href="@{'/AddEvent'}"><button>Додати засiдання</button></a><br>
+
+
+    <form  id="dateForm" th:action="@{'/hallEvents/{id}'(id=${hallid})}" th:object="${hallEventsForm}" method="POST">
+        Дата :
+        <input required type="date" th:field="*{dateStart}" value=0 />
+        <br/>
+        <br/>
+
+        <input type="submit" value="Показати згiдно дати" />
+    </form>
+
+   <br>
+    <a th:href="@{'/index'}"><button>Повернутися</button></a><br><br>
 <div>
     <table border="1" class="content">
         <tr>
@@ -60,8 +43,9 @@ body {
             <td th:utext="${event.description}">...</td>
             <td th:utext="${event.date}">...</td>
             <td th:utext="${event.status}">...</td>
-            <td ><a th:href="@{'/delete/{id}'(id=${event.id})}" onclick="return confirm('Ви дiйсно хочите видалити засiдання ?')">Видалити</a></td>
-            <td ><a th:href="@{'/editEvent/{id}'(id=${event.id})}">Редагувати</a></td>
+            <td ><a th:href="@{'/delete/{id}'(id=${event.id})}"
+                    onclick="return confirm('Ви дiйсно хочите видалити засiдання ?')"><button>Видалити</button></a></td>
+            <td ><a th:href="@{'/editEvent/{id}'(id=${event.id})}"><button>Редагувати</button></a></td>
         </tr>
     </table>
 </div>

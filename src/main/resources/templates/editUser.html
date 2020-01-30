@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Редагування користувача</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+
+<body>
+<h1>Редагування користувача </h1>
+
+<a href = "/userList"><button>Повернутися</button></a> <br><br>
+
+<form th:action="@{/editUser}" th:object="${userForm}" method="POST">
+
+    Назва користувача:
+    <input required type="text" th:field="*{name}" value=0/>
+    <br/>
+    <br/>
+    Пароль:
+    <input required type="text" th:field="*{password}" value=0 />
+    <br/>
+    <br/>
+    Оберіть статус користувача:
+    <select  th:field="*{role}">
+        <option  th:each ="role : ${T(timetable.enums.UserRole).values()}"
+                 th:value="${role}"><h2 th:utext="${role}"></h2></option>
+    </select>
+    <br>
+    <br>
+
+    <input type="submit" value="Зберегти" />
+
+</form>
+</body>
+</html>

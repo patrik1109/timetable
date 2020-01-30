@@ -4,60 +4,17 @@
     <meta charset="UTF-8">
     <title>Title</title>
   <link th:href="@{/css/style.css}" rel="stylesheet" />
+
 </head>
-<!--  <style>
-    .header {
-text-align: center;
-padding: 10px 16px;
-  background: #557;
-  color: #f1f1f1;
-}
 
-/* Page content */
-.content {
-  padding: 16px;
-}
-
-/* The sticky class is added to the header with JS when it reaches its scroll position */
-.sticky {
-  position: fixed;
-  top: 0;
-  width: 100%
-}
-
-/* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
-.sticky + .content {
-  padding-top: 102px;
-}
-
-table, td, th {
-  border: 1px solid #ddd;
-  text-align: left;
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-th, td {
-  padding: 15px;
-}
-
-
-tr:nth-child(even){background-color: #f2f2ff}
-
-th {
-  background-color: #4CAFFF;
-  color: white;
-}
-</style>-->
 <body>
 <div>
     <h1 class="header_admin">Оберiть номер зали:</h1>
-
 </div>
-
+<a href = "/users"><button>Редагувати користувачiв</button></a>
+<a href="/addHall"><button>Додати залу</button></a>
+<br>
+<br>
 <div class="content">
 <div class="subheader_placeholder_admin">&nbsp;</div>
     <table >
@@ -68,12 +25,31 @@ th {
         </tr>
         <tr th:each ="hall : ${halls}">
             <td ><a th:href="@{'/hallEvents/{id}'(id=${hall.id})}"><h3 th:utext="${hall.name}"></h3></a></td>
-            <td ><a th:href="@{'deleteHall/{id}'(id=${hall.id})}" onclick="return confirm('Ви дiйсно хочите видалити засiдання ?')">Видалити</a></td>
-            <td><a th:href="@{'editHall/{id}'(id=${hall.id})}">Редагувати</a></td>
+            <td ><a th:href="@{'deleteHall/{id}'(id=${hall.id})}"
+                    onclick="return confirm('Ви дiйсно хочите видалити засiдання ?')"> <button >Видалити</button></a></td>
+            <td><a th:href="@{'editHall/{id}'(id=${hall.id})}">
+                <button>Редагувати</button></a></td>
         </tr>
     </table>
 </div>
+
+<div class="subheader_placeholder_admin">&nbsp;</div>
+<table >
+    <tr>
+        <th> Назва користувача </th>
+        <th> Видалити </th>
+        <th> Редагувати</th>
+    </tr>
+    <tr th:each ="user : ${users}">
+        <td ><h3 th:utext="${user.name}"></h3></td>
+        <td ><a th:href="@{'deleteUser/{id}'(id=${user.id})}"
+                onclick="return confirm('Ви дiйсно хочите видалити засiдання ?')"> <button >Видалити</button></a></td>
+        <td><a th:href="@{'editUser/{id}'(id=${user.id})}">
+            <button>Редагувати</button></a></td>
+    </tr>
+</table>
+</div>
 <br>
-<a href="/addHall"><button>Додати залу</button></a>
+
 </body>
 </html>

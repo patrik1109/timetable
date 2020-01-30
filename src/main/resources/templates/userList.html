@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+    <style>
+        .deleteButton
+       {
+           <!-- position: fixed; top: 40%; left: 40%;-->
+       }
+    </style>
+</head>
+
+<body>
+
+<div>
+    <h1 class="header_admin">Оберiть потрiбного користувача:</h1>
+    <br>
+</div>
+<a href = "/index"><button>Повернутися</button></a>
+<a href="/addUser"><button>Додати користувача</button></a>
+<br>
+<br>
+<div class="content">
+    <div class="subheader_placeholder_admin">&nbsp;</div>
+    <table >
+        <tr>
+            <th> Iмя користувача </th>
+            <th> Видалити </th>
+            <th> Редагувати</th>
+        </tr>
+        <tr th:each ="user : ${users}">
+            <td ><h3 th:utext="${user.name}"></h3></td>
+            <td ><a th:href="@{'deleteUser/{id}'(id=${user.id})}"
+                 onclick="return confirm('Ви дiйсно хочите видалити користувача ?')">
+                <button class="deleteButton">Видалити</button></a></td>
+
+            <td><a th:href="@{'editUser/{id}'(id=${user.id})}"><button>Редагувати</button></a></td>
+        </tr>
+    </table>
+</div>
+<br>
+
+</body>
+</html>
