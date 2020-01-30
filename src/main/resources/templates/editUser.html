@@ -9,7 +9,7 @@
 <body>
 <h1>Редагування користувача </h1>
 
-<a href = "/userList"><button>Повернутися</button></a> <br><br>
+<a href = "/index"><button>Повернутися</button></a> <br><br>
 
 <form th:action="@{/editUser}" th:object="${userForm}" method="POST">
 
@@ -18,7 +18,7 @@
     <br/>
     <br/>
     Пароль:
-    <input required type="text" th:field="*{password}" value=0 />
+    <input required type="password" th:field="*{password}" value=0 />
     <br/>
     <br/>
     Оберіть статус користувача:

@@ -21,9 +21,9 @@
 
 <form class="login_Form" ID="loginForm" th:action="@{/login}" method="post">
 
-    <div><label id="login_Label_User"> Username or Email adress : </label><br><input id="login_Input_email" type="text" name="username" value="Username or Email adress :"/> </div><br>
+    <div><label id="login_Label_User" hint="Username or Email address">  </label><br><input id="login_Input_email" type="text" name="username" /> </div><br>
 
-    <div><label id="login_Label_psw"> Password: </label><br><input id="login_Input_psw" type="password" name="password" value="Password"/></div><br><br>
+    <div><label id="login_Label_psw" hint=" Password: "></label><br><input id="login_Input_psw" type="password" name="password" /></div><br><br>
 
     <div><input id="login_submit" type="submit" value="LOG IN"/></div>
 </form>
