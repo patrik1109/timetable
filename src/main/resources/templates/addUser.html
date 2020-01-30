@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Новий користувач</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+
+</head>
+<body>
+
+<a href = "/index"><button>Повернутися</button></a>
+<br>
+<br>
+<h2>Створити нового користувача</h2>
+<br>
+<form th:action="@{/addUser}" th:object="${userForm}" method="POST">
+
+    Назва користувача:
+    <input required type="text" th:field="*{name}" value=0/>
+    <br/>
+    <br/>
+    Пароль:
+    <input required type="text" th:field="*{password}" value=0 />
+    <br/>
+    <br/>
+    Пiтвердiть пароль:
+    <input required type="text" th:field="*{konformpassword}" value=0 />
+    <br/>
+    <br/>
+
+
+    Оберіть статус користувача:
+    <select  th:field="*{role}">
+        <option  th:each ="role : ${T(timetable.enums.UserRole).values()}"
+                 th:value="${role}"><h2 th:utext="${role}"></h2></option>
+    </select>
+    <br>
+    <br>
+
+    <input type="submit" value="Додати користувача" />
+
+</form>
+<br>
+<br>
+</body>
+</html>
