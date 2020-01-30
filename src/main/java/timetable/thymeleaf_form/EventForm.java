@@ -14,7 +14,7 @@ public class EventForm {
     int Hall_number;
     EventStatus estatus;
     String color;
-
+    
 	public String getColor() {
 		return color;
 	}
