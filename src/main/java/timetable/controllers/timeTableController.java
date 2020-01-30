@@ -336,7 +336,7 @@ public ModelAndView users(Map<String, Object> model){
     @GetMapping("/deleteUser/{id}")
     public ModelAndView deleteUser(@PathVariable Integer id) {
         userRepository.deleteUserbyId(id);
-        return new ModelAndView("redirect:/users");
+        return new ModelAndView("redirect:/index");
     }
 
     @Transactional
@@ -355,7 +355,7 @@ public ModelAndView users(Map<String, Object> model){
         newUser.setPassword(userForm.getPassword());
         newUser.setRole(userForm.getRole());
         userRepository.saveUser(newUser);
-        return new ModelAndView("redirect:/users");
+        return new ModelAndView("redirect:/index");
     }
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -384,7 +384,7 @@ public ModelAndView users(Map<String, Object> model){
         if (id !=0   ) {
             userRepository.updateUser(id,name,role,password);
 
-            return new ModelAndView("redirect:/users");
+            return new ModelAndView("redirect:/index");
         }
         model.addObject("errorMessage", errorMessage);
 

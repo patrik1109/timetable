@@ -8,15 +8,23 @@
 </head>
 
 <body>
-<div>
-    <h1 class="header_admin">Оберiть номер зали:</h1>
-</div>
-<a href = "/users"><button>Редагувати користувачiв</button></a>
-<a href="/addHall"><button>Додати залу</button></a>
-<br>
-<br>
+
 <div class="content">
 <div class="subheader_placeholder_admin">&nbsp;</div>
+<div class="buttons_header">
+    <div>
+        <h1 class="header_admin">Редагування/Налаштування </h1>
+    </div>
+    <div class="table1">
+        <a href="/addHall"><button>Додати зал</button></a>
+    </div>
+    <div class="table2">
+        <a href = "/addUser"><button>Додати користувача</button></a>
+    </div>
+    <br>
+</div>
+    <br>
+    <div class="table1">
     <table >
         <tr>
             <th> Назва зали </th>
@@ -33,8 +41,9 @@
     </table>
 </div>
 
-<div class="subheader_placeholder_admin">&nbsp;</div>
-<table >
+<div class="table2">
+
+    <table  >
     <tr>
         <th> Назва користувача </th>
         <th> Видалити </th>
@@ -43,13 +52,14 @@
     <tr th:each ="user : ${users}">
         <td ><h3 th:utext="${user.name}"></h3></td>
         <td ><a th:href="@{'deleteUser/{id}'(id=${user.id})}"
-                onclick="return confirm('Ви дiйсно хочите видалити засiдання ?')"> <button >Видалити</button></a></td>
+                onclick="return confirm('Ви дiйсно хочите видалити користувача ?')"> <button >Видалити</button></a></td>
         <td><a th:href="@{'editUser/{id}'(id=${user.id})}">
             <button>Редагувати</button></a></td>
     </tr>
 </table>
 </div>
-<br>
-<a th:href="@{'/addHall'}"><button>Додати залу</button></a>
+
+</div>
+
 </body>
 </html>
