@@ -9,14 +9,16 @@
 
 
 <h2>Додати засiдання по справi</h2>
-<form th:action="@{/AddEvent}" th:object="${eventForm}" method="POST">
+<form th:action="@{/AddEvent}" th:object="${eventForm}" id="myform" method="POST">
 
     Номер справи:
     <input required type="text" th:field="*{Number}" value=0/>
     <br/>
     <br/>
     Зміст справи:
-    <input required class="desctext" type="text" th:field="*{Description}" value=" " />
+    <br>
+    <textarea  rows = "30" cols = "80" th:field = "*{Description}" name="lines" form = "myform" >... </textarea>
+   <!-- <input required class="desctext" type="text" th:field="*{Description}" value=" " />-->
     <br/>
     <br/>
     Дата розгляду справи:
