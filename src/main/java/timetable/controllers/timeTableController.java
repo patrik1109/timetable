@@ -96,11 +96,13 @@ public class timeTableController {
         return new ModelAndView("redirect:/hallEvents/"+hall_Id);
     }
 
+
     @Transactional
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @RequestMapping(value = { "/showHall/{id}" }, method = RequestMethod.GET)
     public ModelAndView showHall(@PathVariable Integer id) {
         ModelAndView NewModel = new ModelAndView("showHall");
+
         String  hallName = hallRepository.getHallById(id).getName();
 
         Date date =  new Date();
@@ -119,6 +121,7 @@ public class timeTableController {
         }
         NewModel.addObject("events",eventsresponse);
         NewModel.addObject("hallName",hallName);
+        NewModel.addObject("dateTime",date);
         return NewModel;
     }
     @Transactional
@@ -401,6 +404,16 @@ public ModelAndView users(Map<String, Object> model){
   // SUPPORT PART OF METHODS
   //
 //===========================================================================================================================
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @RequestMapping(value = { "/getTime" }, method = RequestMethod.GET)
+    public String getTime() {
+        Date dateNow = new Date();
+        SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd");
+        return  formatForDateNow.format(dateNow);
+    }
+
+
     private  List<HallResponse> fillHallResponse (List<Hall> hallList){
 
         List<HallResponse> halls = new LinkedList<>();

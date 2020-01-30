@@ -6,21 +6,7 @@ public enum EventStatus {
     Завершено,
     Призначено,
     Нарадча_кімната,
-    Перенесено;
-
-    /*deleted("Вiдкладено"),
-    onProces("Розглядаеться"),
-    finished("Завершено"),
-    postponed("Перенесено");
-
-     private final String displayValue;
-
-    private EventStatus(String displayValue) {
-        this.displayValue = displayValue;
-    }
-
-    public String getDisplayValue() {
-        return displayValue;
-    }*/
+    Перенесено,
+    ___________;
 
 }
