@@ -11,14 +11,16 @@
 
 <a href = "/index">Повернутися</a> <br><br>
 
-<form th:action="@{/editEvent}" th:object="${eventForm}" method="POST">
+<form th:action="@{/editEvent}" th:object="${eventForm}" id="myform" method="POST">
 
     Номер справи:
     <input required type="text" th:field="*{Number}" value=0/>
     <br/>
     <br/>
     Зміст справи:
-    <input required type="text" class="desctext" th:field="*{Description}" value=" " />
+    <!--  <input required type="text" class="desctext" th:field="*{Description}" value=" " />-->
+    <br/>
+    <textarea  rows = "30" cols = "80" th:field = "*{Description}" name="lines" form = "myform" >... </textarea>
     <br/>
     <br/>
     Дата розгляду справи:

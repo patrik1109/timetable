@@ -49,6 +49,12 @@ public class timeTableController {
         List<Hall> halls = hallRepository.findAll();
         List<HallResponse> hallResponses = fillResponse(halls);
         EventForm eventForm = new EventForm();
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, 1); 
+        eventForm.setDate(cal.getTime());
+        
         newModel.addObject("eventForm", eventForm);
         newModel.addObject("halls",hallResponses);
         return  newModel;
