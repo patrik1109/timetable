@@ -25,8 +25,9 @@ public class Event {
     @Column(name = "description")
     String description;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    //@DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "date")
+    @Temporal(TemporalType.DATE)
     Date date;
 
     @Column(name = "status")

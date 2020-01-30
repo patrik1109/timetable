@@ -6,6 +6,8 @@ import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import timetable.entities.Event;
 import timetable.enums.EventStatus;
@@ -13,6 +15,7 @@ import timetable.repository.EventRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -80,4 +83,18 @@ public class EventServiceImpl implements EventService{
         }
         return results;
     }
+
+
+
+    @Override
+    public List<Event> findAllByDate(Date date) {
+        return repository.findAllByDate(date);
+    }
+
+    @Override
+    public List<Event> findAllByDateBetween(Date DateStart, Date DateEnd) {
+        return repository.findAllByDateBetween(DateStart,DateEnd);
+    }
+
+
 }
