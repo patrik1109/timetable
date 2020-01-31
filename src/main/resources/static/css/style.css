@@ -1,0 +1,209 @@
+@charset "UTF-8";
+
+.header {
+text-align: center;
+height : 80px;
+        padding: 10px 16px;
+        background: #00274e;
+        color: #f1f1f1;
+}
+
+.header_admin {
+        top : 0px;
+        height : 100px;
+        text-align: center;
+        padding: 0px 16px;
+        background: #00274e;
+        color: #f1f1f1;
+}
+
+/* Page content */
+.content {
+  padding: 2px;
+}
+
+/* The sticky class is added to the header with JS when it reaches its scroll position */
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%
+  
+}
+
+/* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
+.sticky + .content {
+  padding-top: 0px;
+}
+
+body {
+	padding : 0;
+	margin : 0;
+	
+}
+
+table, td, th {
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+	height : 50px;
+  padding: 0px;
+}
+
+tr:nth-child(even){
+	height : 50px;
+	background-color: #f2f2ff
+	}
+
+th {
+	height : 50px;
+  background-color: #4CAFFF;
+  color: white;
+   text-align: center;
+}
+
+.right_title
+{
+	float : left;
+	width :20%;
+  /*background:  #0080ff;*/
+  text-align: center;
+	
+}
+
+.center_title
+{
+	float : left;
+	width : 60%;
+  /*background:  #0080ff;*/
+  text-align: center;
+	
+}
+
+.current_date_time
+{
+float : left;
+width :20%;
+/*background:  #0080ff;*/
+  text-align: center;
+}
+
+.subheader_placeholder
+{
+        height : 100px;
+        width :100%;
+}
+
+.subheader_placeholder_admin
+{
+	height : 100px;
+	width :100%;
+}
+
+.numcol{
+	width :3%;
+	 text-align: center;
+}
+
+.casenumcol{
+	width :10%;
+	 padding: 4px;
+}
+
+.casedesccol{
+	width :77%;
+	padding: 4px;
+}
+
+.casestatuscol{
+	width :10%;
+	 padding: 4px;
+}
+
+.numcol_admin{
+	width :3%;
+	 
+}
+
+.casenumcol_admin{
+	width :7%;
+	
+}
+
+.casedesccol_admin{
+	width :70%;
+}
+
+.casedatecol_admin{
+	width :5%;
+	
+}
+
+.casestatuscol_admin{
+	width :5%;	
+	 
+}
+
+.casedeletecol_admin{
+	width :5%;	
+	
+}
+
+.caseeditcol_admin{
+	width :5%;
+	
+}
+
+.desctext{
+	height : 200px;
+	width : 500px;
+	text-align: right;
+}
+
+
+.index_hall{
+	
+	text-align: right;
+}
+
+.index_deletehall{
+	
+	text-align: right;
+}
+
+.index_edithall{
+	
+	text-align: right;
+}
+
+#dateForm
+    {
+        position: absolute;
+        left:200px;
+        top: 90px;
+   }
+   
+.buttons_top{
+   width : 100%;
+   }
+
+.table2
+{
+    float:left;
+    width : 49%;
+    padding:3px;
+}
+
+.table1
+{
+    float:left;
+    width : 49%;
+    padding:3px;
+}                   
