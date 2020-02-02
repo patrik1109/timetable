@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Entity
 @Indexed
-@Table(name="event", schema = "test22", catalog = "" )
+@Table(name="event", schema = "test", catalog = "" )
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

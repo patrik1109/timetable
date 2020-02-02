@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.Temporal;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,6 +16,7 @@ import timetable.entities.User;
 import timetable.enums.EventStatus;
 import timetable.enums.UserRole;
 import timetable.repository.EventRepository;
+import timetable.repository.UserRepository;
 import timetable.responses.EventResponse;
 import timetable.responses.HallResponse;
 import timetable.responses.UserResponse;
@@ -24,6 +27,7 @@ import timetable.thymeleaf_form.EventForm;
 import timetable.thymeleaf_form.HallEventsForm;
 import timetable.thymeleaf_form.HallForm;
 import timetable.thymeleaf_form.UserForm;
+import timetable.utils.DummyContentUtil;
 
 import javax.persistence.TemporalType;
 import java.io.UnsupportedEncodingException;
@@ -254,7 +258,20 @@ public class timeTableController {
         return  NewModel;
     }
 
-
+    @Transactional
+    @RequestMapping(value = { "/createDummies" }, method = RequestMethod.GET )
+    public String addHall(){
+        
+    	System.out.println("Here we go!");
+    	
+    	DummyContentUtil dcu = new DummyContentUtil();
+    	
+    	List<User> users = dcu.generateDummyUsers();
+    	
+    	users.stream().forEach((u) -> {userRepository.saveUser(u);});
+    	
+        return  "OK";
+    }
 
     @Transactional
     @RequestMapping(value = { "/addHall" }, method = RequestMethod.GET )
@@ -330,7 +347,7 @@ public ModelAndView users(Map<String, Object> model){
             {
                 UserResponse response = new UserResponse();
                 response.setId(user.getId());
-                response.setName(user.getName());
+                response.setUsername(user.getUsername());
                 response.setRole(user.getRole());
                 response.setPassword(user.getPassword());
 
@@ -360,8 +377,11 @@ public ModelAndView users(Map<String, Object> model){
     @RequestMapping(value = { "/addUser" }, method = RequestMethod.POST)
     public ModelAndView addUser(ModelAndView model, @ModelAttribute("userForm") UserForm userForm) {
         User newUser = new User();
-        newUser.setName(userForm.getName());
-        newUser.setPassword(userForm.getPassword());
+        newUser.setName(userForm.getUsername());
+        newUser.setUsername(userForm.getUsername());
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String password = passwordEncoder.encode(userForm.getPassword());
+        newUser.setPassword(password);
         newUser.setRole(userForm.getRole());
         userRepository.saveUser(newUser);
         return new ModelAndView("redirect:/index");
@@ -373,7 +393,7 @@ public ModelAndView users(Map<String, Object> model){
         ModelAndView newModel = new ModelAndView("editUser");
         UserForm userForm = new UserForm();
         user = userRepository.getUserById(id);
-            userForm.setName(user.getName());
+            userForm.setUsername(user.getUsername());
             userForm.setRole(user.getRole());
             userForm.setPassword(user.getPassword());
              newModel.addObject("userForm", userForm);
@@ -386,13 +406,14 @@ public ModelAndView users(Map<String, Object> model){
     @RequestMapping(value = { "/editUser" }, method = RequestMethod.POST)
     public ModelAndView editUser(ModelAndView model,    @ModelAttribute("userForm") UserForm userForm) {
         int id = user.getId();
-        String name =userForm.getName();
-        String password = userForm.getPassword();
+        String name =userForm.getUsername();
+        String email = userForm.getEmail();      
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String password = passwordEncoder.encode(userForm.getPassword());
         UserRole role =userForm.getRole();
 
         if (id !=0   ) {
-            userRepository.updateUser(id,name,role,password);
-
+            userRepository.updateUser(id,name,role, email, password);
             return new ModelAndView("redirect:/index");
         }
         model.addObject("errorMessage", errorMessage);
@@ -432,7 +453,7 @@ public ModelAndView users(Map<String, Object> model){
         for(User user : userList){
             UserResponse userResponse = new UserResponse();
             userResponse.setId(user.getId());
-            userResponse.setName(user.getName());
+            userResponse.setUsername(user.getUsername());
             userResponse.setPassword(user.getPassword());
             userResponse.setRole(user.getRole());
             users.add(userResponse);

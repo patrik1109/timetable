@@ -12,6 +12,6 @@ public interface UserService {
     User getUserById(Integer id);
     void saveUser(User user);
     void deleteUserbyId(Integer id);
-    void updateUser(int id, String name, UserRole role, String password);
+    void updateUser(int id, String name, UserRole role, String email, String password);
     List<User> findAll();
 }

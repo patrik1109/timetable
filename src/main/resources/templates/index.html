@@ -10,7 +10,7 @@
 <body>
 
 <div class="content">
-<div class="subheader_placeholder_admin">&nbsp;</div>
+<!--  <div class="subheader_placeholder_admin">&nbsp;</div>-->
 <div class="buttons_header">
     <div>
         <h1 class="header_admin">Редагування/Налаштування </h1>
@@ -50,7 +50,7 @@
         <th> Редагувати</th>
     </tr>
     <tr th:each ="user : ${users}">
-        <td ><h3 th:utext="${user.name}"></h3></td>
+        <td ><h3 th:utext="${user.username}"></h3></td>
         <td ><a th:href="@{'deleteUser/{id}'(id=${user.id})}"
                 onclick="return confirm('Ви дiйсно хочите видалити користувача ?')"> <button >Видалити</button></a></td>
         <td><a th:href="@{'editUser/{id}'(id=${user.id})}">
