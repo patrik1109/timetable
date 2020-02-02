@@ -16,95 +16,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>Monitor</title>
 </head>
-   <!--  <style>
- .header {
-	text-align: center;
-	padding: 10px 16px;
-  	background: #557;
-  	color: #f1f1f1;
-}
-
-/* Page content */
-.content {
-  padding: 16px;
-}
-
-/* The sticky class is added to the header with JS when it reaches its scroll position */
-.sticky {
-  position: fixed;
-  top: 0;
-  width: 100%
-}
-
-body {
-	padding : 0;
-	margin : 0;
-	
-}
-
-/* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
-.sticky + .content {
-  padding-top: 102px;
-}
-
-table, td, th {
-  border: 1px solid #ddd;
-  text-align: left;
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-th, td {
-  padding: 15px;
-}
-
-
-tr:nth-child(even){background-color: #f2f2ff}
-
-th {
-  background-color: #4CAFFF;
-  color: white;
-}
-
-
-.right_title
-{
-float : left;
-width :20%;
-  background: #557;
-  text-align: center;
-	
-}
-
-
-.center_title
-{
-float : left;
-	width : 60%;
-
-  background: #557;
-  text-align: center;
-	
-}
-
-.current_date_time
-{
-float : left;
-width :20%;
-background: #557;
-  text-align: center;
-}
-
-.subheader_placeholder
-{
-height : 300px;
-width :100%;
-}
-
-</style>-->
+  
 <body>
 <div class="header sticky" >
 <div class="right_title"><header><h2>&nbsp;</h2></header></div>
@@ -116,9 +28,9 @@ width :100%;
     <div th:with="count=${1}">
         <table border="1">
             <tr>
-                <th>N</th>
-                <th>Номер справи</th>
-                <th>Опис</th>
+                <th>№ з/п</th>
+                <th>№ проведення</th>
+                <th>Сторони у справі та предмет спору</th>
                 <th>Статус</th>
             </tr>
             <tr th:each ="event,iter : ${events}">

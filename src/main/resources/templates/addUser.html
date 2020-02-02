@@ -16,7 +16,7 @@
 <form th:action="@{/addUser}" th:object="${userForm}" method="POST">
 
     Назва користувача:
-    <input required type="text" th:field="*{name}" value=0/>
+    <input required type="text" th:field="*{username}" value=0/>
     <br/>
     <br/>
     Пароль:
@@ -24,7 +24,7 @@
     <br/>
     <br/>
     Пiтвердiть пароль:
-    <input required type="password" th:field="*{konformpassword}" value=0 />
+    <input required type="password" th:field="*{confirmpassword}" value=0 />
     <br/>
     <br/>
 

@@ -4,28 +4,40 @@ import timetable.enums.UserRole;
 
 public class UserForm {
     int id;
-    String name;
+    String username;
     UserRole role;
+    String email;
     String password;
-    String konformpassword;
+    String confirmpassword;
 
-    public UserForm(int id, String name, UserRole role, String password, String konformpassword) {
+    public UserForm(int id, String username, UserRole role, String email, String password, String confirmpassword) {
         this.id = id;
-        this.name = name;
+        this.username = username;
         this.role = role;
+        this.email = email;
         this.password = password;
-        this.konformpassword = konformpassword;
+        this.confirmpassword = confirmpassword;
     }
 
     public UserForm() {
     }
 
-    public String getKonformpassword() {
-        return konformpassword;
+    
+    
+    public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getConfirmpassword() {
+        return confirmpassword;
     }
 
-    public void setKonformpassword(String konformpassword) {
-        this.konformpassword = konformpassword;
+    public void setConfirmpassword(String Confirmpassword) {
+        this.confirmpassword = confirmpassword;
     }
 
     public int getId() {
@@ -36,12 +48,12 @@ public class UserForm {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public UserRole getRole() {

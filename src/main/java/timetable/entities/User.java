@@ -6,33 +6,71 @@ import org.hibernate.search.annotations.TermVector;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import timetable.enums.UserRole;
 
+import java.util.Date;
+
 import javax.persistence.*;
 
 
 @Entity
 @Indexed
-@Table(name="users", schema = "test22", catalog = "" )
+@Table(name="user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    @Column(name = "name")
-    String name;
+    @Column(nullable = false, unique = true)
+    String username;
 
     @Column(name = "role")
     UserRole role;
 
+    @Column(name = "email")
+    String email;
+    
     @Column(name = "password")
     String password;
+    
+    @Column(name = "last_login")
+    Date lastLogin;
 
-    public User() {
+    @Column(name = "name")
+    String name;
+    
+    
+    
+    
+    public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Date getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+	public User() {
     }
 
-    public User(int id, String name, UserRole role, String password) {
-        this.id = id;
-        this.name = name;
-        this.role = role;
+    public User(String username, String email, String password) {
+    	this.name = username;
+        this.username = username;
+        this.email = email;
         this.password = password;
     }
 
@@ -44,12 +82,12 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String user) {
-        this.name = user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public UserRole getRole() {

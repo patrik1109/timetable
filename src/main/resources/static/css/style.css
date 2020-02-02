@@ -207,3 +207,8 @@ width :20%;
     width : 49%;
     padding:3px;
 }                   
+
+ .deleteButton
+       {
+           <!-- position: fixed; top: 40%; left: 40%;-->
+       }

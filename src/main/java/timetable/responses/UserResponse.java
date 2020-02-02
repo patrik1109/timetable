@@ -4,6 +4,7 @@ import timetable.enums.UserRole;
 
 public class UserResponse {
     int id;
+    String username;
     String name;
     UserRole role;
     String password;
@@ -11,9 +12,9 @@ public class UserResponse {
     public UserResponse() {
     }
 
-    public UserResponse(int id, String name, UserRole role, String password) {
+    public UserResponse(int id, String username, UserRole role, String password) {
         this.id = id;
-        this.name = name;
+        this.username = username;
         this.role = role;
         this.password = password;
     }
@@ -26,12 +27,22 @@ public class UserResponse {
         this.id = id;
     }
 
+    
+    
     public String getName() {
-        return name;
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public UserRole getRole() {
