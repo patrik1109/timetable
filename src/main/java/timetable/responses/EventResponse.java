@@ -1,8 +1,5 @@
 package timetable.responses;
 
-import timetable.enums.EventStatus;
-
-import javax.persistence.Column;
 import java.util.Date;
 
 public class EventResponse {
@@ -12,16 +9,28 @@ public class EventResponse {
     public String description;
     public Date date;
     public int idHall;
-    public EventStatus status;
+    public String status;
     public String color;
 
-    public EventStatus getStatus() {
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(EventStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
+
+
+
+
 
     public String getNumber() {
         return number;
@@ -55,14 +64,6 @@ public class EventResponse {
         this.idHall = idHall;
     }
 
-    public String getColor() {
-		return color;
-	}
-
-	public void setColor(String color) {
-		this.color = color;
-	}
-
 	public EventResponse() {
     }
 
@@ -74,13 +75,13 @@ public class EventResponse {
         this.id = id;
     }
 
-    public EventResponse(String number, String description, Date date, int idHall, int id ,EventStatus status, String color) {
+    public EventResponse(String number, String description, Date date, int idHall, int id ,int idStatus) {
         this.number = number;
         this.description = description;
         this.date = date;
         this.idHall = idHall;
         this.id = id;
-        this.status = status;
-
     }
+
+
 }

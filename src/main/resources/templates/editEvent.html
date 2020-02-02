@@ -29,7 +29,7 @@
     <br/>
     Статус справи:
     <select  th:field="*{estatus}">
-        <option  th:each ="status : ${statuses}" th:value="${status}"><h2 th:utext="${status}"></h2></option>
+        <option  th:each ="status : ${statuses}" th:value="${status.id}"><h2 th:utext="${status.status}"></h2></option>
     </select>
     <br/>
     <br/>
@@ -39,9 +39,7 @@
         </select>
     <br/>
     <br/>
-		Color: <input type="color" th:field="*{color}" name="eventcolor" value="*{color}"><br><br>
     <input type="submit" value="Зберегти" />
-
 </form>
 </body>
 </html>

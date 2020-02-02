@@ -33,13 +33,17 @@
     <br/>
     Оберіть статус справи:
     <select  th:field="*{estatus}">
+        <option  th:each ="state : ${statuses}" th:value="${state.id}"><h2 th:utext="${state.status}"></h2></option>
+    </select><br>
+    <!--Оберіть статус справи:
+    <select  th:field="*{estatus}">
         <option  th:each ="state : ${T(timetable.enums.EventStatus).values()}"
                  th:value="${state}"><h2 th:utext="${state}"></h2></option>
-    </select><br>
+    </select><br>-->
     
-   Color: <input type="color" th:field="*{color}" name="eventcolor" value="#ff0000"><br><br>
+ <!--  Color: <input type="color" th:field="*{color}" name="eventcolor" value="#ff0000"><br><br>-->
    
-    <input type="submit" value="Add Event" />
+    <input type="submit" value="Додати" />
     <br>
 
 </form>

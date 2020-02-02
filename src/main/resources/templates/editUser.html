@@ -27,8 +27,8 @@
     <br/>
     Оберіть статус користувача:
     <select  th:field="*{role}">
-        <option  th:each ="role : ${T(timetable.enums.UserRole).values()}"
-                 th:value="${role}"><h2 th:utext="${role}"></h2></option>
+        <option  th:each ="role : ${T(timetable.enums.UserRole).values()}" th:value="${role}">
+            <h2 th:utext="${role}"></h2></option>
     </select>
     <br>
     <br>
