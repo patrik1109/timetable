@@ -258,6 +258,8 @@ public class timeTableController {
         return  NewModel;
     }
 
+   
+    
     @Transactional
     @RequestMapping(value = { "/settings" }, method = RequestMethod.GET)
     public ModelAndView settings(Map<String, Object> model){
@@ -266,34 +268,16 @@ public class timeTableController {
         SettingForm settingForm = new SettingForm();
         NewModel.addObject("parameters",parameters);
         NewModel.addObject("settingForm",settingForm);
-    @Transactional
-    @RequestMapping(value = { "/createDummies" }, method = RequestMethod.GET )
-    public String addHall(){
-        
-<<<<<<< .mine
-    	System.out.println("Here we go!");
-
-=======
+ 
         return  NewModel;
     }
->>>>>>> .theirs
-    	
-    	DummyContentUtil dcu = new DummyContentUtil();
-    	
-    	List<User> users = dcu.generateDummyUsers();
-    	
-    	users.stream().forEach((u) -> {userRepository.saveUser(u);});
-    	
-        return  "OK";
-    }
+
+
 
 @Transactional
     @RequestMapping(value = { "/createDummies" }, method = RequestMethod.GET )
     public String createDummies(){
 
-    	System.out.println("Here we go!");
-
-    	
     	DummyContentUtil dcu = new DummyContentUtil();
     	
     	List<User> users = dcu.generateDummyUsers();
