@@ -3,9 +3,6 @@ package timetable.entities;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.TermVector;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import timetable.enums.EventStatus;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,6 +11,7 @@ import java.util.Date;
 @Indexed
 @Table(name="event", schema = "test22", catalog = "" )
 public class Event {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
@@ -25,20 +23,16 @@ public class Event {
     @Column(name = "description")
     String description;
 
-    //@DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
     Date date;
 
-    @Column(name = "status")
-    EventStatus status;
-    
-    @Column(name = "color")
-    String color;
-    
+    private int  idStatus;
+
 	private int idHall;
 
-    public int getId() {
+
+	public int getId() {
         return id;
     }
 
@@ -77,35 +71,26 @@ public class Event {
     public void setIdHall(int idHall) {
         this.idHall = idHall;
     }
-    public String getColor() {
-		return color;
-	}
 
-	public void setColor(String color) {
-		this.color = color;
-	}
-	
+
     public Event() {
     }
 
-    public Event(int id, String number, String description, Date date, int idHall, EventStatus estatus, String color) {
+    public Event(int id, String number, String description, Date date, int idHall,int estatus)   {
         this.id = id;
         this.number = number;
         this.description = description;
         this.date = date;
         this.idHall = idHall;
-        this.status = estatus;
-        this.color = color;
+        this.idStatus = estatus;
+
     }
 
-	public void setStatus(EventStatus getestatus) {
-		this.status = getestatus;
-		
-	}
+    public int getIdStatus() {
+        return idStatus;
+    }
 
-	public EventStatus getStatus() {
-		return status;
-	}
-	
-	
+    public void setIdStatus(int idStatus) {
+        this.idStatus = idStatus;
+    }
 }

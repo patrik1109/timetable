@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+     <link th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+
+<style>
+     #settingTable
+    {
+        width:400px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+    #settingForm{
+        padding:10px;
+    }
+
+</style>
+
+<body>
+<div class="header sticky" >
+    <div class="right_title"><header><h2>&nbsp;</h2></header></div>
+    <div class="center_title"><header><h2> Верховний суд </h2></header></div>
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+    <form id="settingForm" th:action="@{/setting}" th:object="${settingForm}" method="POST">
+    <div >
+        <table id="settingTable">
+            <tr>
+                <th> Назва зали  </th>
+                <th> Колір тексту</th>
+                <th> Шрифт </th>
+                <th> Висота шрифту </th>
+                <th> Колір підложки</th>
+            </tr>
+            <tr th:each ="parameter : ${parameters}">
+                <td  th:utext="${parameter.parameter}" ></td>
+
+                <!--<input required type="text" th:field="*{name}" value=" "/>-->
+                <td >
+                    <input type="color" th:field="*{textcolor}" value="${parameter.textcolor}"/>
+                </td>
+                <td  th:utext="${parameter.textfont}" >...</td>
+                <td  th:utext="${parameter.textsize}">...</td>
+                <td  th:utext="${parameter.textbackground}">...</td>
+            </tr>
+
+        </table>
+        <br/>
+    </div>
+        <input type="submit" value="Зберегти" />
+    </form>
+
+
+</body>
+</html>

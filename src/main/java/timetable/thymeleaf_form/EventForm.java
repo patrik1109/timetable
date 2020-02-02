@@ -1,7 +1,6 @@
 package timetable.thymeleaf_form;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import timetable.enums.EventStatus;
 
 import java.util.Date;
 
@@ -12,32 +11,27 @@ public class EventForm {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date date;
     int Hall_number;
-    EventStatus estatus;
-    String color;
-    
-	public String getColor() {
-		return color;
-	}
+    int estatus;
 
-	public void setColor(String color) {
-		this.color = color;
-	}
+    public void setEstatus(int estatus) {
+        this.estatus = estatus;
+    }
 
-	public EventStatus getestatus() {
+
+	public int getEstatus() {
         return estatus;
     }
 
-    public void setestatus(EventStatus status) {
+    public void setestatus(int status) {
         this.estatus = status;
     }
 
-    public EventForm(String number, String description, Date date, int hall_number, EventStatus status, String color) {
+    public EventForm(String number, String description, Date date, int hall_number, int status) {
         this.Number = number;
         this.Description = description;
         this.date = date;
         this.Hall_number = hall_number;
         this.estatus = status;
-        this.color = color;
     }
 
     public EventForm() {
