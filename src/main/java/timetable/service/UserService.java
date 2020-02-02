@@ -1,11 +1,8 @@
 package timetable.service;
 
-import timetable.entities.Event;
 import timetable.entities.User;
-import timetable.enums.EventStatus;
 import timetable.enums.UserRole;
 
-import java.util.Date;
 import java.util.List;
 
 public interface UserService {

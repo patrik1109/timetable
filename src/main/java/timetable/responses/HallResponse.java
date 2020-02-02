@@ -1,7 +1,6 @@
 package timetable.responses;
 
 import timetable.entities.Event;
-import timetable.enums.EventStatus;
 
 import java.util.Date;
 import java.util.Set;
@@ -12,7 +11,7 @@ public class HallResponse{
     public String name;
     public Date date;
     public Set<Event> eventSet;
-    public EventStatus status;
+    public String status;
 
 
     public HallResponse() {
@@ -50,7 +49,7 @@ public class HallResponse{
         this.eventSet = eventSet;
     }
 
-    public HallResponse(int id, String name, Date date, Set<Event> booksAuthor, EventStatus status) {
+    public HallResponse(int id, String name, Date date, Set<Event> booksAuthor, String status) {
         this.id = id;
         this.name = name;
         this.date = date;
