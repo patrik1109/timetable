@@ -51,6 +51,7 @@ public class timeTableController {
     private volatile Hall hall;
     private volatile User user;
     private volatile Parameter parameter;
+    private volatile List<Parameter> parameterList;
     @Value("${error.message}")
 
     private String errorMessage;
@@ -260,16 +261,30 @@ public class timeTableController {
 
    
     
-    @Transactional
+
     @RequestMapping(value = { "/settings" }, method = RequestMethod.GET)
     public ModelAndView settings(Map<String, Object> model){
-        List<ParameterResponse> parameters = fillParameterResponce(parameterRepository.findAll());
+        parameterList = parameterRepository.findAll();
+        List<ParameterResponse> parameters = fillParameterResponce(parameterList);
         ModelAndView NewModel = new ModelAndView("settings");
+
         SettingForm settingForm = new SettingForm();
         NewModel.addObject("parameters",parameters);
         NewModel.addObject("settingForm",settingForm);
  
         return  NewModel;
+    }
+    @Transactional
+    @RequestMapping(value = { "/settings" }, method = RequestMethod.POST)
+    public ModelAndView settings(ModelAndView model, @ModelAttribute("settingForm") SettingForm settingForm) {
+
+        Parameter parameterHall = parameterList.get(0);
+        Parameter parameterTableTitle =  parameterList.get(1);
+        String colors =  (settingForm.getTextcolor());
+
+        parameterRepository.saveParameter(parameter);
+        return new ModelAndView("redirect:/index");
+
     }
 
 
