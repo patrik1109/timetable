@@ -44,7 +44,7 @@
                 <th> Колір підложки</th>
             </tr>
             <tr th:each ="parameter : ${parameters}">
-                <td  th:utext="${parameter.parameter}"></td>
+                <td  th:utext="${parameter.parameter}"   ></td>
 
                 <!--th:attr="value = ${client.name}"-->
                 <td >
@@ -54,7 +54,7 @@
                     <input type="text" th:field="*{textfont}" th:value="${parameter.textfont}" >
                 </td>
                 <td>
-                    <input type="number"  th:field="*{textsize}" th:utext="${parameter.textsize}">
+                    <input type="text"  th:field="*{textsize}" th:utext="${parameter.textsize}">
                 </td>
                 <td>
                     <input type="color" th:field="*{textbackground}" th:utext="${parameter.textbackground}">

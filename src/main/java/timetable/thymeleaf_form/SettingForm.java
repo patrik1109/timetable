@@ -5,10 +5,10 @@ public class SettingForm {
     String parameter;
     String textcolor;
     String textfont;
-    Integer textsize;
+    String textsize;
     String textbackground;
 
-    public SettingForm(String parameter, String textcolor, String textfont, Integer textsize, String textbackground) {
+    public SettingForm(String parameter, String textcolor, String textfont, String textsize, String textbackground) {
         this.parameter = parameter;
         this.textcolor = textcolor;
         this.textfont = textfont;
@@ -43,11 +43,11 @@ public class SettingForm {
         this.textfont = textfont;
     }
 
-    public Integer getTextsize() {
+    public String getTextsize() {
         return textsize;
     }
 
-    public void setTextsize(Integer textsize) {
+    public void setTextsize(String textsize) {
         this.textsize = textsize;
     }
 

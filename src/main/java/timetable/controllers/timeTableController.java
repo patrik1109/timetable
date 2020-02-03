@@ -280,9 +280,22 @@ public class timeTableController {
 
         Parameter parameterHall = parameterList.get(0);
         Parameter parameterTableTitle =  parameterList.get(1);
-        String colors =  (settingForm.getTextcolor());
 
-        parameterRepository.saveParameter(parameter);
+        String[] colors =  settingForm.getTextcolor().split(",");
+        String[] textbackgound = settingForm.getTextbackground().split(",");
+        String[] textfont = settingForm.getTextfont().split(",");
+        String[] textsize = settingForm.getTextsize().split(",");
+
+        parameterHall.setTextbackground(textbackgound[0]);
+        parameterTableTitle.setTextbackground(textbackgound[1]);
+        parameterHall.setTextcolor(colors[0]);
+        parameterTableTitle.setTextcolor(colors[1]);
+        parameterHall.setTextfont(textfont[0]);
+        parameterTableTitle.setTextfont(textfont[1]);
+        parameterHall.setTextsize(Integer.parseInt(textsize[0]));
+        parameterTableTitle.setTextsize(Integer.parseInt(textsize[1]));
+        parameterRepository.saveParameter(parameterHall);
+        parameterRepository.saveParameter(parameterTableTitle);
         return new ModelAndView("redirect:/index");
 
     }
