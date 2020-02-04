@@ -16,11 +16,31 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>Monitor</title>
 </head>
-  
+<style>
+
+
+</style>
 <body>
 <div class="header sticky" >
 <div class="right_title"><header><h2>&nbsp;</h2></header></div>
-<div class="center_title"><header><h2 th:utext="${hallName}"></h2></header></div>
+
+    <div class="center_title">
+
+        <header><h2 id = "headerTitle"
+
+                    th:style="'color : '+${parameterHall.textcolor}+';
+                    background-color : '+${parameterHall.textbackground}+';
+                    font-size : '+${parameterHall.textsize}+'px;
+                    font-family : '+${parameterHall.textfont}+';'"
+
+                    th:utext="${hallName}"
+        >
+
+        </h2>
+
+    </header></div>
+
+
  <div class="current_date_time"><header><h2 id="current_date_time_block2"></h2></header></div>
 </div>
 <div class="content">
