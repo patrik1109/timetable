@@ -105,30 +105,28 @@ public class timeTableController {
     @RequestMapping(value = { "/showHall/{id}" }, method = RequestMethod.GET)
     public ModelAndView showHall(@PathVariable Integer id) {
         ModelAndView NewModel = new ModelAndView("showHall");
-
         String  hallName = hallRepository.getHallById(id).getName();
+
+        List<ParameterResponse> listparameter =fillParameterResponce(parameterRepository.findAll());
+
+        ParameterResponse parameterHall = listparameter.get(0);
+        ParameterResponse parameterTableTitle =  listparameter.get(1);
+        ParameterResponse parameterText = listparameter.get(2);
+
 
         Date date =  new Date();
         List<Event> eventList = eventRepository.findAllByDate(date);
-        List<EventResponse> eventsresponse = new LinkedList<>();
+        List<EventResponse> eventsresponse = fillEventRenspose(eventList);// new LinkedList<>();
 
-        for (Event event: eventList) {
-            if(event.getIdHall()==id) {
-                EventResponse response = new EventResponse();
-                StatusEvent statusEvent = statusEventRepository.getStatusEventById(event.getIdStatus());
-                response.setDate(event.getDate());
-                response.setDescription(event.getDescription());
-                response.setNumber(event.getNumber());
-                response.setColor(statusEvent.getColor());
-                response.setStatus(statusEvent.getStatus());
-                eventsresponse.add(response);
-            }
-        }
+
         NewModel.addObject("events",eventsresponse);
         NewModel.addObject("hallName",hallName);
         NewModel.addObject("dateTime",date);
+        NewModel.addObject("parameterHall",parameterHall);
         return NewModel;
     }
+
+
     @Transactional
     @RequestMapping(value = { "/hallEvents/{id}" }, method = RequestMethod.GET)
     public ModelAndView editHallEvents(@PathVariable Integer id) {
@@ -280,22 +278,35 @@ public class timeTableController {
 
         Parameter parameterHall = parameterList.get(0);
         Parameter parameterTableTitle =  parameterList.get(1);
+        Parameter parameterText = parameterList.get(2);
 
         String[] colors =  settingForm.getTextcolor().split(",");
         String[] textbackgound = settingForm.getTextbackground().split(",");
         String[] textfont = settingForm.getTextfont().split(",");
         String[] textsize = settingForm.getTextsize().split(",");
 
+
+
         parameterHall.setTextbackground(textbackgound[0]);
         parameterTableTitle.setTextbackground(textbackgound[1]);
+        parameterText.setTextbackground(textbackgound[2]);
+
         parameterHall.setTextcolor(colors[0]);
         parameterTableTitle.setTextcolor(colors[1]);
+        parameterText.setTextcolor(colors[2]);
+
         parameterHall.setTextfont(textfont[0]);
         parameterTableTitle.setTextfont(textfont[1]);
+        parameterText.setTextfont(textfont[2]);
+
         parameterHall.setTextsize(Integer.parseInt(textsize[0]));
         parameterTableTitle.setTextsize(Integer.parseInt(textsize[1]));
+        parameterText.setTextsize(Integer.parseInt(textsize[2]));
+
         parameterRepository.saveParameter(parameterHall);
         parameterRepository.saveParameter(parameterTableTitle);
+        parameterRepository.saveParameter(parameterText);
+
         return new ModelAndView("redirect:/index");
 
     }
@@ -384,7 +395,7 @@ public class timeTableController {
 @GetMapping(value = {  "/users" } )
 public ModelAndView users(Map<String, Object> model){
     List<User> userList = userRepository.findAll();
-    List<UserResponse> responses = new LinkedList<>();
+    List<UserResponse> responses =  new LinkedList<>();
         for (User user : userList )
             {
                 UserResponse response = new UserResponse();
@@ -524,8 +535,25 @@ public ModelAndView users(Map<String, Object> model){
             response.setTextsize(parameter.getTextsize());
             response.setParameter(parameter.getParameter());
             parameters.add(response);
-}
+        }
         return parameters;
     }
+    private List<EventResponse> fillEventRenspose(List<Event> eventList) {
+
+        List<EventResponse> eventsresponse = new ArrayList<>();
+        for (Event event: eventList) {
+
+                EventResponse response = new EventResponse();
+                StatusEvent statusEvent = statusEventRepository.getStatusEventById(event.getIdStatus());
+                response.setDate(event.getDate());
+                response.setDescription(event.getDescription());
+                response.setNumber(event.getNumber());
+                response.setColor(statusEvent.getColor());
+                response.setStatus(statusEvent.getStatus());
+                eventsresponse.add(response);
+            }
+        return eventsresponse;
+    }
+
 }
 

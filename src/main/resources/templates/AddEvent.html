@@ -18,7 +18,7 @@
     Зміст справи:
     <br>
     <textarea  rows = "30" cols = "80" th:field = "*{Description}" name="lines" form = "myform" >... </textarea>
-   <!-- <input required class="desctext" type="text" th:field="*{Description}" value=" " />-->
+
     <br/>
     <br/>
     Дата розгляду справи:
@@ -35,14 +35,7 @@
     <select  th:field="*{estatus}">
         <option  th:each ="state : ${statuses}" th:value="${state.id}"><h2 th:utext="${state.status}"></h2></option>
     </select><br>
-    <!--Оберіть статус справи:
-    <select  th:field="*{estatus}">
-        <option  th:each ="state : ${T(timetable.enums.EventStatus).values()}"
-                 th:value="${state}"><h2 th:utext="${state}"></h2></option>
-    </select><br>-->
-    
- <!--  Color: <input type="color" th:field="*{color}" name="eventcolor" value="#ff0000"><br><br>-->
-   
+
     <input type="submit" value="Додати" />
     <br>
 
