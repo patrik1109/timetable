@@ -63,10 +63,10 @@ tr:nth-child(even){
 	}
 
 th {
-	height : 50px;
+  height : 50px;
   background-color: #4CAFFF;
   color: white;
-   text-align: center;
+  text-align: center;
 }
 
 .right_title
@@ -187,7 +187,7 @@ width :20%;
     {
         position: absolute;
         left:200px;
-        top: 90px;
+        top: 130px;
    }
    
 .buttons_top{
