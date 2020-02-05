@@ -35,7 +35,9 @@
 <br/>
     <form  class="settingForm" th:action="@{/settings}" th:object="${settingFormHall}" method="POST">
     <div >
-
+        <input type="text"   hidden="true"  th:field="*{formname}"/>
+        <input type="text"   hidden="true"  th:field="*{parameter}"/>
+        <input type="text"   hidden="true"  th:field="*{id}"/>
         <table class="settingTable">
             <tr>
                 <th> Назва зали  </th>
@@ -45,25 +47,36 @@
                 <th> Колір підложки</th>
             </tr>
             <tr >
-                <td  th:utext="${responseSettingHall.parameter}"   ></td>
-
                 <!--th:attr="value = ${client.name}"-->
-                <td > <input type="color" th:field="*{textcolor}"  th:value="${responseSettingHall.textcolor}"/> </td>
-                <td> <input type="text" th:field="*{textfont}" th:value="${responseSettingHall.textfont}" > </td>
-                <td> <input type="number"  th:field="*{textsize}" th:value="${responseSettingHall.textsize}"> </td>
-                <td> <input type="color" th:field="*{textbackground}" th:value="${responseSettingHall.textbackground}">
+                <td  th:utext="*{parameter}"></td>
+                <td > <input type="color" th:field="*{textcolor}" /> </td>
+                <td>
+                    <select  th:field="*{textfont}">
+                        <option th:value="Serif"> Serif </option>
+                        <option value="Arial"> Arial </option>
+                        <option value="Sans-Serif"> Sans-Serif </option>
+                        <option value="Tahoma"> Tahoma </option>
+                        <option value="Verdana"> Verdana </option>
+                        <option value="Lucida Sans Unicode"> Lucida Sans Unicode </option>
+                    </select>
+                </td>
+                <td> <input type="number"  th:field="*{textsize}" > </td>
+                <td> <input type="color" th:field="*{textbackground}">
                 </td>
             </tr>
 
         </table>
         <br/>
     </div>
-        <input type="submit" value="Зберегти" />
+        <input type="submit" name="" value="Зберегти" />
     </form>
     <br/>
 
 <form class="settingForm" th:action="@{/settings}" th:object="${settingFormTableTitle}" method="POST">
     <div >
+        <input type="text"   hidden="true"  th:field="*{formname}"/>
+        <input type="text"   hidden="true"  th:field="*{parameter}"/>
+        <input type="text"   hidden="true"  th:field="*{id}"/>
         <table class="settingTable">
             <tr>
                 <th> Назва зали  </th>
@@ -73,11 +86,20 @@
                 <th> Колір підложки</th>
             </tr>
             <tr >
-               <td  th:utext="${responseSettingTable.parameter}"   ></td>
-                <td > <input type="color" th:field="*{textcolor}"  th:value="${responseSettingTable.textcolor}"/> </td>
-                <td> <input type="text" th:field="*{textfont}" th:value="${responseSettingTable.textfont}" > </td>
-                <td> <input type="number"  th:field="*{textsize}" th:value="${responseSettingTable.textsize}"> </td>
-                <td> <input type="color" th:field="*{textbackground}" th:value="${responseSettingTable.textbackground}">
+               <td  th:utext="*{parameter}" ></td>
+                <td > <input type="color" th:field="*{textcolor}" > </td>
+                <td>
+                    <select  th:field="*{textfont}">
+                        <option th:value="Serif"> Serif </option>
+                        <option value="Arial"> Arial </option>
+                        <option value="Sans-Serif"> Sans-Serif </option>
+                        <option value="Tahoma"> Tahoma </option>
+                        <option value="Verdana"> Verdana </option>
+                        <option value="Lucida Sans Unicode"> Lucida Sans Unicode </option>
+                    </select>
+                </td>
+                <td> <input type="number"  th:field="*{textsize}" > </td>
+                <td> <input type="color" th:field="*{textbackground}" >
                 </td>
             </tr>
 
@@ -89,6 +111,9 @@
 
 <form class="settingForm" th:action="@{/settings}" th:object="${settingText}" method="POST">
     <div >
+        <input type="text"   hidden="true"  th:field="*{formname}"/>
+        <input type="text"   hidden="true"  th:field="*{parameter}"/>
+        <input type="text"   hidden="true"  th:field="*{id}"/>
         <table class="settingTable">
             <tr>
                 <th> Назва зали  </th>
@@ -98,11 +123,20 @@
                 <th> Колір підложки</th>
             </tr>
             <tr >
-                <td  th:utext="${responseSettingText.parameter}"   ></td>
-                <td > <input type="color" th:field="*{textcolor}"  th:value="${responseSettingText.textcolor}"/> </td>
-                <td> <input type="text" th:field="*{textfont}" th:value="${responseSettingText.textfont}" > </td>
-                <td> <input type="number"  th:field="*{textsize}" th:value="${responseSettingText.textsize}"> </td>
-                <td> <input type="color" th:field="*{textbackground}" th:value="${responseSettingText.textbackground}">
+                <td  th:utext="*{parameter}"   ></td>
+                <td > <input type="color" th:field="*{textcolor}"  th:value="${textcolor}"/> </td>
+                <td>
+                    <select  th:field="*{textfont}">
+                        <option th:value="Serif"> Serif </option>
+                        <option value="Arial"> Arial </option>
+                        <option value="Sans-Serif"> Sans-Serif </option>
+                        <option value="Tahoma"> Tahoma </option>
+                        <option value="Verdana"> Verdana </option>
+                        <option value="Lucida Sans Unicode"> Lucida Sans Unicode </option>
+                    </select>
+                </td>
+                <td> <input type="number"  th:field="*{textsize}" th:value="${textsize}"> </td>
+                <td> <input type="color" th:field="*{textbackground}" th:value="${textbackground}">
                 </td>
             </tr>
 
