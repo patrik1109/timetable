@@ -7,13 +7,13 @@
 </head>
 
 <style>
-     #settingTable
+     .settingTable
     {
         width:400px;
         border: 1px solid #ddd;
         text-align: center;
     }
-    #settingForm{
+    .settingForm{
         padding:10px;
     }
 
@@ -33,9 +33,10 @@
 <a href = "/index"><button>Повернутися</button></a>
 <br/>
 <br/>
-    <form id="settingForm" th:action="@{/settings}" th:object="${settingForm}" method="POST">
+    <form  class="settingForm" th:action="@{/settings}" th:object="${settingFormHall}" method="POST">
     <div >
-        <table id="settingTable">
+
+        <table class="settingTable">
             <tr>
                 <th> Назва зали  </th>
                 <th> Колір тексту</th>
@@ -43,21 +44,14 @@
                 <th> Висота шрифту </th>
                 <th> Колір підложки</th>
             </tr>
-            <tr th:each ="parameter : ${parameters}">
-                <td  th:utext="${parameter.parameter}"   ></td>
+            <tr >
+                <td  th:utext="${responseSettingHall.parameter}"   ></td>
 
                 <!--th:attr="value = ${client.name}"-->
-                <td >
-                    <input type="color" th:field="*{textcolor}"  th:value="${parameter.textcolor}"/> </td>
-
-                <td>
-                    <input type="text" th:field="*{textfont}" th:value="${parameter.textfont}" >
-                </td>
-                <td>
-                    <input type="text"  th:field="*{textsize}" th:utext="${parameter.textsize}">
-                </td>
-                <td>
-                    <input type="color" th:field="*{textbackground}" th:utext="${parameter.textbackground}">
+                <td > <input type="color" th:field="*{textcolor}"  th:value="${responseSettingHall.textcolor}"/> </td>
+                <td> <input type="text" th:field="*{textfont}" th:value="${responseSettingHall.textfont}" > </td>
+                <td> <input type="number"  th:field="*{textsize}" th:value="${responseSettingHall.textsize}"> </td>
+                <td> <input type="color" th:field="*{textbackground}" th:value="${responseSettingHall.textbackground}">
                 </td>
             </tr>
 
@@ -66,7 +60,56 @@
     </div>
         <input type="submit" value="Зберегти" />
     </form>
+    <br/>
 
+<form class="settingForm" th:action="@{/settings}" th:object="${settingFormTableTitle}" method="POST">
+    <div >
+        <table class="settingTable">
+            <tr>
+                <th> Назва зали  </th>
+                <th> Колір тексту</th>
+                <th> Шрифт </th>
+                <th> Висота шрифту </th>
+                <th> Колір підложки</th>
+            </tr>
+            <tr >
+               <td  th:utext="${responseSettingTable.parameter}"   ></td>
+                <td > <input type="color" th:field="*{textcolor}"  th:value="${responseSettingTable.textcolor}"/> </td>
+                <td> <input type="text" th:field="*{textfont}" th:value="${responseSettingTable.textfont}" > </td>
+                <td> <input type="number"  th:field="*{textsize}" th:value="${responseSettingTable.textsize}"> </td>
+                <td> <input type="color" th:field="*{textbackground}" th:value="${responseSettingTable.textbackground}">
+                </td>
+            </tr>
 
+        </table>
+        <br/>
+    </div>
+    <input type="submit" value="Зберегти" />
+</form>
+
+<form class="settingForm" th:action="@{/settings}" th:object="${settingText}" method="POST">
+    <div >
+        <table class="settingTable">
+            <tr>
+                <th> Назва зали  </th>
+                <th> Колір тексту</th>
+                <th> Шрифт </th>
+                <th> Висота шрифту </th>
+                <th> Колір підложки</th>
+            </tr>
+            <tr >
+                <td  th:utext="${responseSettingText.parameter}"   ></td>
+                <td > <input type="color" th:field="*{textcolor}"  th:value="${responseSettingText.textcolor}"/> </td>
+                <td> <input type="text" th:field="*{textfont}" th:value="${responseSettingText.textfont}" > </td>
+                <td> <input type="number"  th:field="*{textsize}" th:value="${responseSettingText.textsize}"> </td>
+                <td> <input type="color" th:field="*{textbackground}" th:value="${responseSettingText.textbackground}">
+                </td>
+            </tr>
+
+        </table>
+        <br/>
+    </div>
+    <input type="submit" value="Зберегти" />
+</form>
 </body>
 </html>

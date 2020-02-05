@@ -3,6 +3,7 @@ package timetable.responses;
 public class ParameterResponse {
 
     int id;
+
     String parameter;
     String textcolor;
     String textfont;
@@ -69,4 +70,7 @@ public class ParameterResponse {
     public void setTextbackground(String textbackground) {
         this.textbackground = textbackground;
     }
+
+
+
 }
