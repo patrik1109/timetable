@@ -123,6 +123,9 @@ public class timeTableController {
         NewModel.addObject("hallName",hallName);
         NewModel.addObject("dateTime",date);
         NewModel.addObject("parameterHall",parameterHall);
+        NewModel.addObject("parameterTableTitle",parameterTableTitle );
+        NewModel.addObject("parameterText",parameterText);
+
         return NewModel;
     }
 

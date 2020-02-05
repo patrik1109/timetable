@@ -1,7 +1,7 @@
 
 <!--<html xmlns:th="http://www.thymeleaf.org">-->
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:text-align="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8" />
@@ -16,27 +16,36 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>Monitor</title>
 </head>
-<style>
 
+<style >
+    .tablesettingTitle {
+      color: [[${parameterTableTitle.textcolor}]];
+      background-color : [[${parameterTableTitle.textbackground}]];
+      font-size : [[${parameterTableTitle.textsize}]]px;
+      font-family: "[[${parameterTableTitle.textfont}]]"
+    }
+    .tablesettingText{
+      color : [[${parameterText.textcolor}]];
+      background-color : [[${parameterText.textbackground}]];
+      font-size : [[${parameterText.textsize}]]px;
+      font-family : "[[${parameterText.textfont}]]";
+      text-align : center;
+    }
 
 </style>
+
 <body>
 <div class="header sticky" >
 <div class="right_title"><header><h2>&nbsp;</h2></header></div>
 
     <div class="center_title">
 
-        <header><h2 id = "headerTitle"
-
-                    th:style="'color : '+${parameterHall.textcolor}+';
+        <header><h2 th:style="'color : '+${parameterHall.textcolor}+';
                     background-color : '+${parameterHall.textbackground}+';
                     font-size : '+${parameterHall.textsize}+'px;
                     font-family : '+${parameterHall.textfont}+';'"
 
-                    th:utext="${hallName}"
-        >
-
-        </h2>
+                    th:utext="${hallName}">   </h2>
 
     </header></div>
 
@@ -44,19 +53,22 @@
  <div class="current_date_time"><header><h2 id="current_date_time_block2"></h2></header></div>
 </div>
 <div class="content">
+
+    <!--th:style="'color : '+${parameterTableTitle.textcolor}+';'"-->
+
 <div class="subheader_placeholder">&nbsp;</div>
     <div th:with="count=${1}">
         <table border="1">
-            <tr>
-                <th>№ з/п</th>
-                <th>№ проведення</th>
-                <th>Сторони у справі та предмет спору</th>
-                <th>Статус</th>
+            <tr >
+                <th class="tablesettingTitle" >№ з/п</th>
+                <th class="tablesettingTitle" >№ проведення</th>
+                <th class="tablesettingTitle" >Сторони у справі та предмет спору</th>
+                <th class="tablesettingTitle" >Статус</th>
             </tr>
             <tr th:each ="event,iter : ${events}">
-                <td th:style="'background-color : '+${event.color}" th:utext="${iter.count}" class="numcol"></td>
-                <td th:style="'background-color : '+${event.color}" th:utext="${event.number}"  class="casenumcol">...</td>
-                <td th:style="'background-color : '+${event.color}" th:utext="${event.description}"  class="casedesccol">...</td>
+                <td class="tablesettingText" th:utext="${iter.count}"></td>
+                <td class="tablesettingText" th:utext="${event.number}">...</td>
+                <td class="tablesettingText" th:utext="${event.description}">...</td>
                 <td th:style="'background-color : '+${event.color}" th:utext="${event.status}"  class="casestatuscol">...</td>
             </tr>
         </table>

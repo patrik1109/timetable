@@ -12,8 +12,11 @@
     <div class="header sticky" id="myHeader">
         <h2 style="font-family:Arial">Верховний суд </h2>
     </div>
+    <br/>
 
-    <h1>Перелiк засiдань</h1><br>
+    <h1>Перелiк засiдань</h1>
+    <br/>
+    <br/>
     <a th:href="@{'/AddEvent'}"><button>Додати засiдання</button></a><br>
 
 
@@ -22,7 +25,6 @@
         <input required type="date" th:field="*{dateStart}" value=0 />
         <br/>
         <br/>
-
         <input type="submit" value="Показати згiдно дати" />
 
     </form>
