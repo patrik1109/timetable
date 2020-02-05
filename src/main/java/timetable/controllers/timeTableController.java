@@ -1,5 +1,6 @@
 package timetable.controllers;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -47,12 +48,17 @@ public class timeTableController {
     @Autowired
     ParameterService parameterRepository;
 
+    private String formHall = "formHall";
+    private String formTabletitle = "formTabletitle";
+    private String formText ="formText";
+
     private volatile Event event;
     private volatile Hall hall;
     private volatile User user;
-    private volatile Parameter parameter;
     private volatile List<Parameter> parameterList;
     @Value("${error.message}")
+
+
 
     private String errorMessage;
 
@@ -269,54 +275,59 @@ public class timeTableController {
         List<ParameterResponse> parameters = fillParameterResponce(parameterList);
         ModelAndView NewModel = new ModelAndView("settings");
 
-        SettingForm settingForm = new SettingForm();
-        NewModel.addObject("parameters",parameters);
-        NewModel.addObject("settingForm",settingForm);
- 
+        ParameterResponse responseSettingHall = parameters.get(0);
+        ParameterResponse responseSettingTable = parameters.get(1);
+        ParameterResponse responseSettingText = parameters.get(2);
+
+        SettingForm settingFormHall = new SettingForm();
+       // settingFormHall.setFormname(formHall);
+        SettingForm settingFormTableTitle = new SettingForm();
+       // settingFormHall.setFormname(formTabletitle);
+        SettingForm settingText = new SettingForm();
+       // settingFormHall.setFormname(formText);
+
+        NewModel.addObject("responseSettingHall",responseSettingHall);
+        NewModel.addObject("responseSettingTable",responseSettingTable);
+        NewModel.addObject("responseSettingText",responseSettingText);
+
+        NewModel.addObject("settingFormHall",settingFormHall);
+        NewModel.addObject("settingFormTableTitle",settingFormTableTitle);
+        NewModel.addObject("settingText",settingText);
+        NewModel.addObject("formHall",formHall);
         return  NewModel;
     }
     @Transactional
     @RequestMapping(value = { "/settings" }, method = RequestMethod.POST)
     public ModelAndView settings(ModelAndView model, @ModelAttribute("settingForm") SettingForm settingForm) {
 
+
         Parameter parameterHall = parameterList.get(0);
         Parameter parameterTableTitle =  parameterList.get(1);
         Parameter parameterText = parameterList.get(2);
 
-        String[] colors =  settingForm.getTextcolor().split(",");
-        String[] textbackgound = settingForm.getTextbackground().split(",");
-        String[] textfont = settingForm.getTextfont().split(",");
-        String[] textsize = settingForm.getTextsize().split(",");
 
+            String str = settingForm.getFormname();
 
+            parameterHall = getFromForm(settingForm);
+            parameterRepository.saveParameter(parameterHall);
 
-        parameterHall.setTextbackground(textbackgound[0]);
-        parameterTableTitle.setTextbackground(textbackgound[1]);
-        parameterText.setTextbackground(textbackgound[2]);
-
-        parameterHall.setTextcolor(colors[0]);
-        parameterTableTitle.setTextcolor(colors[1]);
-        parameterText.setTextcolor(colors[2]);
-
-        parameterHall.setTextfont(textfont[0]);
-        parameterTableTitle.setTextfont(textfont[1]);
-        parameterText.setTextfont(textfont[2]);
-
-        parameterHall.setTextsize(Integer.parseInt(textsize[0]));
-        parameterTableTitle.setTextsize(Integer.parseInt(textsize[1]));
-        parameterText.setTextsize(Integer.parseInt(textsize[2]));
-
-        parameterRepository.saveParameter(parameterHall);
-        parameterRepository.saveParameter(parameterTableTitle);
-        parameterRepository.saveParameter(parameterText);
 
         return new ModelAndView("redirect:/index");
 
     }
 
+    private Parameter getFromForm(SettingForm settingForm) {
+        Parameter newparameter = new Parameter();
+        newparameter = getFromForm(settingForm);
+        newparameter.setTextbackground(settingForm.getTextbackground());
+        newparameter.setTextcolor(settingForm.getTextcolor());
+        newparameter.setTextfont(settingForm.getTextfont());
+        newparameter.setTextsize(settingForm.getTextsize());
+        return  newparameter;
+    }
 
 
-@Transactional
+    @Transactional
     @RequestMapping(value = { "/createDummies" }, method = RequestMethod.GET )
     public String createDummies(){
 
@@ -557,6 +568,9 @@ public ModelAndView users(Map<String, Object> model){
             }
         return eventsresponse;
     }
+
+
+
 
 }
 
