@@ -115,23 +115,27 @@ public class timeTableController {
 
         List<ParameterResponse> listparameter =fillParameterResponce(parameterRepository.findAll());
 
-        ParameterResponse parameterHall = listparameter.get(0);
-        ParameterResponse parameterTableTitle =  listparameter.get(1);
-        ParameterResponse parameterText = listparameter.get(2);
-
-
+       
         Date date =  new Date();
         List<Event> eventList = eventRepository.findAllByDate(date);
         List<EventResponse> eventsresponse = fillEventRenspose(eventList);// new LinkedList<>();
 
-
         NewModel.addObject("events",eventsresponse);
         NewModel.addObject("hallName",hallName);
         NewModel.addObject("dateTime",date);
-        NewModel.addObject("parameterHall",parameterHall);
-        NewModel.addObject("parameterTableTitle",parameterTableTitle );
-        NewModel.addObject("parameterText",parameterText);
 
+        if(listparameter != null && !listparameter.isEmpty() ) {
+            
+        	ParameterResponse parameterHall = listparameter.get(0);
+        	ParameterResponse parameterTableTitle =  listparameter.get(1);
+        	ParameterResponse parameterText = listparameter.get(2);
+
+        	NewModel.addObject("parameterHall",parameterHall);
+        	NewModel.addObject("parameterTableTitle",parameterTableTitle );
+        	NewModel.addObject("parameterText",parameterText);
+
+        }
+        
         return NewModel;
     }
 
