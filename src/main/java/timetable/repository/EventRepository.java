@@ -14,5 +14,8 @@ public interface EventRepository extends JpaRepository<Event,Integer> {
    // @DateTimeFormat(pattern = "yyyy-MM-dd")
     List<Event> findAllByDate(Date date);
     List<Event> findAllByDateBetween(Date DateStart, Date DateEnd);
+/*
+    List<Event> findAllByDateid_Hall(Date date,int idHall );
+*/
 
 }

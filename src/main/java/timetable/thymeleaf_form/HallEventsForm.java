@@ -6,6 +6,8 @@ import java.util.Date;
 
 public class HallEventsForm {
 
+    int id;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date dateStart;
 
@@ -31,8 +33,17 @@ public class HallEventsForm {
     public HallEventsForm() {
     }
 
-    public HallEventsForm(Date dateStart, Date dateEnd) {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public HallEventsForm(int id,Date dateStart, Date dateEnd) {
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
+        this.id = id;
     }
 }
