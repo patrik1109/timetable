@@ -283,50 +283,48 @@ public class timeTableController {
         ParameterResponse responseSettingTable = parameters.get(1);
         ParameterResponse responseSettingText = parameters.get(2);
 
-        SettingForm settingFormHall = new SettingForm();
-       // settingFormHall.setFormname(formHall);
-        SettingForm settingFormTableTitle = new SettingForm();
-       // settingFormHall.setFormname(formTabletitle);
-        SettingForm settingText = new SettingForm();
-       // settingFormHall.setFormname(formText);
-
-        NewModel.addObject("responseSettingHall",responseSettingHall);
-        NewModel.addObject("responseSettingTable",responseSettingTable);
-        NewModel.addObject("responseSettingText",responseSettingText);
+        SettingForm settingFormHall = fillSettingForm(formHall,responseSettingHall);
+        SettingForm settingFormTableTitle = fillSettingForm(formTabletitle,responseSettingTable);
+        SettingForm settingText = fillSettingForm(formText,responseSettingText);
 
         NewModel.addObject("settingFormHall",settingFormHall);
         NewModel.addObject("settingFormTableTitle",settingFormTableTitle);
         NewModel.addObject("settingText",settingText);
-        NewModel.addObject("formHall",formHall);
+
         return  NewModel;
     }
     @Transactional
     @RequestMapping(value = { "/settings" }, method = RequestMethod.POST)
     public ModelAndView settings(ModelAndView model, @ModelAttribute("settingForm") SettingForm settingForm) {
 
+        Parameter parameter = new Parameter();
 
-        Parameter parameterHall = parameterList.get(0);
-        Parameter parameterTableTitle =  parameterList.get(1);
-        Parameter parameterText = parameterList.get(2);
+           if(settingForm.getFormname().equals(formHall)) {
+               parameter = getFromForm(settingForm);
+               parameterRepository.saveParameter(parameter);
+             }
+           else if (settingForm.getFormname().equals(formTabletitle)) {
+               parameter = getFromForm(settingForm);
+               parameterRepository.saveParameter(parameter);
+           }
+           else if (settingForm.getFormname().equals(formText)) {
+               parameter = getFromForm(settingForm);
+               parameterRepository.saveParameter(parameter);
+           }
 
 
-            String str = settingForm.getFormname();
-
-            parameterHall = getFromForm(settingForm);
-            parameterRepository.saveParameter(parameterHall);
-
-
-        return new ModelAndView("redirect:/index");
+        return new ModelAndView("redirect:/settings");
 
     }
 
     private Parameter getFromForm(SettingForm settingForm) {
         Parameter newparameter = new Parameter();
-        newparameter = getFromForm(settingForm);
         newparameter.setTextbackground(settingForm.getTextbackground());
         newparameter.setTextcolor(settingForm.getTextcolor());
         newparameter.setTextfont(settingForm.getTextfont());
         newparameter.setTextsize(settingForm.getTextsize());
+        newparameter.setParameter(settingForm.getParameter());
+        newparameter.setId(settingForm.getId());
         return  newparameter;
     }
 
@@ -571,6 +569,18 @@ public ModelAndView users(Map<String, Object> model){
                 eventsresponse.add(response);
             }
         return eventsresponse;
+    }
+
+    private static SettingForm fillSettingForm(String formName, ParameterResponse response){
+        SettingForm newForm = new SettingForm();
+        newForm.setFormname(formName);
+        newForm.setParameter(response.getParameter());
+        newForm.setTextbackground(response.getTextbackground());
+        newForm.setTextcolor(response.getTextcolor());
+        newForm.setTextfont(response.getTextfont());
+        newForm.setTextsize(response.getTextsize());
+        newForm.setId(response.getId());
+        return newForm;
     }
 
 
