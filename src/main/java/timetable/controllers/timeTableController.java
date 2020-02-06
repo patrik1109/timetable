@@ -144,9 +144,9 @@ public class timeTableController {
         String  hallName = hallRepository.getHallById(id).getName();
         List<Event> events = eventRepository.findAll();
         List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
+
         List<EventResponse> eventsresponse = new LinkedList<>();
         HallEventsForm hallEventsForm = new HallEventsForm();
-
 
         for (Event event: events) {
             if(event.getIdHall()==id) {
@@ -168,12 +168,14 @@ public class timeTableController {
         return NewModel;
     }
 
-    @RequestMapping(value = { "/hallEvents/{id}" }, method = RequestMethod.POST)
+   /* @RequestMapping(value = { "/hallEvents/{id}" }, method = RequestMethod.POST)
     public ModelAndView editHallEvents(@PathVariable Integer id, @ModelAttribute("hallEventsForm") HallEventsForm halleventsForm) {
         ModelAndView NewModel = new ModelAndView("hallEvents");
         HallEventsForm hallEventsForm = new HallEventsForm();
+
         Date dateStart = halleventsForm.getDateStart();
         List<Event> events = eventRepository.findAllByDate(dateStart) ;
+
         List<EventResponse> eventsresponse = new LinkedList<>();
         String  hallName = hallRepository.getHallById(id).getName();
         Integer hallid = id;
@@ -196,8 +198,32 @@ public class timeTableController {
         NewModel.addObject("hallEventsForm",hallEventsForm);
 
         return NewModel;
-    }
+    }*/
+   @RequestMapping(value = { "/hallEvents/{id}" }, method = RequestMethod.POST)
+   public ModelAndView editHallEvents(@PathVariable Integer id, @ModelAttribute("hallEventsForm") HallEventsForm halleventsForm) {
+       ModelAndView NewModel = new ModelAndView("hallEvents");
 
+
+
+
+       HallEventsForm hallEventsForm = new HallEventsForm();
+       Date dateStart = halleventsForm.getDateStart();
+       int Id = hallEventsForm.getId();
+
+
+       List<Event> events = eventRepository.findAllByDate(dateStart) ;
+       List<EventResponse> eventsresponse = new LinkedList<>();
+       String  hallName = hallRepository.getHallById(id).getName();
+       Integer hallid = id;
+
+
+       NewModel.addObject("events",eventsresponse);
+       NewModel.addObject("hallName",hallName);
+       NewModel.addObject("hallid",hallid);
+       NewModel.addObject("hallEventsForm",hallEventsForm);
+
+       return NewModel;
+   }
 
 
     @GetMapping("/delete/{id}")
@@ -562,10 +588,17 @@ public ModelAndView users(Map<String, Object> model){
                 response.setNumber(event.getNumber());
                 response.setColor(statusEvent.getColor());
                 response.setStatus(statusEvent.getStatus());
+                response.setId(statusEvent.getId());
                 eventsresponse.add(response);
             }
         return eventsresponse;
     }
+
+
+
+
+
+
 
     private static SettingForm fillSettingForm(String formName, ParameterResponse response){
         SettingForm newForm = new SettingForm();
