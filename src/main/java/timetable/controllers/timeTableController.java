@@ -208,7 +208,7 @@ public class timeTableController {
        ModelAndView NewModel = new ModelAndView("hallEvents");
 
 
-
+System.out.println("Id: "+ halleventsForm.getId());
 
        HallEventsForm hallEventsForm = new HallEventsForm();
        Date dateStart = halleventsForm.getDateStart();

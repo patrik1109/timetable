@@ -61,7 +61,7 @@
             Виберiть дату:
             <input required type="date" th:field="*{dateStart}" value=0 />
         </div>
-        <input type="text"   hidden="true" id="hidden_id" th:field="*{id}"/>
+        <input type="text" hidden="true" id="hidden_id" th:field="*{id}"/>
 
         <input type="submit" value="Показати згiдно дати" />
 
@@ -110,8 +110,11 @@
 
          document.getElementById(id).style.background = "LightGreen";
 
-         hidden_id.setAttribute('name',id);
-         hidden_id.setAttribute('value',id);
+         //document.getElementById("hidden_id").setAttribute('name',id);
+         document.getElementById("hidden_id").setAttribute('value',id);
+         
+         
+         
          temp = id;
 
    }
