@@ -16,7 +16,7 @@ public interface EventRepository extends JpaRepository<Event,Integer> {
     List<Event> findAllByDateBetween(Date DateStart, Date DateEnd);
 
 
-    @Query(value= "select e from event e where e.date = :date AND e.idHall =: idHall")
+    @Query(value= "select e from Event e where e.date = :date AND e.idHall =:idHall")
     List<Event> findAllWithCreationDateTimeandIdHall(
             @Param("date") Date date, @Param("idHall") int idHall );
 
