@@ -39,9 +39,9 @@
     <br/>
     <br/>
 
-
-    <form  id="dateForm" th:action="@{'/hallEvents/{id}'(id=${hallid})}" th:object="${hallEventsForm}" method="POST">
-
+    
+    <!--<form  id="dateForm" th:action="@{'/hallEvents/{id}'(id=${hallid})}" th:object="${hallEventsForm}" method="POST">-->
+    <form  id="dateForm" th:action="@{'/hallEvents'}" th:object="${hallEventsForm}" method="POST">
         <br/>
         <table border="1" class="content">
             <tr>
@@ -61,8 +61,8 @@
             Виберiть дату:
             <input required type="date" th:field="*{dateStart}" value=0 />
         </div>
-        <input type="text" hidden="true" id="hidden_id" th:field="*{id}"/>
-
+        <input required type="text" hidden="true" id="hidden_id" th:field="*{id}"/>
+        <br/>
         <input type="submit" value="Показати згiдно дати" />
 
     </form>
@@ -104,16 +104,19 @@
 
 </html>
 <script>
-    var temp;
+    let temp = 0;
     var setColor = function(id){
-        <!-- debugger;-->
+        debugger;
 
-         document.getElementById(id).style.background = "LightGreen";
-
-         //document.getElementById("hidden_id").setAttribute('name',id);
-         document.getElementById("hidden_id").setAttribute('value',id);
-         
-         
+         if(temp!=0){
+            document.getElementById(temp).style.background = "#f2f2ff";
+            document.getElementById(id).style.background = "LightGreen";
+            document.getElementById("hidden_id").setAttribute('value',id);
+         }
+         else{
+            document.getElementById(id).style.background = "LightGreen";
+            document.getElementById("hidden_id").setAttribute('value',id);
+         }
          
          temp = id;
 

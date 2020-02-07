@@ -107,7 +107,7 @@ public class timeTableController {
 
     @Transactional
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @RequestMapping(value = { "/showHall/{id}" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "/showHall" }, method = RequestMethod.GET)
     public ModelAndView showHall(@PathVariable Integer id) {
         ModelAndView NewModel = new ModelAndView("showHall");
         String  hallName = hallRepository.getHallById(id).getName();
@@ -140,91 +140,35 @@ public class timeTableController {
 
 
     @Transactional
-    @RequestMapping(value = { "/hallEvents/{id}" }, method = RequestMethod.GET)
-    public ModelAndView editHallEvents(@PathVariable Integer id) {
+    @RequestMapping(value = { "/hallEvents" }, method = RequestMethod.GET)
+    public ModelAndView editHallEvents() {
         ModelAndView NewModel = new ModelAndView("hallEvents");
-        Integer hallid = id;
-        String  hallName = hallRepository.getHallById(id).getName();
-        List<Event> events = eventRepository.findAll();
         List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
-
-        List<EventResponse> eventsresponse = new LinkedList<>();
         HallEventsForm hallEventsForm = new HallEventsForm();
-
-        for (Event event: events) {
-            if(event.getIdHall()==id) {
-                EventResponse response = new EventResponse();
-                StatusEvent statusEvent = statusEventRepository.getStatusEventById(event.getIdStatus());
-                response.setDate(event.getDate());
-                response.setDescription(event.getDescription());
-                response.setNumber(event.getNumber());
-                response.setId(event.getId());
-                response.setStatus(statusEvent.getStatus());
-                eventsresponse.add(response);
-            }
-        }
-        NewModel.addObject("events",eventsresponse);
-        NewModel.addObject("hallName",hallName);
         NewModel.addObject("hallEventsForm",hallEventsForm);
-        NewModel.addObject("hallid",hallid);
         NewModel.addObject("halls",halls);
         return NewModel;
     }
 
-   /* @RequestMapping(value = { "/hallEvents/{id}" }, method = RequestMethod.POST)
-    public ModelAndView editHallEvents(@PathVariable Integer id, @ModelAttribute("hallEventsForm") HallEventsForm halleventsForm) {
-        ModelAndView NewModel = new ModelAndView("hallEvents");
-        HallEventsForm hallEventsForm = new HallEventsForm();
 
-        Date dateStart = halleventsForm.getDateStart();
-        List<Event> events = eventRepository.findAllByDate(dateStart) ;
-
-        List<EventResponse> eventsresponse = new LinkedList<>();
-        String  hallName = hallRepository.getHallById(id).getName();
-        Integer hallid = id;
-        for (Event event: events) {
-            if(event.getIdHall()==id) {
-                EventResponse response = new EventResponse();
-                StatusEvent statusEvent = statusEventRepository.getStatusEventById(event.getIdStatus());
-                response.setDate(event.getDate());
-                response.setDescription(event.getDescription());
-                response.setNumber(event.getNumber());
-                response.setId(event.getId());
-                response.setStatus(statusEvent.getStatus());
-                eventsresponse.add(response);
-            }
-        }
-
-        NewModel.addObject("events",eventsresponse);
-        NewModel.addObject("hallName",hallName);
-        NewModel.addObject("hallid",hallid);
-        NewModel.addObject("hallEventsForm",hallEventsForm);
-
-        return NewModel;
-    }*/
-   @RequestMapping(value = { "/hallEvents/{id}" }, method = RequestMethod.POST)
-   public ModelAndView editHallEvents(@PathVariable Integer id, @ModelAttribute("hallEventsForm") HallEventsForm halleventsForm) {
+   @RequestMapping(value = { "/hallEvents" }, method = RequestMethod.POST)
+   public ModelAndView editHallEvents( @ModelAttribute("hallEventsForm") HallEventsForm halleventsForm) {
        ModelAndView NewModel = new ModelAndView("hallEvents");
-
-
-      System.out.println("Id: "+ halleventsForm.getId());
 
        HallEventsForm newEventsForm = new HallEventsForm();
        Date dateStart = halleventsForm.getDateStart();
-       int Id = halleventsForm.getId();
-
-
-       List<Event> events = eventRepository.findAllByDate(dateStart) ;
-       List<EventResponse> eventsresponse = new LinkedList<>();
+       int id = halleventsForm.getId();
+       List<Event> events = eventRepository.findAllByDateAndIdHall(dateStart,id);
+       List<EventResponse> eventsresponse =fillEventRenspose(events);
        String  hallName = hallRepository.getHallById(id).getName();
        Integer hallid = id;
-
+       List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
 
        NewModel.addObject("events",eventsresponse);
        NewModel.addObject("hallName",hallName);
        NewModel.addObject("hallid",hallid);
        NewModel.addObject("hallEventsForm",newEventsForm);
-
+       NewModel.addObject("halls",halls);
        return NewModel;
    }
 

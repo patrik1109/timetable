@@ -13,7 +13,7 @@
 <!--  <div class="subheader_placeholder_admin">&nbsp;</div>-->
 <div class="buttons_header">
     <div >
-        <h2 class="header_admin">Редагування/<a th:href="@{'settings'}"> Налаштування</a> </h2>
+        <h2 class="header_admin"><a th:href="@{'hallEvents'}"> Редагування/<a th:href="@{'settings'}"> Налаштування</a> </h2>
     </div>
     <div class="table1">
         <a th:href="@{'addHall'}"><button>Додати зал</button></a>
@@ -32,7 +32,7 @@
             <th> Редагувати</th>
         </tr>
         <tr th:each ="hall : ${halls}">
-            <td ><a th:href="@{'/hallEvents/{id}'(id=${hall.id})}"><h3 th:utext="${hall.name}"></h3></a></td>
+            <td ><h3 th:utext="${hall.name}"></h3></td>
             <td ><a th:href="@{'deleteHall/{id}'(id=${hall.id})}"
                     onclick="return confirm('Ви дiйсно хочите видалити зал ?')"> <button >Видалити</button></a></td>
             <td><a th:href="@{'editHall/{id}'(id=${hall.id})}">
