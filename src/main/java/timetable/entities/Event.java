@@ -4,8 +4,12 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.TermVector;
 
+import timetable.utils.TimeUtils;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Entity
@@ -58,11 +62,16 @@ public class Event implements Serializable {
     }
 
     public Date getDate() {
+    	
         return date;
     }
 
     public void setDate(Date date) {
-        this.date = date;
+    	
+    	LocalDateTime ldt = TimeUtils.convertToLocalDateTimeViaInstant(date);
+    	Date newDate = Date.from(ldt.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
+    	
+    	this.date = date;
     }
 
     public int getIdHall() {
