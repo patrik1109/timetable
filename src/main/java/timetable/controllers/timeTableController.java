@@ -93,8 +93,7 @@ public class timeTableController {
     @RequestMapping(value = { "/AddEvent" }, method = RequestMethod.POST)
     public ModelAndView addEvent(ModelAndView model, @ModelAttribute("eventForm") EventForm eventForm) {
         Event newEvent = new Event();
-        Date date = eventForm.getDate();
-        newEvent.setDate(date);
+        newEvent.setDate(eventForm.getDate());
         newEvent.setDescription(eventForm.getDescription());
         newEvent.setIdHall(eventForm.getHall_number());
         newEvent.setNumber(eventForm.getNumber());
@@ -301,11 +300,9 @@ public class timeTableController {
 
     @Transactional
     @RequestMapping(value = { "/createDummies" }, method = RequestMethod.GET )
-    public String createDummies(){
-
-    	DummyContentUtil dcu = new DummyContentUtil();
+    public String createDummies() {
     	
-    	List<User> users = dcu.generateDummyUsers();
+    	List<User> users = DummyContentUtil.generateDummyUsers();
     	
     	users.stream().forEach((u) -> {userRepository.saveUser(u);});
     	
