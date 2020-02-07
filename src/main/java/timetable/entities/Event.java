@@ -68,10 +68,11 @@ public class Event implements Serializable {
 
     public void setDate(Date date) {
     	
-    	LocalDateTime ldt = TimeUtils.convertToLocalDateTimeViaInstant(date);
-    	Date newDate = Date.from(ldt.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
+    //	LocalDateTime ldt = TimeUtils.convertToLocalDateTimeViaInstant(date);
+    //	Date newDate = Date.from(ldt.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
     	
-    	this.date = date;
+    	
+    	this.date = TimeUtils.getTimeZoneDate(date);
     }
 
     public int getIdHall() {
