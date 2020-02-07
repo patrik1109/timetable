@@ -5,12 +5,13 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.TermVector;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Indexed
 @Table(name="event", schema = "test", catalog = "" )
-public class Event {
+public class Event implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

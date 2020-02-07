@@ -14,5 +14,6 @@ public interface EventService {
     List<Event> findAllByIdHall(Integer id);
     List<Event> findAllByDate(Date date);
     List<Event> findAllByDateBetween(Date DateStart, Date DateEnd);
-   /* List<Event> findAllByDateAndidHall(Date date,int idHall );*/
+    List<Event> findAllByDateAndIdHall(Date date, int id_hall );
+
 }

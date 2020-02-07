@@ -11,11 +11,17 @@ import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event,Integer> {
     List<Event> findAllByOrderByDateAsc();
-   // @DateTimeFormat(pattern = "yyyy-MM-dd")
+
     List<Event> findAllByDate(Date date);
     List<Event> findAllByDateBetween(Date DateStart, Date DateEnd);
-/*
-    List<Event> findAllByDateid_Hall(Date date,int idHall );
-*/
+
+
+    @Query(value= "select e from event e where e.date = :date AND e.idHall =: idHall")
+    List<Event> findAllWithCreationDateTimeandIdHall(
+            @Param("date") Date date, @Param("idHall") int idHall );
+
+
+    /*List<Event> findAllByDateAndId_Hall(Date date,int idHall );*/
+
 
 }
