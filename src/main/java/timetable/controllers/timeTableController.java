@@ -208,11 +208,11 @@ public class timeTableController {
        ModelAndView NewModel = new ModelAndView("hallEvents");
 
 
-System.out.println("Id: "+ halleventsForm.getId());
+      System.out.println("Id: "+ halleventsForm.getId());
 
-       HallEventsForm hallEventsForm = new HallEventsForm();
+       HallEventsForm newEventsForm = new HallEventsForm();
        Date dateStart = halleventsForm.getDateStart();
-       int Id = hallEventsForm.getId();
+       int Id = halleventsForm.getId();
 
 
        List<Event> events = eventRepository.findAllByDate(dateStart) ;
@@ -224,7 +224,7 @@ System.out.println("Id: "+ halleventsForm.getId());
        NewModel.addObject("events",eventsresponse);
        NewModel.addObject("hallName",hallName);
        NewModel.addObject("hallid",hallid);
-       NewModel.addObject("hallEventsForm",hallEventsForm);
+       NewModel.addObject("hallEventsForm",newEventsForm);
 
        return NewModel;
    }

@@ -92,10 +92,10 @@ public class EventServiceImpl implements EventService{
         return repository.findAllByDateBetween(DateStart,DateEnd);
     }
 
-   /* @Override
-    public List<Event> findAllByDateAndidHall(Date date, int idHall) {
-        return repository.findAllByDateid_Hall(date,idHall);
-    }*/
+    @Override
+    public List<Event> findAllByDateAndIdHall(Date date, int id_hall) {
+        return repository.findAllWithCreationDateTimeandIdHall(date,id_hall);
+    }
 
 
 }
