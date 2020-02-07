@@ -28,7 +28,7 @@ public class Event implements Serializable {
     @Column(name = "description")
     String description;
 
-    @Column(name = "date")
+    @Column(name = "date" )
     @Temporal(TemporalType.DATE)
     Date date;
 
