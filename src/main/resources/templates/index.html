@@ -6,14 +6,22 @@
   <link th:href="@{/css/style.css}" rel="stylesheet" />
 
 </head>
-
+<style>
+    .header_admin
+    {
+       color: white;
+       font-family:Arial;
+    }
+</style>
 <body>
 
 <div class="content">
 <!--  <div class="subheader_placeholder_admin">&nbsp;</div>-->
 <div class="buttons_header">
+
     <div >
-        <h2 class="header_admin"><a th:href="@{'hallEvents'}"> Редагування/<a th:href="@{'settings'}"> Налаштування</a> </h2>
+
+        <h2 class="header_admin"><a  th:href="@{'hallEvents'}"> Редагування/</a> <a th:href="@{'settings'}"> Налаштування</a> </h2>
     </div>
     <div class="table1">
         <a th:href="@{'addHall'}"><button>Додати зал</button></a>
