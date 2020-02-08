@@ -4,6 +4,7 @@ package timetable.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import timetable.thymeleaf_form.HallEventsForm;
 import timetable.thymeleaf_form.HallForm;
 import timetable.thymeleaf_form.UserForm;
 import timetable.utils.DummyContentUtil;
+import timetable.utils.SecurityUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -98,7 +100,6 @@ public class timeTableController {
         newEvent.setIdHall(eventForm.getHall_number());
         newEvent.setNumber(eventForm.getNumber());
         newEvent.setIdStatus(eventForm.getEstatus());
-        
         eventRepository.saveEvent(newEvent);
         int hall_Id = eventForm.getHall_number();
         return new ModelAndView("redirect:/hallEvents");
@@ -107,7 +108,7 @@ public class timeTableController {
 
     @Transactional
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @RequestMapping(value = { "/showHall" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "/showHall/{id}" }, method = RequestMethod.GET)
     public ModelAndView showHall(@PathVariable Integer id) {
         ModelAndView NewModel = new ModelAndView("showHall");
         String  hallName = hallRepository.getHallById(id).getName();
@@ -158,8 +159,10 @@ public class timeTableController {
        HallEventsForm newEventsForm = new HallEventsForm();
        Date dateStart = halleventsForm.getDateStart();
        int id = halleventsForm.getId();
+
        List<Event> events = eventRepository.findAllByDateAndIdHall(dateStart,id);
        List<EventResponse> eventsresponse =fillEventRenspose(events);
+
        String  hallName = hallRepository.getHallById(id).getName();
        Integer hallid = id;
        List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
@@ -179,7 +182,7 @@ public class timeTableController {
         int hall_Id = tmpevent.getIdHall();
         eventRepository.deleteEventbyId(id);
 
-        return new ModelAndView("redirect:/hallEvents/"+hall_Id);
+        return new ModelAndView("redirect:/hallEvents");
     }
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -216,7 +219,7 @@ public class timeTableController {
         if (idEvent !=0   ) {
 
             eventRepository.updateEvent(idEvent,numberEvent,description,date,idHall,estatus);
-            return new ModelAndView("redirect:/hallEvents/"+idHall);
+            return new ModelAndView("redirect:/hallEvents");
         }
         model.addObject("errorMessage", errorMessage);
 
@@ -230,7 +233,8 @@ public class timeTableController {
     @Transactional
     @GetMapping(value = { "/", "/index" } )
     public ModelAndView addEvent(Map<String, Object> model){
-
+        //final String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
+        String userName = SecurityUtils.getUserName();
         List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
         List<UserResponse> users = fillUserResponse(userRepository.findAll());
         ModelAndView NewModel = new ModelAndView("index");
@@ -533,7 +537,7 @@ public ModelAndView users(Map<String, Object> model){
                 response.setNumber(event.getNumber());
                 response.setColor(statusEvent.getColor());
                 response.setStatus(statusEvent.getStatus());
-                response.setId(statusEvent.getId());
+                response.setId(event.getId());
                 eventsresponse.add(response);
             }
         return eventsresponse;
