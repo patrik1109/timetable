@@ -54,7 +54,7 @@ table {
 
 th, td {
 	height : 50px;
-  padding: 0px;
+  padding: 5px;
 }
 
 tr:nth-child(even){

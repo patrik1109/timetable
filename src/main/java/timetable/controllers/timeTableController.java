@@ -101,7 +101,7 @@ public class timeTableController {
         
         eventRepository.saveEvent(newEvent);
         int hall_Id = eventForm.getHall_number();
-        return new ModelAndView("redirect:/hallEvents/"+hall_Id);
+        return new ModelAndView("redirect:/hallEvents");
     }
 
 
