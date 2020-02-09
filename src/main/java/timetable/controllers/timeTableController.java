@@ -150,35 +150,56 @@ public class timeTableController {
     public ModelAndView editHallEvents() {
         ModelAndView NewModel = new ModelAndView("hallEvents");
         List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
+        List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
         HallEventsForm hallEventsForm = new HallEventsForm();
         EventForm eventForm = new EventForm();
         NewModel.addObject("hallEventsForm",hallEventsForm);
         NewModel.addObject("eventForm",eventForm);
         NewModel.addObject("halls",halls);
+        NewModel.addObject("statuses",statuses);
         return NewModel;
     }
 
 
    @RequestMapping(value = { "/hallEvents" }, method = RequestMethod.POST)
-   public ModelAndView editHallEvents( @ModelAttribute("hallEventsForm") HallEventsForm halleventsForm) {
-       ModelAndView NewModel = new ModelAndView("hallEvents");
+   public ModelAndView editHallEvents( @ModelAttribute("hallEventsForm") HallEventsForm halleventsForm,
+                                       @ModelAttribute ("eventForm") EventForm eventForm ) {
 
-       HallEventsForm newEventsForm = new HallEventsForm();
-       Date dateStart = halleventsForm.getDateStart();
-       int id = halleventsForm.getId();
+        ModelAndView NewModel = new ModelAndView("hallEvents");
+        HallEventsForm newEventsForm = new HallEventsForm();
+        List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
+        List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
 
-       List<Event> events = eventRepository.findAllByDateAndIdHall(dateStart,id);
-       List<EventResponse> eventsresponse =fillEventRenspose(events);
 
-       String  hallName = hallRepository.getHallById(id).getName();
-       Integer hallid = id;
-       List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
+       if(halleventsForm.getDateStart()!=null) {
+           Date dateStart = halleventsForm.getDateStart();
+           int id = halleventsForm.getId();
+           List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHall(dateStart, id));
+           String hallName = hallRepository.getHallById(id).getName();
+           Integer hallid = id;
+           NewModel.addObject("events",eventsresponse);
+           NewModel.addObject("hallName",hallName);
+           NewModel.addObject("hallid",hallid);
+       }
+       else if(eventForm.getDate()!=null){
+           EventForm neweventForm = new EventForm();
+           Event newEvent = new Event();
+           newEvent.setNumber(eventForm.getNumber());
+           newEvent.setIdHall(eventForm.getHall_number());
+           newEvent.setDescription(eventForm.getDescription());
+           newEvent.setDate(eventForm.getDate());
+           newEvent.setIdStatus(eventForm.getEstatus());
+           eventRepository.saveEvent(newEvent);
+           NewModel.addObject("eventForm",neweventForm);
+       }
 
-       NewModel.addObject("events",eventsresponse);
+       /*NewModel.addObject("events",eventsresponse);
        NewModel.addObject("hallName",hallName);
-       NewModel.addObject("hallid",hallid);
+       NewModel.addObject("hallid",hallid);*/
        NewModel.addObject("hallEventsForm",newEventsForm);
+
        NewModel.addObject("halls",halls);
+       NewModel.addObject("statuses",statuses);
        return NewModel;
    }
 
