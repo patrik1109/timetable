@@ -4,16 +4,12 @@ package timetable.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import timetable.entities.*;
 import timetable.enums.UserRole;
-import timetable.repository.EventRepository;
-import timetable.repository.UserRepository;
 import timetable.responses.EventResponse;
 import timetable.responses.*;
 import timetable.service.*;
@@ -124,7 +120,7 @@ public class timeTableController {
         NewModel.addObject("hallName",hallName);
         NewModel.addObject("dateTime",date);
 
-        if(listparameter != null && !listparameter.isEmpty() ) {
+        if(listparameter != null && !listparameter.isEmpty() && listparameter.size()<4 ) {
             
         	ParameterResponse parameterHall = listparameter.get(0);
         	ParameterResponse parameterTableTitle =  listparameter.get(1);
@@ -135,7 +131,16 @@ public class timeTableController {
         	NewModel.addObject("parameterText",parameterText);
 
         }
-        
+        else {
+            ParameterResponse parameterHall = fillParameterResponcebyDefault();
+            ParameterResponse parameterTableTitle =  fillParameterResponcebyDefault();
+            ParameterResponse parameterText = fillParameterResponcebyDefault();
+
+            NewModel.addObject("parameterHall",parameterHall);
+            NewModel.addObject("parameterTableTitle",parameterTableTitle );
+            NewModel.addObject("parameterText",parameterText);
+
+        }
         return NewModel;
     }
 
@@ -146,7 +151,9 @@ public class timeTableController {
         ModelAndView NewModel = new ModelAndView("hallEvents");
         List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
         HallEventsForm hallEventsForm = new HallEventsForm();
+        EventForm eventForm = new EventForm();
         NewModel.addObject("hallEventsForm",hallEventsForm);
+        NewModel.addObject("eventForm",eventForm);
         NewModel.addObject("halls",halls);
         return NewModel;
     }
@@ -525,6 +532,17 @@ public ModelAndView users(Map<String, Object> model){
         }
         return parameters;
     }
+
+
+    private ParameterResponse fillParameterResponcebyDefault() {
+            ParameterResponse response = new ParameterResponse();
+            response.setTextbackground("#4cafff");
+            response.setTextcolor("#ff0000");
+            response.setTextfont("Arial");
+            response.setTextsize(20);
+          return response;
+    }
+
     private List<EventResponse> fillEventRenspose(List<Event> eventList) {
 
         List<EventResponse> eventsresponse = new ArrayList<>();
