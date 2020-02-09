@@ -39,9 +39,9 @@
     <br/>
     <br/>
 
-    
+
     <!--<form  id="dateForm" th:action="@{'/hallEvents/{id}'(id=${hallid})}" th:object="${hallEventsForm}" method="POST">-->
-    <form  id="dateForm" th:action="@{'/hallEvents'}" th:object="${hallEventsForm}" method="POST">
+    <form  id="dateForm" name="dateForm" th:action="@{'/hallEvents'}" th:object="${hallEventsForm}" method="POST">
         <br/>
         <table border="1" class="content">
             <tr>
@@ -52,18 +52,19 @@
                 <th  hidden="true">5</th>
             </tr>
             <tr>
-                <td  th:each ="hall : ${halls}" th:id="${hall.id}" onclick="setColor(this.id)"  > <h3 th:utext="${hall.name}"></h3></td>
+                <td  th:each ="hall,iterator : ${halls}" th:id="${hall.id}" onclick="setColor(this.id)"  > <h3 th:utext="${hall.name}"></h3></td>
+                <span th:if = "${iterator.index}>=5"></tr><tr></span>
             </tr>
         </table>
         <br/>
 
         <div id="calendar">
             Виберiть дату:
-            <input required type="date" th:field="*{dateStart}" value=0 />
+            <input  type="date" name="dateStart" th:field="*{dateStart}" value=0 />
         </div>
-        <input required type="text" hidden="true" id="hidden_id" th:field="*{id}"/>
+        <input required type="text" name="hidden_id" hidden="true" id="hidden_id"    th:field="*{id}"/>
         <br/>
-        <input type="submit" value="Показати згiдно дати" />
+        <input type="submit" onclick="return checkform()" value="Показати згiдно дати" />
 
     </form>
    <br/>
@@ -97,6 +98,9 @@
                 <button>Видалити</button></a></td>
             <td ><a th:href="@{'/editEvent/{id}'(id=${event.id})}" class="caseeditcol_admin"><button>Редагувати</button></a></td>
         </tr>
+        <tr>
+            <td> Number</td>
+        </tr>
     </table>
 </div>
 
@@ -119,6 +123,19 @@
          }
          
          temp = id;
-
    }
+
+   function checkform() {
+    if(document.dateForm.hidden_id.value == "0") {
+        alert("Будь ласка оберiть залу");
+        return false;
+    }
+    else if(document.dateForm.dateStart.value == 0){
+        alert("Будь ласка оберiть дату");
+        return false;
+    }
+    else {
+        document.dateForm.submit();
+    }
+}
 </script>
