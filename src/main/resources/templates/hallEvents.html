@@ -98,7 +98,22 @@
             <td ><a th:href="@{'/editEvent/{id}'(id=${event.id})}" class="caseeditcol_admin"><button>Редагувати</button></a></td>
         </tr>
         <tr>
-            <td> Number</td>
+            <form th:action="@{/hallEvents}" th:object="${eventForm}" id="myform" method="POST">
+                <td> + </td>
+                <td><input required type="text" th:field="*{Number}" value=0/></td>
+                <td><input required type="text" th:field="*{Description}" value=0/></td>
+                <td><input required type="date" th:field="*{date}" value=0 /></td>
+                <td><select  th:field="*{Hall_number}">
+                    <option  th:each ="hall : ${halls}" th:value="${hall.id}"><h2 th:utext="${hall.name}"></h2></option>
+                </select>
+                </td>
+                <td>
+                    <select  th:field="*{estatus}">
+                        <option  th:each ="state : ${statuses}" th:value="${state.id}"><h2 th:utext="${state.status}"></h2></option>
+                    </select><br>
+                </td>
+                <td><input type="submit" value="Додати" /></td>
+            </form>
         </tr>
     </table>
 </div>
