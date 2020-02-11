@@ -142,6 +142,7 @@ public class timeTableController {
 
 
     @Transactional
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @RequestMapping(value = { "/hallEvents" }, method = RequestMethod.GET)
     public ModelAndView editHallEvents() {
         ModelAndView NewModel = new ModelAndView("hallEvents");
@@ -156,7 +157,7 @@ public class timeTableController {
         return NewModel;
     }
 
-//ModelAndView model,
+   @DateTimeFormat(pattern = "yyyy-MM-dd")
    @RequestMapping(value = { "/hallEvents" }, method = RequestMethod.POST)
    public ModelAndView editHallEvents( ModelAndView model,@ModelAttribute("hallEventsForm") HallEventsForm halleventsForm,
                                        @ModelAttribute ("eventForm") EventForm eventForm ) {
@@ -173,21 +174,36 @@ public class timeTableController {
            List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHall(dateStart, id));
            String hallName = hallRepository.getHallById(id).getName();
            Integer hallid = id;
+
            model.addObject("events",eventsresponse);
            model.addObject("hallName",hallName);
            model.addObject("hallid",hallid);
        }
        else if(eventForm.getDate()!=null){
+           int idHall = eventForm.getHall_number();
+
+
+           Date date = eventForm.getDate();
+           /*Calendar cal = Calendar.getInstance();
+           cal.setTime(date);
+           cal.add(Calendar.DATE, 1);
+            */
+
+           SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/DD");
+           sdf.format(date);
+           String hallName = hallRepository.getHallById(idHall).getName();
+
            EventForm neweventForm = new EventForm();
-           Event newEvent = new Event();
-           newEvent.setNumber(eventForm.getNumber());
-           newEvent.setIdHall(eventForm.getHall_number());
-           newEvent.setDescription(eventForm.getDescription());
-           newEvent.setDate(eventForm.getDate());
-           newEvent.setIdStatus(eventForm.getEstatus());
-           newEvent.setComposition(eventForm.getComposition());
+           Event newEvent =  fillEventfromEventForm(eventForm);
            eventRepository.saveEvent(newEvent);
+
+           List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHall(date, idHall));
+           halleventsForm.setDateStart(date);
+           halleventsForm.setId(idHall);
            model.addObject("eventForm",neweventForm);
+           model.addObject("events",eventsresponse);
+           model.addObject("hallName",hallName);
+           model.addObject("hallid",idHall);
        }
 
        model.addObject("hallEventsForm",newEventsForm);
@@ -551,6 +567,16 @@ public ModelAndView users(Map<String, Object> model){
         return parameters;
     }
 
+    private Event fillEventfromEventForm(EventForm eventForm) {
+        Event newEvent = new Event();
+        newEvent.setNumber(eventForm.getNumber());
+        newEvent.setIdHall(eventForm.getHall_number());
+        newEvent.setDescription(eventForm.getDescription());
+        newEvent.setDate(eventForm.getDate());
+        newEvent.setIdStatus(eventForm.getEstatus());
+        newEvent.setComposition(eventForm.getComposition());
+        return newEvent;
+    }
 
     private ParameterResponse fillParameterResponcebyDefault() {
             ParameterResponse response = new ParameterResponse();
