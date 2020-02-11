@@ -89,6 +89,8 @@ $(document).ready(function() {
     	setTimeout(function(){
     		$("html, body").animate({ scrollTop:0 }, 0);   
     		window.location.reload(true);
+    		
+    		//	refreshTable();
     		},100);
         }); 
 });
@@ -96,7 +98,24 @@ $(document).ready(function() {
 
 function refreshTable(){
 	
+	var xhr = new XMLHttpRequest();
+	// var url='/showHall/';
+	var url = window.location.href; 
 	
+	alert(url);
+	xhr.open("GET", url);
+	 
+	 //xhr.responseType = 'text';
+	 
+	 xhr.send();
+	 xhr.onload = function () {
+		    if (xhr.readyState === xhr.DONE) {
+		        if (xhr.status === 200) {
+
+		           // document.getElementById('current_date_time_block2').innerHTML = xhr.response;
+		        }
+		    }
+		};
 	
 }
 

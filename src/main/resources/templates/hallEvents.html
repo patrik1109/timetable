@@ -94,7 +94,7 @@
             <td th:utext="${event.number}" class="casenumcol_admin">...</td>
             <td th:utext="${event.composition}" class="casenumcol_admin">...</td>
             <td th:utext="${event.description}" class="casedesccol_admin">...</td>
-            <td th:utext="${event.date}" class="casedatecol_admin">...</td>
+            <td th:utext="${event.date.toLocaleString()}" class="casedatecol_admin">...</td>
             <td th:utext="${event.status}" class="casestatuscol_admin">...</td>
             <td ><a th:href="@{'/delete/{id}'(id=${event.id})}" onclick="return confirm('Ви дiйсно хочите видалити засiдання ?')" class="casedeletecol_admin">
                 <button>Видалити</button></a></td>

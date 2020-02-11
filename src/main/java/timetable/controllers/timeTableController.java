@@ -189,8 +189,8 @@ public class timeTableController {
            cal.add(Calendar.DATE, 1);
             */
 
-           SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/DD");
-           sdf.format(date);
+           //SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/DD");
+           //sdf.format(date);
            String hallName = hallRepository.getHallById(idHall).getName();
 
            EventForm neweventForm = new EventForm();
@@ -511,7 +511,7 @@ public ModelAndView users(Map<String, Object> model){
     public String getTime() {
         Date dateNow = new Date();
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd");
-        SimpleDateFormat formatForTimeNow = new SimpleDateFormat("hh:mm:SS");
+        SimpleDateFormat formatForTimeNow = new SimpleDateFormat("hh:mm:ss");
         return  formatForDateNow.format(dateNow)+"<br>"+formatForTimeNow.format(dateNow);
     }
 
