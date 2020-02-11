@@ -89,17 +89,64 @@ $(document).ready(function() {
     	setTimeout(function(){
     		$("html, body").animate({ scrollTop:0 }, 0);   
     		window.location.reload(true);
+    		
+    		//	refreshTable();
     		},100);
         }); 
 });
 
+
+function refreshTable(){
+	
+	var xhr = new XMLHttpRequest();
+	// var url='/showHall/';
+	var url = window.location.href; 
+	
+	alert(url);
+	xhr.open("GET", url);
+	 
+	 //xhr.responseType = 'text';
+	 
+	 xhr.send();
+	 xhr.onload = function () {
+		    if (xhr.readyState === xhr.DONE) {
+		        if (xhr.status === 200) {
+
+		           // document.getElementById('current_date_time_block2').innerHTML = xhr.response;
+		        }
+		    }
+		};
+	
+}
+
 setInterval(function () {
-        document.getElementById('current_date_time_block2').innerHTML = date_time();
+		date_time();
     }, 1000);
 
  function date_time()
     {
-        var current_datetime = new Date();
+	 
+	 var current_datetime = new Date();
+	 
+	 var xhr = new XMLHttpRequest();
+	 const url='/getTime';
+	 xhr.open("GET", url);
+	 
+	 xhr.responseType = 'text';
+	 
+	 xhr.send();
+	 xhr.onload = function () {
+		    if (xhr.readyState === xhr.DONE) {
+		        if (xhr.status === 200) {
+
+		            document.getElementById('current_date_time_block2').innerHTML = xhr.response;
+		        }
+		    }
+		};
+		
+		
+		
+      /*  var current_datetime = new Date();
         var day = zero_first_format(current_datetime.getDate());
         var month = zero_first_format(current_datetime.getMonth()+1);
         var year = current_datetime.getFullYear();
@@ -107,7 +154,7 @@ setInterval(function () {
         var minutes = zero_first_format(current_datetime.getMinutes());
         var seconds = zero_first_format(current_datetime.getSeconds());
 
-        return day+"."+month+"."+year+"<br>"+hours+":"+minutes+":"+seconds;
+        return day+"."+month+"."+year+"<br>"+hours+":"+minutes+":"+seconds;*/
     }
 
     function zero_first_format(value)

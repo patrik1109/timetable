@@ -34,7 +34,16 @@ public class Event implements Serializable {
 
     @Column(name = "composition" )
     String composition;
+/*
+    @Column(name = "show_composition" )
+    boolean showComposition;
 
+    @Column(name = "show_row" )
+    boolean showRow;
+    
+    @Column(name = "order_num" )
+    int orderNum;
+  */  
     private int  idStatus;
 
 	private int idHall;
@@ -106,9 +115,6 @@ public class Event implements Serializable {
         this.idHall = idHall;
     }
 
-
-
-
     public int getIdStatus() {
         return idStatus;
     }
@@ -116,4 +122,32 @@ public class Event implements Serializable {
     public void setIdStatus(int idStatus) {
         this.idStatus = idStatus;
     }
+/*
+	public boolean isShowComposition() {
+		return showComposition;
+	}
+
+	public void setShowComposition(boolean showComposition) {
+		this.showComposition = showComposition;
+	}
+
+	public boolean isShowRow() {
+		return showRow;
+	}
+
+	public void setShowRow(boolean showRow) {
+		this.showRow = showRow;
+	}
+
+	public int getOrderNum() {
+		return orderNum;
+	}
+
+	public void setOrderNum(int orderNum) {
+		this.orderNum = orderNum;
+	}
+    
+  */  
+    
+    
 }
