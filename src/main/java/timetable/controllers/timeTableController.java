@@ -473,12 +473,13 @@ public ModelAndView users(Map<String, Object> model){
   //
 //===========================================================================================================================
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+   // @DateTimeFormat(pattern = "yyyy-MM-dd")
     @RequestMapping(value = { "/getTime" }, method = RequestMethod.GET)
     public String getTime() {
         Date dateNow = new Date();
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd");
-        return  formatForDateNow.format(dateNow);
+        SimpleDateFormat formatForTimeNow = new SimpleDateFormat("hh:mm:SS");
+        return  formatForDateNow.format(dateNow)+"<br>"+formatForTimeNow.format(dateNow);
     }
 
     private List<StatusResponse> fillStatusResponse(List<StatusEvent> statusEventList) {
