@@ -12,6 +12,16 @@ public class EventResponse {
     public String status;
     public String color;
 
+    public String getComposition() {
+        return composition;
+    }
+
+    public void setComposition(String composition) {
+        this.composition = composition;
+    }
+
+    public String composition;
+
     public String getColor() {
         return color;
     }
@@ -75,12 +85,14 @@ public class EventResponse {
         this.id = id;
     }
 
-    public EventResponse(String number, String description, Date date, int idHall, int id ,int idStatus) {
+    public EventResponse(String number, String description, Date date, int idHall, int id ,int idStatus,String composition) {
         this.number = number;
         this.description = description;
         this.date = date;
         this.idHall = idHall;
         this.id = id;
+        this.composition = composition;
+
     }
 
 

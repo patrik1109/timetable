@@ -6,8 +6,9 @@ import java.util.Date;
 
 public class EventForm {
 
-    String Number;
+    String number;
     String Description;
+    String composition;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date date;
     int Hall_number;
@@ -26,23 +27,32 @@ public class EventForm {
         this.estatus = status;
     }
 
-    public EventForm(String number, String description, Date date, int hall_number, int status) {
-        this.Number = number;
+    public EventForm(String number, String description, Date date, int hall_number, int status,String composition) {
+        this.number = number;
         this.Description = description;
         this.date = date;
         this.Hall_number = hall_number;
         this.estatus = status;
+        this.composition = composition;
     }
 
     public EventForm() {
     }
 
+    public String getComposition() {
+        return composition;
+    }
+
+    public void setComposition(String composition) {
+        this.composition = composition;
+    }
+
     public String getNumber() {
-        return Number;
+        return number;
     }
 
     public void setNumber(String number) {
-        Number = number;
+        this.number = number;
     }
 
     public String getDescription() {

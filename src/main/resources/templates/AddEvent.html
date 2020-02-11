@@ -17,10 +17,15 @@
     <br/>
     Зміст справи:
     <br>
-    <textarea  rows = "30" cols = "80" th:field = "*{Description}" name="lines" form = "myform" >... </textarea>
+    <textarea  rows = "15" cols = "60" th:field = "*{Description}" name="lines" form = "myform" >... </textarea>
+    <br/>
+    <br/>
+    Склад суду:
+    <br>
+    <textarea  rows = "10" cols = "45" th:field = "*{composition}" name="lines" form = "myform" >... </textarea>
+    <br/>
+    <br/>
 
-    <br/>
-    <br/>
     Дата розгляду справи:
     <input required type="date" th:field="*{date}" value=0 />
     <br/>

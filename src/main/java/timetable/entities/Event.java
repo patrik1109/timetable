@@ -32,12 +32,35 @@ public class Event implements Serializable {
     @Temporal(TemporalType.DATE)
     Date date;
 
+    @Column(name = "composition" )
+    String composition;
+
     private int  idStatus;
 
 	private int idHall;
 
+    public Event() {
+    }
 
-	public int getId() {
+    public Event(int id, String number, String description, Date date, int idHall,int estatus,String composition)   {
+        this.id = id;
+        this.number = number;
+        this.description = description;
+        this.date = date;
+        this.idHall = idHall;
+        this.idStatus = estatus;
+        this.composition = composition;
+    }
+
+    public String getComposition() {
+        return composition;
+    }
+
+    public void setComposition(String composition) {
+        this.composition = composition;
+    }
+
+    public int getId() {
         return id;
     }
 
@@ -84,18 +107,7 @@ public class Event implements Serializable {
     }
 
 
-    public Event() {
-    }
 
-    public Event(int id, String number, String description, Date date, int idHall,int estatus)   {
-        this.id = id;
-        this.number = number;
-        this.description = description;
-        this.date = date;
-        this.idHall = idHall;
-        this.idStatus = estatus;
-
-    }
 
     public int getIdStatus() {
         return idStatus;
