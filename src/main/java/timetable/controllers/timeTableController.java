@@ -96,6 +96,7 @@ public class timeTableController {
         newEvent.setIdHall(eventForm.getHall_number());
         newEvent.setNumber(eventForm.getNumber());
         newEvent.setIdStatus(eventForm.getEstatus());
+        newEvent.setComposition(eventForm.getComposition());
         eventRepository.saveEvent(newEvent);
         int hall_Id = eventForm.getHall_number();
         return new ModelAndView("redirect:/hallEvents");
@@ -108,14 +109,9 @@ public class timeTableController {
     public ModelAndView showHall(@PathVariable Integer id) {
         ModelAndView NewModel = new ModelAndView("showHall");
         String  hallName = hallRepository.getHallById(id).getName();
-
         List<ParameterResponse> listparameter =fillParameterResponce(parameterRepository.findAll());
-
-       
         Date date =  new Date();
-        List<Event> eventList = eventRepository.findAllByDate(date);
-        List<EventResponse> eventsresponse = fillEventRenspose(eventList);// new LinkedList<>();
-
+        List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllByDate(date));
         NewModel.addObject("events",eventsresponse);
         NewModel.addObject("hallName",hallName);
         NewModel.addObject("dateTime",date);
@@ -160,12 +156,12 @@ public class timeTableController {
         return NewModel;
     }
 
-
+//ModelAndView model,
    @RequestMapping(value = { "/hallEvents" }, method = RequestMethod.POST)
-   public ModelAndView editHallEvents( @ModelAttribute("hallEventsForm") HallEventsForm halleventsForm,
+   public ModelAndView editHallEvents( ModelAndView model,@ModelAttribute("hallEventsForm") HallEventsForm halleventsForm,
                                        @ModelAttribute ("eventForm") EventForm eventForm ) {
 
-        ModelAndView NewModel = new ModelAndView("hallEvents");
+        //ModelAndView NewModel = new ModelAndView("hallEvents");
         HallEventsForm newEventsForm = new HallEventsForm();
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
         List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
@@ -177,9 +173,9 @@ public class timeTableController {
            List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHall(dateStart, id));
            String hallName = hallRepository.getHallById(id).getName();
            Integer hallid = id;
-           NewModel.addObject("events",eventsresponse);
-           NewModel.addObject("hallName",hallName);
-           NewModel.addObject("hallid",hallid);
+           model.addObject("events",eventsresponse);
+           model.addObject("hallName",hallName);
+           model.addObject("hallid",hallid);
        }
        else if(eventForm.getDate()!=null){
            EventForm neweventForm = new EventForm();
@@ -189,18 +185,15 @@ public class timeTableController {
            newEvent.setDescription(eventForm.getDescription());
            newEvent.setDate(eventForm.getDate());
            newEvent.setIdStatus(eventForm.getEstatus());
+           newEvent.setComposition(eventForm.getComposition());
            eventRepository.saveEvent(newEvent);
-           NewModel.addObject("eventForm",neweventForm);
+           model.addObject("eventForm",neweventForm);
        }
 
-       /*NewModel.addObject("events",eventsresponse);
-       NewModel.addObject("hallName",hallName);
-       NewModel.addObject("hallid",hallid);*/
-       NewModel.addObject("hallEventsForm",newEventsForm);
-
-       NewModel.addObject("halls",halls);
-       NewModel.addObject("statuses",statuses);
-       return NewModel;
+       model.addObject("hallEventsForm",newEventsForm);
+       model.addObject("halls",halls);
+       model.addObject("statuses",statuses);
+       return model;
    }
 
 
@@ -228,6 +221,7 @@ public class timeTableController {
             eventForm.setHall_number(event.getIdHall());
             eventForm.setNumber(event.getNumber());
             eventForm.setestatus(event.getIdStatus());
+            eventForm.setComposition(event.getComposition());
 
         newModel.addObject("eventForm", eventForm);
         newModel.addObject("halls",hallResponses);
@@ -242,11 +236,13 @@ public class timeTableController {
         Integer idHall = eventForm.getHall_number();
         String numberEvent = eventForm.getNumber();
         String description = (eventForm.getDescription());
+        String composition = (eventForm.getComposition());
         int estatus = eventForm.getEstatus();
         Date date= eventForm.getDate();
+
         if (idEvent !=0   ) {
 
-            eventRepository.updateEvent(idEvent,numberEvent,description,date,idHall,estatus);
+            eventRepository.updateEvent(idEvent,numberEvent,description,date,idHall,estatus,composition);
             return new ModelAndView("redirect:/hallEvents");
         }
         model.addObject("errorMessage", errorMessage);
@@ -262,7 +258,7 @@ public class timeTableController {
     @GetMapping(value = { "/", "/index" } )
     public ModelAndView addEvent(Map<String, Object> model){
         //final String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
-        String userName = SecurityUtils.getUserName();
+        //String userName = SecurityUtils.getUserName();
         List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
         List<UserResponse> users = fillUserResponse(userRepository.findAll());
         ModelAndView NewModel = new ModelAndView("index");
@@ -573,6 +569,7 @@ public ModelAndView users(Map<String, Object> model){
                 StatusEvent statusEvent = statusEventRepository.getStatusEventById(event.getIdStatus());
                 response.setDate(event.getDate());
                 response.setDescription(event.getDescription());
+                response.setComposition(event.getComposition());
                 response.setNumber(event.getNumber());
                 response.setColor(statusEvent.getColor());
                 response.setStatus(statusEvent.getStatus());

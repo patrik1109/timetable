@@ -81,7 +81,8 @@
         <tr>
         <th>#</th>
             <th>Номер справи</th>
-            <th>Опис</th>
+            <th>Склад суду </th>
+            <th>Сторони у справi та предмет спору</th>
             <th>Дата</th>
             <th>Статус</th>
             <th style="width: 5%">Видалити</th>
@@ -90,6 +91,7 @@
         <tr th:each ="event,iter : ${events}">
             <td th:utext="${iter.count}" class="numcol_admin">...</td>
             <td th:utext="${event.number}" class="casenumcol_admin">...</td>
+            <td th:utext="${event.composition}" class="casenumcol_admin">...</td>
             <td th:utext="${event.description}" class="casedesccol_admin">...</td>
             <td th:utext="${event.date}" class="casedatecol_admin">...</td>
             <td th:utext="${event.status}" class="casestatuscol_admin">...</td>
@@ -101,6 +103,7 @@
             <form th:action="@{/hallEvents}" th:object="${eventForm}" id="myform" method="POST">
                 <td> + </td>
                 <td><input required type="text" th:field="*{Number}" value=0/></td>
+                <td><input required type="text" th:field="*{composition}" value=0/></td>
                 <td><input required type="text" th:field="*{Description}" value=0/></td>
                 <td><input required type="date" th:field="*{date}" value=0 /></td>
                 <td><select  th:field="*{Hall_number}">
