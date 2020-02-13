@@ -111,7 +111,7 @@ public class timeTableController {
         String  hallName = hallRepository.getHallById(id).getName();
         List<ParameterResponse> listparameter =fillParameterResponce(parameterRepository.findAll());
         Date date =  new Date();
-        List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllByDate(date));
+        List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHall(date,id) );
         NewModel.addObject("events",eventsresponse);
         NewModel.addObject("hallName",hallName);
         NewModel.addObject("dateTime",date);
