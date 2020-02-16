@@ -9,12 +9,12 @@
 <body>
 <h1>Редагування розгляду справи </h1>
 
-<a href = "/index"><button>Повернутися</button></a> <br><br>
+<a href = "/hallEvents"><button>Повернутися</button></a> <br><br>
 
 <form th:action="@{/editEvent}" th:object="${eventForm}" id="myform" method="POST">
 
     Номер справи:
-    <input required type="text" th:field="*{Number}" value=0/>
+    <input required type="text" th:field="*{Number}">
     <br/>
     <br/>
     Зміст справи:
@@ -28,7 +28,7 @@
     <br/>
     <br/>
     Дата розгляду справи:
-    <input required type="date" th:field="*{date}" value=0 />
+    <input required type="date" th:field="*{date}" />
     <br/>
     <br/>
     Статус справи:
