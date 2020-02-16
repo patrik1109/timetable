@@ -594,6 +594,7 @@ public ModelAndView users(Map<String, Object> model){
 
                 EventResponse response = new EventResponse();
                 StatusEvent statusEvent = statusEventRepository.getStatusEventById(event.getIdStatus());
+                response.setIdHall(event.getIdHall());
                 response.setDate(event.getDate());
                 response.setDescription(event.getDescription());
                 response.setComposition(event.getComposition());
