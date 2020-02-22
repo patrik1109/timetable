@@ -85,7 +85,14 @@
 
 
 $(document).ready(function() {  
-    $("html, body").animate({ 
+	
+	var hiddenColomns  = [[${hiddenColomns}]];
+	 for(index=0;index<hiddenColomns.length;++index){
+         //document.getElementByName(hiddenColomns[index]).setAttribute("type", "hidden");
+		 $(hiddenColomns[index]).hide();
+         }
+	
+	$("html, body").animate({ 
         scrollTop: $('html, body').get(0).scrollHeight 
     }, 40000, function() {
     	setTimeout(function(){
@@ -107,7 +114,7 @@ function hideColomns(){
     xhr.send();
 	 xhr.onload = function () {
             for(index=0;index<hiddenColomns.length;++index){
-	            document.getElementByName (hiddenColomns[index]).setAttribute("type", "hidden");
+	            document.getElementByName(hiddenColomns[index]).setAttribute("type", "hidden");
 
 	            }
 		};
