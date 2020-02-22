@@ -100,14 +100,15 @@ $(document).ready(function() {
  var hiddenColomns  = [[${hiddenColomns}]];
 
 function hideColomns(){
-    debugger
+    var hiddenColomns  = [[${hiddenColomns}]];
+    var url = window.location.href;
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url);
     xhr.send();
 	 xhr.onload = function () {
             for(index=0;index<hiddenColomns.length;++index){
 	            document.getElementByName (hiddenColomns[index]).setAttribute("type", "hidden");
-	            alert(hiddenColomns[index]);
+
 	            }
 		};
 }
