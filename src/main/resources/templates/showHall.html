@@ -86,14 +86,7 @@
 
 $(document).ready(function() {  
 	
-	var hiddenColomns  = [[${hiddenColomns}]];
-	 for(index=0;index<hiddenColomns.length;++index){
-         console.log(hiddenColomns[index]);
-        
-		 $('td[name*="'+hiddenColomns[index]+'"]').hide();
-		 $('th[name*="'+hiddenColomns[index]+'"]').hide();
-         }
-	
+	hideColumns();
 	$("html, body").animate({ 
         scrollTop: $('html, body').get(0).scrollHeight 
     }, 40000, function() {
@@ -104,7 +97,15 @@ $(document).ready(function() {
     		},100);
         }); 
 });
+ function hideColumns(){
+ var hiddenColomns  = [[${hiddenColomns}]];
+	 for(index=0;index<hiddenColomns.length;++index){
+         console.log(hiddenColomns[index]);
 
+		 $('td[name*="'+hiddenColomns[index]+'"]').hide();
+		 $('th[name*="'+hiddenColomns[index]+'"]').hide();
+         }
+ }
 
 
 
