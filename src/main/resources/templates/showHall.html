@@ -66,22 +66,22 @@
         <table border="1">
             <tr >
                 <th class="tablesettingTitle" >№ з/п</th>
-                <th class="tablesettingTitle" name ="number">№ проведення</th>
-                <th class="tablesettingTitle" name ="composition">Склад суду</th>
-                <th class="tablesettingTitle" name ="description">Сторони у справі та предмет спору</th>
-                <th class="tablesettingTitle" name = "status">Статус</th>
+                <th class="tablesettingTitle number" >№ проведення</th>
+                <th class="tablesettingTitle composition" >Склад суду</th>
+                <th class="tablesettingTitle description" >Сторони у справі та предмет спору</th>
+                <th class="tablesettingTitle status" >Статус</th>
             </tr>
             <tr th:each ="event,iter : ${events}" >
                 <td class="tablesettingText" th:utext="${iter.count}"></td>
-                <td class="tablesettingText" name ="number" th:utext="${event.number}">...</td>
-                <td class="tablesettingText" name ="composition" th:utext="${event.composition}">...</td>
-                <td class="tablesettingText" name ="description" th:utext="${event.description}">...</td>
-                <td th:style="'background-color : '+${event.color}" th:utext="${event.status}" name = "status" class="casestatuscol">...</td>
+                <td class="tablesettingText number" name="number" th:utext="${event.number}">...</td>
+                <td class="tablesettingText composition" name ="composition" th:utext="${event.composition}">...</td>
+                <td class="tablesettingText description" name ="description" th:utext="${event.description}">...</td>
+                <td th:style="'background-color : '+${event.color}" th:utext="${event.status}"  class="casestatuscol status">...</td>
             </tr>
         </table>
     </div>
 </div>
-<script type="text/javascript"  th:inline="javascript">
+<script type="text/javascript"  th:inline="javascript" >
 
 
 $(document).ready(function() {  
@@ -91,13 +91,10 @@ $(document).ready(function() {
     	setTimeout(function(){
     		$("html, body").animate({ scrollTop:0 }, 0);   
     		window.location.reload(true);
-    		
-    		//	refreshTable();
+
     		},100);
         }); 
 });
-
- var hiddenColomns  = [[${hiddenColomns}]];
 
 function hideColomns(){
     var hiddenColomns  = [[${hiddenColomns}]];
@@ -105,20 +102,19 @@ function hideColomns(){
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url);
     xhr.send();
-	 xhr.onload = function () {
-            for(index=0;index<hiddenColomns.length;++index){
-	            document.getElementByName (hiddenColomns[index]).setAttribute("type", "hidden");
-
-	            }
-		};
+	xhr.onload = function () {
+                    for(index=0;index<hiddenColomns.length;++index){
+    	                document.getElementByClass (hiddenColomns[index]).setAttribute("type", "hidden") = xhr.response;
+    	                alert(hiddenColomns[index]);
+	                }
+	  	};
 }
 
 
 function refreshTable(){
 	
 	var xhr = new XMLHttpRequest();
-	// var url='/showHall/';
-	var url = window.location.href; 
+	var url = window.location.href;
 	
 	alert(url);
 	xhr.open("GET", url);
