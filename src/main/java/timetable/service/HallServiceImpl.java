@@ -50,8 +50,8 @@ public class HallServiceImpl implements HallService {
     }
 
     @Override
-    public void updateHall(int id, String name, Date date, Set<Event> events) {
-        Hall hall = new Hall(id,name,date,events);
+    public void updateHall(int id, String name, Date date, Set<Event> events,String hiddencolloms) {
+        Hall hall = new Hall(id,name,date,events,hiddencolloms);
         repository.save(hall);
     }
 
