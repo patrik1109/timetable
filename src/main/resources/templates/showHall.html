@@ -85,7 +85,14 @@
 
 
 $(document).ready(function() {  
-    $("html, body").animate({ 
+	
+	var hiddenColomns  = [[${hiddenColomns}]];
+	 for(index=0;index<hiddenColomns.length;++index){
+         //document.getElementByName(hiddenColomns[index]).setAttribute("type", "hidden");
+		 $(hiddenColomns[index]).hide();
+         }
+	
+	$("html, body").animate({ 
         scrollTop: $('html, body').get(0).scrollHeight 
     }, 40000, function() {
     	setTimeout(function(){
@@ -102,12 +109,21 @@ function hideColomns(){
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url);
     xhr.send();
+<<<<<<< HEAD
 	xhr.onload = function () {
                     for(index=0;index<hiddenColomns.length;++index){
     	                document.getElementByClass (hiddenColomns[index]).setAttribute("type", "hidden") = xhr.response;
     	                alert(hiddenColomns[index]);
 	                }
 	  	};
+=======
+	 xhr.onload = function () {
+            for(index=0;index<hiddenColomns.length;++index){
+	            document.getElementByName(hiddenColomns[index]).setAttribute("type", "hidden");
+
+	            }
+		};
+>>>>>>> 1118e90dd7db33e3e76b5f03a0e807aa03331645
 }
 
 
