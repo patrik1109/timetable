@@ -76,7 +76,7 @@
                 <td class="tablesettingText" name ="number" th:utext="${event.number}">...</td>
                 <td class="tablesettingText" name ="composition" th:utext="${event.composition}">...</td>
                 <td class="tablesettingText" name ="description" th:utext="${event.description}">...</td>
-                <td th:style="'background-color : '+${event.color}" th:utext="${event.status}" name = "status" class="casestatuscol">...</td>
+                <td th:style="'background-color : '+${event.color}" th:utext="${event.status}"  class="casestatuscol" name="status">...</td>
             </tr>
         </table>
     </div>
@@ -86,17 +86,7 @@
 
 $(document).ready(function() {  
 	
-	var hiddenColomns  = [[${hiddenColomns}]];
-	 for(index=0;index<hiddenColomns.length;++index){
-		 
-		 console.log(hiddenColomns[index]);
-		 
-         	//document.getElementByName(hiddenColomns[index]).setAttribute("type", "hidden");
-		 	//$(hiddenColomns[index]).hide();
-
-		 	$('td[name ="'.hiddenColomns[index].'"]').hide(); 
-         }
-	
+	hideColumns();
 	$("html, body").animate({ 
         scrollTop: $('html, body').get(0).scrollHeight 
     }, 40000, function() {
@@ -104,32 +94,24 @@ $(document).ready(function() {
     		$("html, body").animate({ scrollTop:0 }, 0);   
     		window.location.reload(true);
     		
-    		//	refreshTable();
     		},100);
         }); 
 });
-
+ function hideColumns(){
  var hiddenColomns  = [[${hiddenColomns}]];
-
-function hideColomns(){
-    var hiddenColomns  = [[${hiddenColomns}]];
-    var url = window.location.href;
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", url);
-    xhr.send();
-	 xhr.onload = function () {
             for(index=0;index<hiddenColomns.length;++index){
-	            document.getElementByName(hiddenColomns[index]).setAttribute("type", "hidden");
+         console.log(hiddenColomns[index]);
 
+		 $('td[name*="'+hiddenColomns[index]+'"]').hide();
+		 $('th[name*="'+hiddenColomns[index]+'"]').hide();
 	            }
-		};
 }
+
 
 
 function refreshTable(){
 	
 	var xhr = new XMLHttpRequest();
-	// var url='/showHall/';
 	var url = window.location.href; 
 	
 	alert(url);
