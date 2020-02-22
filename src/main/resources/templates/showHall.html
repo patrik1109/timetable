@@ -88,8 +88,13 @@ $(document).ready(function() {
 	
 	var hiddenColomns  = [[${hiddenColomns}]];
 	 for(index=0;index<hiddenColomns.length;++index){
-         //document.getElementByName(hiddenColomns[index]).setAttribute("type", "hidden");
-		 $(hiddenColomns[index]).hide();
+		 
+		 console.log(hiddenColomns[index]);
+		 
+         	//document.getElementByName(hiddenColomns[index]).setAttribute("type", "hidden");
+		 	//$(hiddenColomns[index]).hide();
+
+		 	$('td[name ="'.hiddenColomns[index].'"]').hide(); 
          }
 	
 	$("html, body").animate({ 
