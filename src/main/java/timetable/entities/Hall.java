@@ -2,6 +2,7 @@ package timetable.entities;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,6 +20,25 @@ public class Hall {
 
     @OneToMany(fetch= FetchType.EAGER, mappedBy = "idHall")
     Set<Event> eventSet;
+
+    @Column(name="hiddencolloms")
+    String hiddencolloms;
+
+    public Hall(int id, String name, Date date, Set<Event> eventSet, String hiddencolloms) {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.eventSet = eventSet;
+        this.hiddencolloms = hiddencolloms;
+    }
+
+    public String getHiddencolloms() {
+        return hiddencolloms;
+    }
+
+    public void setHiddencolloms(String hiddencolloms) {
+        this.hiddencolloms = hiddencolloms;
+    }
 
     public int getId() {
         return id;
@@ -55,10 +75,5 @@ public class Hall {
     public Hall() {
     }
 
-    public Hall(int id, String name, Date date, Set<Event> eventSet) {
-        this.id = id;
-        this.name = name;
-        this.date = date;
-        this.eventSet = eventSet;
-    }
+
 }

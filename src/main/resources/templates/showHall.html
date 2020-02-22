@@ -66,22 +66,23 @@
         <table border="1">
             <tr >
                 <th class="tablesettingTitle" >№ з/п</th>
-                <th class="tablesettingTitle" >№ проведення</th>
-                <th class="tablesettingTitle" >Склад суду</th>
-                <th class="tablesettingTitle" >Сторони у справі та предмет спору</th>
-                <th class="tablesettingTitle" >Статус</th>
+                <th class="tablesettingTitle" name ="number">№ проведення</th>
+                <th class="tablesettingTitle" name ="composition">Склад суду</th>
+                <th class="tablesettingTitle" name ="description">Сторони у справі та предмет спору</th>
+                <th class="tablesettingTitle" name = "status">Статус</th>
             </tr>
-            <tr th:each ="event,iter : ${events}">
+            <tr th:each ="event,iter : ${events}" >
                 <td class="tablesettingText" th:utext="${iter.count}"></td>
-                <td class="tablesettingText" th:utext="${event.number}">...</td>
-                <td class="tablesettingText" th:utext="${event.composition}">...</td>
-                <td class="tablesettingText" th:utext="${event.description}">...</td>
-                <td th:style="'background-color : '+${event.color}" th:utext="${event.status}"  class="casestatuscol">...</td>
+                <td class="tablesettingText" name ="number" th:utext="${event.number}">...</td>
+                <td class="tablesettingText" name ="composition" th:utext="${event.composition}">...</td>
+                <td class="tablesettingText" name ="description" th:utext="${event.description}">...</td>
+                <td th:style="'background-color : '+${event.color}" th:utext="${event.status}" name = "status" class="casestatuscol">...</td>
             </tr>
         </table>
     </div>
 </div>
-<script type="text/javascript">
+<script type="text/javascript"  th:inline="javascript">
+
 
 $(document).ready(function() {  
     $("html, body").animate({ 
@@ -95,6 +96,21 @@ $(document).ready(function() {
     		},100);
         }); 
 });
+
+ var hiddenColomns  = [[${hiddenColomns}]];
+
+function hideColomns(){
+    debugger
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+    xhr.send();
+	 xhr.onload = function () {
+            for(index=0;index<hiddenColomns.length;++index){
+	            document.getElementByName (hiddenColomns[index]).setAttribute("type", "hidden");
+	            alert(hiddenColomns[index]);
+	            }
+		};
+}
 
 
 function refreshTable(){

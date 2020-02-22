@@ -26,6 +26,7 @@ import timetable.thymeleaf_form.UserForm;
 import timetable.utils.DummyContentUtil;
 import timetable.utils.SecurityUtils;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -55,6 +56,9 @@ public class timeTableController {
     private volatile User user;
     private volatile List<Parameter> parameterList;
     @Value("${error.message}")
+
+    final private String hold = "hold";
+    final private String pivot ="#";
 
 
 
@@ -108,14 +112,16 @@ public class timeTableController {
     @RequestMapping(value = { "/showHall/{id}" }, method = RequestMethod.GET)
     public ModelAndView showHall(@PathVariable Integer id) {
         ModelAndView NewModel = new ModelAndView("showHall");
-        String  hallName = hallRepository.getHallById(id).getName();
+        Hall hall =hallRepository.getHallById(id);
+        String  hallName = hall.getName();
+        String[] hiddenColomns =  hall.getHiddencolloms().split(pivot);
         List<ParameterResponse> listparameter =fillParameterResponce(parameterRepository.findAll());
         Date date =  new Date();
         List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHall(date,id) );
         NewModel.addObject("events",eventsresponse);
         NewModel.addObject("hallName",hallName);
         NewModel.addObject("dateTime",date);
-
+        NewModel.addObject("hiddenColomns",hiddenColomns);
         if(listparameter != null && !listparameter.isEmpty() && listparameter.size()<4 ) {
             
         	ParameterResponse parameterHall = listparameter.get(0);
@@ -181,20 +187,16 @@ public class timeTableController {
        }
        else if(eventForm.getDate()!=null){
            int idHall = eventForm.getHall_number();
-
-
            Date date = eventForm.getDate();
-           /*Calendar cal = Calendar.getInstance();
-           cal.setTime(date);
-           cal.add(Calendar.DATE, 1);
-            */
-
-           //SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/DD");
-           //sdf.format(date);
-           String hallName = hallRepository.getHallById(idHall).getName();
+           Hall hall = hallRepository.getHallById(idHall);
+           String hallName = hall.getName();
 
            EventForm neweventForm = new EventForm();
            Event newEvent =  fillEventfromEventForm(eventForm);
+           String hiddenColomns =  reflectionfill(eventForm);
+           hall.setHiddencolloms(hiddenColomns);
+
+           hallRepository.saveHall(hall);
            eventRepository.saveEvent(newEvent);
 
            List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHall(date, idHall));
@@ -236,7 +238,7 @@ public class timeTableController {
             eventForm.setDescription(event.getDescription());
             eventForm.setHall_number(event.getIdHall());
             eventForm.setNumber(event.getNumber());
-            eventForm.setestatus(event.getIdStatus());
+            eventForm.setEstatus (event.getIdStatus());
             eventForm.setComposition(event.getComposition());
 
         newModel.addObject("eventForm", eventForm);
@@ -392,6 +394,7 @@ public class timeTableController {
         hallForm.setDate(hall.getDate());
         hallForm.setName(hall.getName());
         hallForm.setId(hall.getId());
+
         newModel.addObject("hallForm", hallForm);
         newModel.addObject("hall",hall);
         return  newModel;
@@ -401,12 +404,13 @@ public class timeTableController {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @RequestMapping(value = { "/editHall" }, method = RequestMethod.POST)
     public ModelAndView editHall(ModelAndView model,    @ModelAttribute("eventHall") HallForm hallForm) {
+        String hiddencolloms = new String();
         Integer idHall = hall.getId();
         String nameHall = (hallForm.getName());
         Date date = hallForm.getDate();
         Set<Event> events = hall.getEventSet();
         if (idHall !=0   ) {
-            hallRepository.updateHall(idHall,nameHall,date,events);
+            hallRepository.updateHall(idHall,nameHall,date,events,hiddencolloms);
             return new ModelAndView("redirect:/index");
         }
         model.addObject("errorMessage", errorMessage);
@@ -565,6 +569,28 @@ public ModelAndView users(Map<String, Object> model){
             parameters.add(response);
         }
         return parameters;
+    }
+
+    private String  reflectionfill(EventForm eventForm){
+        Field[] fields = eventForm.getClass().getDeclaredFields();
+        StringBuffer buffer = new StringBuffer();
+           try {
+               for (Field field : fields) {
+                   field.setAccessible(true);
+                   String name = field.getName();
+                   if(name.contains(hold)){
+                        Boolean value = (Boolean) field.get(eventForm);
+                        if(value){
+                            buffer.append(name.substring(hold.length(),name.length()));
+                            buffer.append(pivot);
+                        }
+                   }
+               }
+           }
+           catch (IllegalAccessException  e){
+               System.out.println(e.getStackTrace());
+           }
+        return buffer.toString();
     }
 
     private Event fillEventfromEventForm(EventForm eventForm) {
