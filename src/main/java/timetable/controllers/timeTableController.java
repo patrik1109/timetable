@@ -1,6 +1,7 @@
 package timetable.controllers;
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,7 +25,7 @@ import timetable.thymeleaf_form.HallEventsForm;
 import timetable.thymeleaf_form.HallForm;
 import timetable.thymeleaf_form.UserForm;
 import timetable.utils.DummyContentUtil;
-import timetable.utils.SecurityUtils;
+import java.util.*;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
@@ -74,7 +75,10 @@ public class timeTableController {
     public ModelAndView addEvent(ModelAndView model){
         ModelAndView newModel = new ModelAndView("AddEvent");
         List<HallResponse> hallResponses = fillHallResponse(hallRepository.findAll());
+
+
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
+
 
         EventForm eventForm = new EventForm();
         Date date = new Date();
@@ -533,6 +537,7 @@ public ModelAndView users(Map<String, Object> model){
         return  formatForDateNow.format(dateNow)+"<br>"+formatForTimeNow.format(dateNow);
     }
 
+
     private List<StatusResponse> fillStatusResponse(List<StatusEvent> statusEventList) {
         List<StatusResponse> responses = new LinkedList<>();
             for(StatusEvent statusEvent : statusEventList){
@@ -544,8 +549,10 @@ public ModelAndView users(Map<String, Object> model){
              }
             return responses;
     }
-    private  List<HallResponse> fillHallResponse (List<Hall> hallList){
 
+
+
+    private  List<HallResponse> fillHallResponse (List<Hall> hallList){
         List<HallResponse> halls = new LinkedList<>();
             for (Hall hall: hallList) {
                 HallResponse hallResponse = new HallResponse();
@@ -668,29 +675,7 @@ public ModelAndView users(Map<String, Object> model){
         return neweventForm;
     }
 
-    /*private EventForm sethideFields(String[] hiddenColomns, EventForm neweventForm) {
-        Field[] fields = neweventForm.getClass().getDeclaredFields();
 
-        for (String str: hiddenColomns) {
-            if(str.equals("number")){
-                neweventForm.setHoldnumber(true);
-            }
-            if(str.equals("description")){
-                neweventForm.setHolddescription(true);
-            }
-            if(str.equals("composition")){
-                neweventForm.setHoldcomposition(true);
-            }
-            if(str.equals("date")){
-                neweventForm.setHolddate(true);
-            }
-            if(str.equals("estatus")){
-                neweventForm.setHoldestatus(true);
-            }
-        }
-        return neweventForm;
-    }
-*/
     private static SettingForm fillSettingForm(String formName, ParameterResponse response){
         SettingForm newForm = new SettingForm();
         newForm.setFormname(formName);
