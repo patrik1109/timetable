@@ -533,6 +533,17 @@ public ModelAndView users(Map<String, Object> model){
         return  formatForDateNow.format(dateNow)+"<br>"+formatForTimeNow.format(dateNow);
     }
 
+    private <T> List<T> fillResponse(List<T> tList)
+    {
+    	List<T> responses = new LinkedList<>();
+        for(T t : tList){
+            
+            responses.add(t);
+         }
+        return responses;
+    	
+    }
+    
     private List<StatusResponse> fillStatusResponse(List<StatusEvent> statusEventList) {
         List<StatusResponse> responses = new LinkedList<>();
             for(StatusEvent statusEvent : statusEventList){
