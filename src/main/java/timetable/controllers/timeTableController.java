@@ -172,15 +172,21 @@ public class timeTableController {
         HallEventsForm newEventsForm = new HallEventsForm();
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
         List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
-
+        EventForm neweventForm = new EventForm();
 
        if(halleventsForm.getDateStart()!=null) {
            Date dateStart = halleventsForm.getDateStart();
            int id = halleventsForm.getId();
            List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHall(dateStart, id));
-           String hallName = hallRepository.getHallById(id).getName();
+           Hall hall =  hallRepository.getHallById(id);
+           String hallName = hall.getName();
            Integer hallid = id;
+           String[] hiddenColomns = hall.getHiddencolloms().split(pivot);
 
+          // neweventForm = sethideFields(hiddenColomns,neweventForm);
+           neweventForm = sethideFields(hiddenColomns,neweventForm);
+
+           model.addObject("eventForm",neweventForm);
            model.addObject("events",eventsresponse);
            model.addObject("hallName",hallName);
            model.addObject("hallid",hallid);
@@ -190,8 +196,6 @@ public class timeTableController {
            Date date = eventForm.getDate();
            Hall hall = hallRepository.getHallById(idHall);
            String hallName = hall.getName();
-
-           EventForm neweventForm = new EventForm();
            Event newEvent =  fillEventfromEventForm(eventForm);
            String hiddenColomns =  reflectionfill(eventForm);
            hall.setHiddencolloms(hiddenColomns);
@@ -215,6 +219,8 @@ public class timeTableController {
    }
 
 
+
+
     @GetMapping("/delete/{id}")
      public ModelAndView delete(@PathVariable Integer id) {
         Event tmpevent = eventRepository.getEventById(id);
@@ -229,11 +235,17 @@ public class timeTableController {
     public ModelAndView editEvent(@PathVariable Integer id) {
         ModelAndView newModel = new ModelAndView("editEvent");
         EventForm eventForm = new EventForm();
+        event = eventRepository.getEventById(id);
+
+        Hall hall =  hallRepository.getHallById(event.getIdHall());
+        String[] hiddenColomns = hall.getHiddencolloms().split(pivot);
+        eventForm = sethideFields(hiddenColomns,eventForm);
+
 
         List<HallResponse> hallResponses = fillHallResponse(hallRepository.findAll());
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
 
-        event = eventRepository.getEventById(id);
+
             eventForm.setDate(event.getDate());
             eventForm.setDescription(event.getDescription());
             eventForm.setHall_number(event.getIdHall());
@@ -252,6 +264,7 @@ public class timeTableController {
     public ModelAndView editEvent(ModelAndView model,    @ModelAttribute("eventForm") EventForm eventForm) {
         Integer idEvent = event.getId();
         Integer idHall = eventForm.getHall_number();
+        Hall hall = hallRepository.getHallById(event.getIdHall());
         String numberEvent = eventForm.getNumber();
         String description = (eventForm.getDescription());
         String composition = (eventForm.getComposition());
@@ -259,7 +272,8 @@ public class timeTableController {
         Date date= eventForm.getDate();
 
         if (idEvent !=0   ) {
-
+            String hiddenColomns =  reflectionfill(eventForm);
+            hall.setHiddencolloms(hiddenColomns);
             eventRepository.updateEvent(idEvent,numberEvent,description,date,idHall,estatus,composition);
             return new ModelAndView("redirect:/hallEvents");
         }
@@ -633,12 +647,50 @@ public ModelAndView users(Map<String, Object> model){
         return eventsresponse;
     }
 
+    private EventForm sethideFields(String[] hiddenColomns, EventForm neweventForm) {
+        Field[] formfields = neweventForm.getClass().getDeclaredFields();
 
+        for (String str:hiddenColomns) {
+            for (Field field : formfields) {
+                String name =field.getName();
+                if(name.contains(hold)&&name.contains(str)){
+                    try {
+                        field.setAccessible(true);
+                        field.set(neweventForm, true);
+                    }
+                    catch ( IllegalAccessException e){
+                        e.printStackTrace();
+                    }
+                }
 
+            }
+        }
+        return neweventForm;
+    }
 
+    /*private EventForm sethideFields(String[] hiddenColomns, EventForm neweventForm) {
+        Field[] fields = neweventForm.getClass().getDeclaredFields();
 
-
-
+        for (String str: hiddenColomns) {
+            if(str.equals("number")){
+                neweventForm.setHoldnumber(true);
+            }
+            if(str.equals("description")){
+                neweventForm.setHolddescription(true);
+            }
+            if(str.equals("composition")){
+                neweventForm.setHoldcomposition(true);
+            }
+            if(str.equals("date")){
+                neweventForm.setHolddate(true);
+            }
+            if(str.equals("estatus")){
+                neweventForm.setHoldestatus(true);
+            }
+        }
+        return neweventForm;
+    }
+*/
     private static SettingForm fillSettingForm(String formName, ParameterResponse response){
         SettingForm newForm = new SettingForm();
         newForm.setFormname(formName);
