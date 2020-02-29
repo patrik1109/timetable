@@ -92,7 +92,7 @@ $(document).ready(function() {
     }, 40000, function() {
     	setTimeout(function(){
     		$("html, body").animate({ scrollTop:0 }, 0);   
-    		window.location.reload(true);
+    		//window.location.reload(true);
     		
     		},100);
         }); 
@@ -140,7 +140,14 @@ setInterval(function () {
 	 var current_datetime = new Date();
 	 
 	 var xhr = new XMLHttpRequest();
-	 const url='/timetable/getTime';
+	 
+	 var base_url = window.location.origin;
+	 
+	 //var host = window.location.host;
+	 
+	 //var pathArray = window.location.pathname.split( '/' );
+	 
+	 const url=base_url+'/getTime';
 	 xhr.open("GET", url);
 	 
 	 xhr.responseType = 'text';
