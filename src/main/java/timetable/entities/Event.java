@@ -34,16 +34,7 @@ public class Event implements Serializable {
 
     @Column(name = "composition" )
     String composition;
-/*
-    @Column(name = "show_composition" )
-    boolean showComposition;
 
-    @Column(name = "show_row" )
-    boolean showRow;
-    
-    @Column(name = "order_num" )
-    int orderNum;
-  */  
     private int  idStatus;
 
 	private int idHall;

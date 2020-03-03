@@ -33,6 +33,7 @@
       white-space: pre-wrap;
     }
 
+
 </style>
 
 <body>
@@ -72,11 +73,11 @@
                 <th class="tablesettingTitle" name = "status">Статус</th>
             </tr>
             <tr th:each ="event,iter : ${events}" >
-                <td class="tablesettingText" th:utext="${iter.count}"></td>
-                <td class="tablesettingText" name ="number" th:utext="${event.number}">...</td>
-                <td class="tablesettingText" name ="composition" th:utext="${event.composition}">...</td>
-                <td class="tablesettingText" name ="description" th:utext="${event.description}">...</td>
-                <td th:style="'background-color : '+${event.color}" th:utext="${event.status}"  class="casestatuscol" name="status">...</td>
+                <td class="tablesettingText" th:style="'background-color : '+${event.color}" th:utext="${iter.count}"></td>
+                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="number" th:utext="${event.number}">...</td>
+                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="composition" th:utext="${event.composition}">...</td>
+                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="description" th:utext="${event.description}">...</td>
+                <td class="tablesettingText" th:style="'background-color : '+${event.color}" th:utext="${event.status}"  name="status">...</td>
             </tr>
         </table>
     </div>
