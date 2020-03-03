@@ -29,7 +29,6 @@ import java.util.*;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
-import java.util.*;
 
 @RestController
 public class timeTableController {
@@ -78,8 +77,6 @@ public class timeTableController {
 
 
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
-
-
         EventForm eventForm = new EventForm();
         Date date = new Date();
         Calendar cal = Calendar.getInstance();
@@ -185,10 +182,6 @@ public class timeTableController {
            Hall hall =  hallRepository.getHallById(id);
            String hallName = hall.getName();
            Integer hallid = id;
-           String[] hiddenColomns = hall.getHiddencolloms().split(pivot);
-
-          // neweventForm = sethideFields(hiddenColomns,neweventForm);
-           neweventForm = sethideFields(hiddenColomns,neweventForm);
 
            model.addObject("eventForm",neweventForm);
            model.addObject("events",eventsresponse);
@@ -201,12 +194,8 @@ public class timeTableController {
            Hall hall = hallRepository.getHallById(idHall);
            String hallName = hall.getName();
            Event newEvent =  fillEventfromEventForm(eventForm);
-           String hiddenColomns =  reflectionfill(eventForm);
-           hall.setHiddencolloms(hiddenColomns);
-
            hallRepository.saveHall(hall);
            eventRepository.saveEvent(newEvent);
-
            List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHall(date, idHall));
            halleventsForm.setDateStart(date);
            halleventsForm.setId(idHall);
@@ -276,8 +265,6 @@ public class timeTableController {
         Date date= eventForm.getDate();
 
         if (idEvent !=0   ) {
-            String hiddenColomns =  reflectionfill(eventForm);
-            hall.setHiddencolloms(hiddenColomns);
             eventRepository.updateEvent(idEvent,numberEvent,description,date,idHall,estatus,composition);
             return new ModelAndView("redirect:/hallEvents");
         }
@@ -309,6 +296,8 @@ public class timeTableController {
     @RequestMapping(value = { "/settings" }, method = RequestMethod.GET)
     public ModelAndView settings(Map<String, Object> model){
         parameterList = parameterRepository.findAll();
+        List<Hall> hallList = hallRepository.findAll();
+
         List<ParameterResponse> parameters = fillParameterResponce(parameterList);
         ModelAndView NewModel = new ModelAndView("settings");
 
@@ -319,48 +308,46 @@ public class timeTableController {
         SettingForm settingFormHall = fillSettingForm(formHall,responseSettingHall);
         SettingForm settingFormTableTitle = fillSettingForm(formTabletitle,responseSettingTable);
         SettingForm settingText = fillSettingForm(formText,responseSettingText);
+        EventfieldsForm hidefieldsForm = new EventfieldsForm();
 
         NewModel.addObject("settingFormHall",settingFormHall);
         NewModel.addObject("settingFormTableTitle",settingFormTableTitle);
         NewModel.addObject("settingText",settingText);
-
+        NewModel.addObject("hidefieldsForm",hidefieldsForm);
+        NewModel.addObject("hallList",hallList);
         return  NewModel;
     }
     @Transactional
     @RequestMapping(value = { "/settings" }, method = RequestMethod.POST)
-    public ModelAndView settings(ModelAndView model, @ModelAttribute("settingForm") SettingForm settingForm) {
+    public ModelAndView settings(ModelAndView model, @ModelAttribute("settingForm") SettingForm settingForm,
+                                 @ModelAttribute("hidefieldsForm")EventfieldsForm hidefields) {
 
         Parameter parameter = new Parameter();
 
-           if(settingForm.getFormname().equals(formHall)) {
-               parameter = getFromForm(settingForm);
-               parameterRepository.saveParameter(parameter);
-             }
-           else if (settingForm.getFormname().equals(formTabletitle)) {
-               parameter = getFromForm(settingForm);
-               parameterRepository.saveParameter(parameter);
-           }
-           else if (settingForm.getFormname().equals(formText)) {
-               parameter = getFromForm(settingForm);
-               parameterRepository.saveParameter(parameter);
+            if(settingForm.getFormname() != null) {
+                if (settingForm.getFormname().equals(formHall)) {
+                    parameter = getFromForm(settingForm);
+                    parameterRepository.saveParameter(parameter);
+                } else if (settingForm.getFormname().equals(formTabletitle)) {
+                    parameter = getFromForm(settingForm);
+                    parameterRepository.saveParameter(parameter);
+                } else if (settingForm.getFormname().equals(formText)) {
+                    parameter = getFromForm(settingForm);
+                    parameterRepository.saveParameter(parameter);
+                }
+            }
+
+           else if(hidefields.getIdHall()!=null) {
+              Hall hall = hallRepository.getHallById(hidefields.getIdHall());
+              String fields = hidenfieldsfill(hidefields);
+              hall.setHiddencolloms(fields);
+              hallRepository.saveHall(hall);
            }
 
 
         return new ModelAndView("redirect:/settings");
 
     }
-
-    private Parameter getFromForm(SettingForm settingForm) {
-        Parameter newparameter = new Parameter();
-        newparameter.setTextbackground(settingForm.getTextbackground());
-        newparameter.setTextcolor(settingForm.getTextcolor());
-        newparameter.setTextfont(settingForm.getTextfont());
-        newparameter.setTextsize(settingForm.getTextsize());
-        newparameter.setParameter(settingForm.getParameter());
-        newparameter.setId(settingForm.getId());
-        return  newparameter;
-    }
-
 
     @Transactional
     @RequestMapping(value = { "/createDummies" }, method = RequestMethod.GET )
@@ -537,6 +524,47 @@ public ModelAndView users(Map<String, Object> model){
         return  formatForDateNow.format(dateNow)+"<br>"+formatForTimeNow.format(dateNow);
     }
 
+    private  List<?> fillRes(Class clazz,List<?>tlist){
+       return fillResponse(clazz,tlist);
+    }
+
+    private <T> List<T> fillResponse(Class claz,List<T> tList)
+    {
+    	/*List<T> responses = new LinkedList<>();
+        Class responsesclass = responses.getClass();*/
+
+    	List<T> responses = new LinkedList<>();
+        Class responsesclass = claz.getClass();
+
+    	Class clazz = tList.getClass();
+    	Field[] fields = clazz.getDeclaredFields();
+
+
+        for(Field field:fields){
+            try
+                {
+                    responsesclass.newInstance();
+                }
+                catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+                catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                Field[] responsefields = responsesclass.getDeclaredFields();
+                    for(Field responsefield:responsefields){
+                        if(field.getName().equals(responsefield.getName())){
+                            responsefield = field;
+                        }
+                    }
+                    responses.add((T) responsesclass);
+            }
+        return responses;
+    	 /*for(T t : tList){
+            responses.add(t);
+         }*/
+    }
+    
 
     private List<StatusResponse> fillStatusResponse(List<StatusEvent> statusEventList) {
         List<StatusResponse> responses = new LinkedList<>();
@@ -592,25 +620,23 @@ public ModelAndView users(Map<String, Object> model){
         return parameters;
     }
 
-    private String  reflectionfill(EventForm eventForm){
+    private String hidenfieldsfill(Object eventForm){
         Field[] fields = eventForm.getClass().getDeclaredFields();
         StringBuffer buffer = new StringBuffer();
-           try {
-               for (Field field : fields) {
-                   field.setAccessible(true);
-                   String name = field.getName();
-                   if(name.contains(hold)){
-                        Boolean value = (Boolean) field.get(eventForm);
-                        if(value){
-                            buffer.append(name.substring(hold.length(),name.length()));
-                            buffer.append(pivot);
-                        }
-                   }
-               }
-           }
-           catch (IllegalAccessException  e){
-               System.out.println(e.getStackTrace());
-           }
+        try {
+            for (Field field : fields) {
+                field.setAccessible(true);
+                String name = field.getName();
+                Boolean value = (Boolean) field.get(eventForm);
+                      if (value != null && value) {
+                             buffer.append(name);
+                             buffer.append(pivot);
+                     }
+            }
+        }
+        catch (Exception  e){
+            System.out.println(e.getStackTrace());
+        }
         return buffer.toString();
     }
 
@@ -688,6 +714,16 @@ public ModelAndView users(Map<String, Object> model){
         return newForm;
     }
 
+    private Parameter getFromForm(SettingForm settingForm) {
+        Parameter newparameter = new Parameter();
+        newparameter.setTextbackground(settingForm.getTextbackground());
+        newparameter.setTextcolor(settingForm.getTextcolor());
+        newparameter.setTextfont(settingForm.getTextfont());
+        newparameter.setTextsize(settingForm.getTextsize());
+        newparameter.setParameter(settingForm.getParameter());
+        newparameter.setId(settingForm.getId());
+        return  newparameter;
+    }
 
 
 
