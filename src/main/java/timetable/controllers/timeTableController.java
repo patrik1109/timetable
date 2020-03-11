@@ -2,6 +2,7 @@ package timetable.controllers;
 
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,6 +26,8 @@ import timetable.thymeleaf_form.HallEventsForm;
 import timetable.thymeleaf_form.HallForm;
 import timetable.thymeleaf_form.UserForm;
 import timetable.utils.DummyContentUtil;
+
+import java.sql.Time;
 import java.util.*;
 
 import java.lang.reflect.Field;
@@ -59,7 +62,7 @@ public class timeTableController {
 
     final private String hold = "hold";
     final private String pivot ="#";
-
+    final private String timePivot=":";
 
 
     private String errorMessage;
@@ -89,9 +92,6 @@ public class timeTableController {
         newModel.addObject("statuses",statuses);
         return  newModel;
     }
-
-
-
 
     @RequestMapping(value = { "/AddEvent" }, method = RequestMethod.POST)
     public ModelAndView addEvent(ModelAndView model, @ModelAttribute("eventForm") EventForm eventForm) {
@@ -169,7 +169,6 @@ public class timeTableController {
    public ModelAndView editHallEvents( ModelAndView model,@ModelAttribute("hallEventsForm") HallEventsForm halleventsForm,
                                        @ModelAttribute ("eventForm") EventForm eventForm ) {
 
-        //ModelAndView NewModel = new ModelAndView("hallEvents");
         HallEventsForm newEventsForm = new HallEventsForm();
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
         List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
@@ -204,7 +203,6 @@ public class timeTableController {
            model.addObject("hallName",hallName);
            model.addObject("hallid",idHall);
        }
-
        model.addObject("hallEventsForm",newEventsForm);
        model.addObject("halls",halls);
        model.addObject("statuses",statuses);
@@ -245,6 +243,7 @@ public class timeTableController {
             eventForm.setNumber(event.getNumber());
             eventForm.setEstatus (event.getIdStatus());
             eventForm.setComposition(event.getComposition());
+            eventForm.setTime(event.getTime().toString());
 
         newModel.addObject("eventForm", eventForm);
         newModel.addObject("halls",hallResponses);
@@ -257,15 +256,24 @@ public class timeTableController {
     public ModelAndView editEvent(ModelAndView model,    @ModelAttribute("eventForm") EventForm eventForm) {
         Integer idEvent = event.getId();
         Integer idHall = eventForm.getHall_number();
-        Hall hall = hallRepository.getHallById(event.getIdHall());
         String numberEvent = eventForm.getNumber();
         String description = (eventForm.getDescription());
         String composition = (eventForm.getComposition());
         int estatus = eventForm.getEstatus();
         Date date= eventForm.getDate();
 
+        Date time = new Date();
+        String[] hours = (eventForm.getTime().split(timePivot));
+        time.setHours(Integer.parseInt(hours[0]));
+        time.setMinutes(Integer.parseInt(hours[1]));
+
+        String defendant = eventForm.getDefendant();
+        String plaintiff = eventForm.getPlaintiff();
+        String contestation = eventForm.getContestation();
+        String additionalstatus = eventForm.getAdditionalstatus();
+
         if (idEvent !=0   ) {
-            eventRepository.updateEvent(idEvent,numberEvent,description,date,idHall,estatus,composition);
+            eventRepository.updateEvent(idEvent,numberEvent,time,defendant,plaintiff,contestation,description,date,composition,additionalstatus,estatus,idHall);
             return new ModelAndView("redirect:/hallEvents");
         }
         model.addObject("errorMessage", errorMessage);
@@ -560,9 +568,7 @@ public ModelAndView users(Map<String, Object> model){
                     responses.add((T) responsesclass);
             }
         return responses;
-    	 /*for(T t : tList){
-            responses.add(t);
-         }*/
+
     }
     
 
@@ -645,9 +651,20 @@ public ModelAndView users(Map<String, Object> model){
         newEvent.setNumber(eventForm.getNumber());
         newEvent.setIdHall(eventForm.getHall_number());
         newEvent.setDescription(eventForm.getDescription());
-        newEvent.setDate(eventForm.getDate());
         newEvent.setIdStatus(eventForm.getEstatus());
         newEvent.setComposition(eventForm.getComposition());
+        newEvent.setContestation(eventForm.getContestation());
+        newEvent.setDefendant(eventForm.getDefendant());
+        newEvent.setPlaintiff(eventForm.getPlaintiff());
+        newEvent.setAdditionalstatus(eventForm.getAdditionalstatus());
+
+        Date time = eventForm.getDate();
+        String[] hours = (eventForm.getTime().split(timePivot));
+        time.setHours(Integer.parseInt(hours[0]));
+        time.setMinutes(Integer.parseInt(hours[1]));
+        newEvent.setTime(time);
+
+        newEvent.setDate(eventForm.getDate());
         return newEvent;
     }
 
@@ -675,6 +692,15 @@ public ModelAndView users(Map<String, Object> model){
                 response.setColor(statusEvent.getColor());
                 response.setStatus(statusEvent.getStatus());
                 response.setId(event.getId());
+                response.setAdditionalstatus(event.getAdditionalstatus());
+                response.setContestation(event.getContestation());
+                response.setDefendant(event.getDefendant());
+                response.setPlaintiff(event.getPlaintiff());
+
+                Date time =event.getTime();
+
+                response.setTime(event.getTime().toString());
+
                 eventsresponse.add(response);
             }
         return eventsresponse;

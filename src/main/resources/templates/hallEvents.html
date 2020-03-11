@@ -81,11 +81,17 @@
     <table border="1" >
         <tr>
         <th>#</th>
-            <th>Номер справи</th>
+            <th>Номер проведення</th>
             <th>Склад суду </th>
+            <th>Час слухання</th>
+            <th>Позивач</th>
+            <th>Вiдповидач</th>
+            <th>Предмет позиву</th>
             <th>Сторони у справi та предмет спору</th>
             <th>Дата</th>
             <th>Статус</th>
+            <th>Доповнення до статусу</th>
+
             <th style="width: 5%">Видалити</th>
             <th style="width: 5%">Редагувати</th>
         </tr>
@@ -93,10 +99,15 @@
             <td th:utext="${iter.count}" class="numcol_admin">...</td>
             <td th:utext="${event.number}" class="casenumcol_admin"></td>
             <td th:utext="${event.composition}" class="casenumcol_admin">...</td>
+            <td th:utext="${event.time}" class="casenumcol_admin">...</td>
+            <td th:utext="${event.defendant}" class="casenumcol_admin">...</td>
+            <td th:utext="${event.plaintiff}" class="casenumcol_admin">...</td>
+            <td th:utext="${event.contestation}" class="casenumcol_admin">...</td>
             <td th:utext="${event.description}" class="casedesccol_admin">...</td>
-            <td th:utext="${event.date.toLocaleString()}" class="casedatecol_admin">...</td>
-            <!--<td th:utext="${event.date}" class="casedatecol_admin">...</td>-->
             <td th:utext="${event.status}" class="casestatuscol_admin">...</td>
+            <td th:utext="${event.date.toLocaleString()}" class="casedatecol_admin">...</td>
+            <td th:utext="${event.additionalstatus}" class="casestatuscol_admin">...</td>
+
             <td ><a th:href="@{'/delete/{id}'(id=${event.id})}" onclick="return confirm('Ви дiйсно хочите видалити засiдання ?')" class="casedeletecol_admin">
                 <button>Видалити</button></a></td>
             <td ><a th:href="@{'/editEvent/{id}'(id=${event.id})}" class="caseeditcol_admin"><button>Редагувати</button></a></td>
@@ -111,20 +122,36 @@
                     <input required type="text" th:field="*{composition}" value=0/>
                 </td>
                 <td>
-                    <input required type="text" th:field="*{Description}" value=0/>
+                    <input required type="time" th:field="*{time}" value=0/>
                 </td>
                 <td>
-                    <input required type="date" th:field="*{date}" value=0 />
+                    <input required type="text" th:field="*{defendant}" value=0/>
                 </td>
-                <td><br/> <select  th:field="*{Hall_number}">
-                     <option  th:each ="hall : ${halls}" th:value="${hall.id}"><h2 th:utext="${hall.name}"></h2></option>
-                </select>
+                <td>
+                    <input required type="text" th:field="*{plaintiff}" value=0/>
+                </td>
+                <td>
+                    <input required type="text" th:field="*{contestation}" value=0/>
+                </td>
+                <td>
+                    <input required type="text" th:field="*{Description}" value=0/>
                 </td>
                 <td>
                     <select  th:field="*{estatus}">
                         <option  th:each ="state : ${statuses}" th:value="${state.id}"><h2 th:utext="${state.status}"></h2></option>
                     </select>
                 </td>
+                <td>
+                    <input required type="date" th:field="*{date}" value=0 />
+                </td>
+                <td>
+                    <input required type="text" th:field="*{additionalstatus}" value=0/>
+                </td>
+                <td><br/> <select  th:field="*{Hall_number}">
+                     <option  th:each ="hall : ${halls}" th:value="${hall.id}"><h2 th:utext="${hall.name}"></h2></option>
+                </select>
+                </td>
+
                 <td><input type="submit" value="Додати" /></td>
             </form>
         </tr>
