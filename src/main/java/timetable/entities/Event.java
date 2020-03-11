@@ -1,5 +1,7 @@
 package timetable.entities;
 
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.TermVector;
@@ -8,8 +10,8 @@ import timetable.utils.TimeUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.sql.Time;
+import java.util.Calendar;
 import java.util.Date;
 
 @Entity
@@ -23,17 +25,35 @@ public class Event implements Serializable {
 
     @Column(name = "number")
     @Field(termVector = TermVector.YES)
-    String number;
+    String number; // номер справи
 
-    @Column(name = "description")
+    @Column(name="defendant")
+    String defendant;    // позивач
+
+    @Column(name="plaintiff")
+    String plaintiff;    // видповидач
+
+    @Column(name="contestation")
+    String contestation; // предмет позиву
+
+    @Column(name = "description")// сторони у справи та предмет спору
     String description;
 
     @Column(name = "date" )
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
     Date date;
 
+    @Column(name="time")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm:ss")
+    @Temporal(TemporalType.TIME)
+    Date time;
+
     @Column(name = "composition" )
-    String composition;
+    String composition;  // склад суду
+
+    @Column(name="additionalstatus")
+    String additionalstatus;  // доповнення до статусу
 
     private int  idStatus;
 
@@ -42,14 +62,59 @@ public class Event implements Serializable {
     public Event() {
     }
 
-    public Event(int id, String number, String description, Date date, int idHall,int estatus,String composition)   {
+    public Event(int id, String number, Date time, String defendant, String plaintiff, String contestation, String description, Date date, String composition, String additionalstatus, int idStatus, int idHall) {
         this.id = id;
         this.number = number;
+        this.time = time;
+        this.defendant = defendant;
+        this.plaintiff = plaintiff;
+        this.contestation = contestation;
         this.description = description;
         this.date = date;
-        this.idHall = idHall;
-        this.idStatus = estatus;
         this.composition = composition;
+        this.additionalstatus = additionalstatus;
+        this.idStatus = idStatus;
+        this.idHall = idHall;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public String getDefendant() {
+        return defendant;
+    }
+
+    public void setDefendant(String defendant) {
+        this.defendant = defendant;
+    }
+
+    public String getPlaintiff() {
+        return plaintiff;
+    }
+
+    public void setPlaintiff(String plaintiff) {
+        this.plaintiff = plaintiff;
+    }
+
+    public String getContestation() {
+        return contestation;
+    }
+
+    public void setContestation(String contestation) {
+        this.contestation = contestation;
+    }
+
+    public String getAdditionalstatus() {
+        return additionalstatus;
+    }
+
+    public void setAdditionalstatus(String additionalstatus) {
+        this.additionalstatus = additionalstatus;
     }
 
     public String getComposition() {
@@ -90,12 +155,7 @@ public class Event implements Serializable {
     }
 
     public void setDate(Date date) {
-    	
-    //	LocalDateTime ldt = TimeUtils.convertToLocalDateTimeViaInstant(date);
-    //	Date newDate = Date.from(ldt.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
-    	
-    	
-    	this.date = TimeUtils.getTimeZoneDate(date);
+       	this.date = TimeUtils.getTimeZoneDate(date);
     }
 
     public int getIdHall() {
@@ -113,32 +173,5 @@ public class Event implements Serializable {
     public void setIdStatus(int idStatus) {
         this.idStatus = idStatus;
     }
-/*
-	public boolean isShowComposition() {
-		return showComposition;
-	}
-
-	public void setShowComposition(boolean showComposition) {
-		this.showComposition = showComposition;
-	}
-
-	public boolean isShowRow() {
-		return showRow;
-	}
-
-	public void setShowRow(boolean showRow) {
-		this.showRow = showRow;
-	}
-
-	public int getOrderNum() {
-		return orderNum;
-	}
-
-	public void setOrderNum(int orderNum) {
-		this.orderNum = orderNum;
-	}
-    
-  */  
-    
     
 }

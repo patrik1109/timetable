@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class EventfieldsForm {
     Boolean number;       // номер справи
     Boolean composition;  // склад суду
-    Boolean date;         // час слухання
+    Boolean time;         // час слухання
     Boolean defendant;    // позивач
     Boolean plaintiff;    // видповидач
     Boolean contestation; // предмет позиву
@@ -14,10 +14,10 @@ public class EventfieldsForm {
     Boolean additionalStatus;  // доповнення до статусу
     Integer idHall; //
 
-    public EventfieldsForm(Boolean number, Boolean composition, Boolean date, Boolean defendant, Boolean plaintiff, Boolean contestation, Boolean description, Boolean idStatus, Boolean additionalStatus, Integer idHall) {
+    public EventfieldsForm(Boolean number, Boolean composition, Boolean time, Boolean defendant, Boolean plaintiff, Boolean contestation, Boolean description, Boolean idStatus, Boolean additionalStatus, Integer idHall) {
         this.number = number;
         this.composition = composition;
-        this.date = date;
+        this.time = time;
         this.defendant = defendant;
         this.plaintiff = plaintiff;
         this.contestation = contestation;
@@ -55,12 +55,12 @@ public class EventfieldsForm {
         this.composition = composition;
     }
 
-    public Boolean getDate() {
-        return date;
+    public Boolean getTime() {
+        return time;
     }
 
-    public void setDate(Boolean date) {
-        this.date = date;
+    public void setTime(Boolean time) {
+        this.time = time;
     }
 
     public Boolean getDefendant() {
