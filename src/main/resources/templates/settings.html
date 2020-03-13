@@ -17,7 +17,7 @@
     {
         padding:10px;
     }
-    #UpDownLoadDB
+    .UpDownLoadDB
     {
         border: 1px solid #ddd;
         position: fixed; top: 25%; left: 60%;
@@ -129,7 +129,7 @@
                 <th> Колір тексту</th>
                 <th> Шрифт </th>
                 <th> Висота шрифту </th>
-                <th> Колір підложки</th>
+
             </tr>
             <tr >
                 <td  th:utext="*{parameter}"   ></td>
@@ -145,7 +145,7 @@
                     </select>
                 </td>
                 <td> <input type="number"  th:field="*{textsize}" th:value="${textsize}"> </td>
-                <td> <input type="color" th:field="*{textbackground}" th:value="${textbackground}">
+
                 </td>
             </tr>
 
@@ -157,15 +157,54 @@
 </div>
 <div>
 
-<table id="UpDownLoadDB" class="settingTable">
-    <tr>
-        <th><button> Вигрузити БД </button>  </th>
-        <th><button> Загрузити БД </button> </th>
-    </tr>
-    <tr >
-        <td style="text-align:center"> CSV </td>
-        <td> </td>
-    </tr>
+
+    <form class="UpDownLoadDB" th:action="@{/settings}" th:object="${hidefieldsForm}" method="POST">
+        <table class="settingTable">
+            <select  th:field="*{idHall}">
+                <option  th:each ="hall : ${hallList}" th:value="${hall.id}"><h2 th:utext="${hall.name}"></h2></option>
+            </select>
+
+            <tr>
+            <td>Час слухання</td>
+            <td><input type="checkbox" unchecked th:field="*{time}"></td>
+            <td>Сховати\Показати</td>
+        </tr>
+        <tr>
+            <td>Позивач</td>
+            <td><input type="checkbox" unchecked th:field="*{defendant}"></td>
+            <td>Сховати\Показати</td>
+        </tr>
+        <tr>
+            <td>Вiдповiдач</td>
+            <td><input type="checkbox" unchecked th:field="*{plaintiff}"></td>
+            <td>Сховати\Показати</td>
+        </tr>
+            <tr>
+                <td>Предмет позиву</td>
+                <td><input type="checkbox" unchecked th:field="*{contestation}"></td>
+                <td>Сховати\Показати</td>
+            </tr>
+            <tr>
+                <td>Скдад суду</td>
+                <td><input type="checkbox" unchecked th:field="*{composition}"></td>
+                <td>Сховати\Показати</td>
+            </tr>
+            <tr>
+                <td>Сторони у справi та предмет спору</td>
+                <td><input type="checkbox" unchecked th:field="*{description}"></td>
+                <td>Сховати\Показати</td>
+            </tr>
+            <tr>
+                <td>Доповнення до статусу</td>
+                <td><input type="checkbox" unchecked th:field="*{additionalStatus}"></td>
+                <td>Сховати\Показати</td>
+            </tr>
+        </table>
+        <input type="submit" value="Зберегти" />
+    </form>
+    </br>
+
+
 </table>
 
 

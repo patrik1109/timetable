@@ -1,16 +1,67 @@
 package timetable.responses;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.sql.Time;
 import java.util.Date;
 
 public class EventResponse {
 
     public int id;
-    public String number;
-    public String description;
+    public String number;           // номер справи
+    public String description;      // сторони у справи та предмет спору
     public Date date;
     public int idHall;
     public String status;
     public String color;
+    public String composition;      // склад суду
+
+    public String time;               // час слухання
+    public String defendant;        // позивач
+    public String plaintiff;        // видповидач
+    public String contestation;      // предмет позиву
+    public String additionalstatus;   // доповнення до статусу
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getDefendant() {
+        return defendant;
+    }
+
+    public void setDefendant(String defendant) {
+        this.defendant = defendant;
+    }
+
+    public String getPlaintiff() {
+        return plaintiff;
+    }
+
+    public void setPlaintiff(String plaintiff) {
+        this.plaintiff = plaintiff;
+    }
+
+    public String getContestation() {
+        return contestation;
+    }
+
+    public void setContestation(String contestation) {
+        this.contestation = contestation;
+    }
+
+    public String getAdditionalstatus() {
+        return additionalstatus;
+    }
+
+    public void setAdditionalstatus(String additionalstatus) {
+        this.additionalstatus = additionalstatus;
+    }
 
     public String getComposition() {
         return composition;
@@ -20,7 +71,7 @@ public class EventResponse {
         this.composition = composition;
     }
 
-    public String composition;
+
 
     public String getColor() {
         return color;
@@ -37,10 +88,6 @@ public class EventResponse {
     public void setStatus(String status) {
         this.status = status;
     }
-
-
-
-
 
     public String getNumber() {
         return number;
@@ -74,8 +121,7 @@ public class EventResponse {
         this.idHall = idHall;
     }
 
-	public EventResponse() {
-    }
+	public EventResponse() { }
 
     public int getId() {
         return id;
@@ -84,16 +130,5 @@ public class EventResponse {
     public void setId(int id) {
         this.id = id;
     }
-
-    public EventResponse(String number, String description, Date date, int idHall, int id ,int idStatus,String composition) {
-        this.number = number;
-        this.description = description;
-        this.date = date;
-        this.idHall = idHall;
-        this.id = id;
-        this.composition = composition;
-
-    }
-
 
 }

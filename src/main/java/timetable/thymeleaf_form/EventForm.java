@@ -1,25 +1,78 @@
 package timetable.thymeleaf_form;
 
+
 import org.springframework.format.annotation.DateTimeFormat;
 
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.sql.Time;
 import java.util.Date;
 
 public class EventForm {
 
-    public String number;
-    public Boolean holdnumber;
-    public String description;
-    public Boolean holddescription;
-    public String composition;
-    public Boolean holdcomposition;
+    public String number; // номер справи
+
+    public String description; // сторони у справи та предмет спору
+
+    public String composition;   // склад суду
+
+    @DateTimeFormat(pattern = "HH:SS")
+    public String time;  // час слухання
+
+    public String defendant;  // позивач
+
+    public String plaintiff;  // видповидач
+
+    public String contestation;  // предмет позиву
+
+    public String additionalstatus;   // доповнення до статусу
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date date;
-    public Boolean holddate;
+
     public int Hall_number;
     public int estatus;
-    public Boolean holdestatus;
 
+    public String getAdditionalstatus() {
+        return additionalstatus;
+    }
 
+    public void setAdditionalstatus(String additionalstatus) {
+        this.additionalstatus = additionalstatus;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getDefendant() {
+        return defendant;
+    }
+
+    public void setDefendant(String defendant) {
+        this.defendant = defendant;
+    }
+
+    public String getPlaintiff() {
+        return plaintiff;
+    }
+
+    public void setPlaintiff(String plaintiff) {
+        this.plaintiff = plaintiff;
+    }
+
+    public String getContestation() {
+        return contestation;
+    }
+
+    public void setContestation(String contestation) {
+        this.contestation = contestation;
+    }
 
     public String getNumber() {
         return number;
@@ -27,14 +80,6 @@ public class EventForm {
 
     public void setNumber(String number) {
         this.number = number;
-    }
-
-    public Boolean getHoldnumber() {
-        return holdnumber;
-    }
-
-    public void setHoldnumber(Boolean holdnumber) {
-        this.holdnumber = holdnumber;
     }
 
     public String getDescription() {
@@ -45,14 +90,6 @@ public class EventForm {
         this.description = description;
     }
 
-    public Boolean getHolddescription() {
-        return holddescription;
-    }
-
-    public void setHolddescription(Boolean holddescription) {
-        this.holddescription = holddescription;
-    }
-
     public String getComposition() {
         return composition;
     }
@@ -61,28 +98,12 @@ public class EventForm {
         this.composition = composition;
     }
 
-    public Boolean getHoldcomposition() {
-        return holdcomposition;
-    }
-
-    public void setHoldcomposition(Boolean holdcomposition) {
-        this.holdcomposition = holdcomposition;
-    }
-
     public Date getDate() {
         return date;
     }
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public Boolean getHolddate() {
-        return holddate;
-    }
-
-    public void setHolddate(Boolean holddate) {
-        this.holddate = holddate;
     }
 
     public int getHall_number() {
@@ -101,11 +122,4 @@ public class EventForm {
         this.estatus = estatus;
     }
 
-    public Boolean getHoldestatus() {
-        return holdestatus;
-    }
-
-    public void setHoldestatus(Boolean holdestatus) {
-        this.holdestatus = holdestatus;
-    }
 }

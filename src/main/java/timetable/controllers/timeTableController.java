@@ -1,6 +1,8 @@
 package timetable.controllers;
 
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,11 +26,12 @@ import timetable.thymeleaf_form.HallEventsForm;
 import timetable.thymeleaf_form.HallForm;
 import timetable.thymeleaf_form.UserForm;
 import timetable.utils.DummyContentUtil;
-import timetable.utils.SecurityUtils;
+
+import java.sql.Time;
+import java.util.*;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
-import java.util.*;
 
 @RestController
 public class timeTableController {
@@ -59,7 +62,7 @@ public class timeTableController {
 
     final private String hold = "hold";
     final private String pivot ="#";
-
+    final private String timePivot=":";
 
 
     private String errorMessage;
@@ -74,8 +77,9 @@ public class timeTableController {
     public ModelAndView addEvent(ModelAndView model){
         ModelAndView newModel = new ModelAndView("AddEvent");
         List<HallResponse> hallResponses = fillHallResponse(hallRepository.findAll());
-        List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
 
+
+        List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
         EventForm eventForm = new EventForm();
         Date date = new Date();
         Calendar cal = Calendar.getInstance();
@@ -88,9 +92,6 @@ public class timeTableController {
         newModel.addObject("statuses",statuses);
         return  newModel;
     }
-
-
-
 
     @RequestMapping(value = { "/AddEvent" }, method = RequestMethod.POST)
     public ModelAndView addEvent(ModelAndView model, @ModelAttribute("eventForm") EventForm eventForm) {
@@ -207,7 +208,6 @@ public class timeTableController {
    public ModelAndView editHallEvents( ModelAndView model,@ModelAttribute("hallEventsForm") HallEventsForm halleventsForm,
                                        @ModelAttribute ("eventForm") EventForm eventForm ) {
 
-        //ModelAndView NewModel = new ModelAndView("hallEvents");
         HallEventsForm newEventsForm = new HallEventsForm();
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
         List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
@@ -220,10 +220,6 @@ public class timeTableController {
            Hall hall =  hallRepository.getHallById(id);
            String hallName = hall.getName();
            Integer hallid = id;
-           String[] hiddenColomns = hall.getHiddencolloms().split(pivot);
-
-          // neweventForm = sethideFields(hiddenColomns,neweventForm);
-           neweventForm = sethideFields(hiddenColomns,neweventForm);
 
            model.addObject("eventForm",neweventForm);
            model.addObject("events",eventsresponse);
@@ -236,12 +232,8 @@ public class timeTableController {
            Hall hall = hallRepository.getHallById(idHall);
            String hallName = hall.getName();
            Event newEvent =  fillEventfromEventForm(eventForm);
-           String hiddenColomns =  reflectionfill(eventForm);
-           hall.setHiddencolloms(hiddenColomns);
-
            hallRepository.saveHall(hall);
            eventRepository.saveEvent(newEvent);
-
            List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHall(date, idHall));
            halleventsForm.setDateStart(date);
            halleventsForm.setId(idHall);
@@ -250,7 +242,6 @@ public class timeTableController {
            model.addObject("hallName",hallName);
            model.addObject("hallid",idHall);
        }
-
        model.addObject("hallEventsForm",newEventsForm);
        model.addObject("halls",halls);
        model.addObject("statuses",statuses);
@@ -291,6 +282,7 @@ public class timeTableController {
             eventForm.setNumber(event.getNumber());
             eventForm.setEstatus (event.getIdStatus());
             eventForm.setComposition(event.getComposition());
+            eventForm.setTime(event.getTime().toString());
 
         newModel.addObject("eventForm", eventForm);
         newModel.addObject("halls",hallResponses);
@@ -303,17 +295,24 @@ public class timeTableController {
     public ModelAndView editEvent(ModelAndView model,    @ModelAttribute("eventForm") EventForm eventForm) {
         Integer idEvent = event.getId();
         Integer idHall = eventForm.getHall_number();
-        Hall hall = hallRepository.getHallById(event.getIdHall());
         String numberEvent = eventForm.getNumber();
         String description = (eventForm.getDescription());
         String composition = (eventForm.getComposition());
         int estatus = eventForm.getEstatus();
         Date date= eventForm.getDate();
 
+        Date time = new Date();
+        String[] hours = (eventForm.getTime().split(timePivot));
+        time.setHours(Integer.parseInt(hours[0]));
+        time.setMinutes(Integer.parseInt(hours[1]));
+
+        String defendant = eventForm.getDefendant();
+        String plaintiff = eventForm.getPlaintiff();
+        String contestation = eventForm.getContestation();
+        String additionalstatus = eventForm.getAdditionalstatus();
+
         if (idEvent !=0   ) {
-            String hiddenColomns =  reflectionfill(eventForm);
-            hall.setHiddencolloms(hiddenColomns);
-            eventRepository.updateEvent(idEvent,numberEvent,description,date,idHall,estatus,composition);
+            eventRepository.updateEvent(idEvent,numberEvent,time,defendant,plaintiff,contestation,description,date,composition,additionalstatus,estatus,idHall);
             return new ModelAndView("redirect:/hallEvents");
         }
         model.addObject("errorMessage", errorMessage);
@@ -344,6 +343,8 @@ public class timeTableController {
     @RequestMapping(value = { "/settings" }, method = RequestMethod.GET)
     public ModelAndView settings(Map<String, Object> model){
         parameterList = parameterRepository.findAll();
+        List<Hall> hallList = hallRepository.findAll();
+
         List<ParameterResponse> parameters = fillParameterResponce(parameterList);
         ModelAndView NewModel = new ModelAndView("settings");
 
@@ -354,48 +355,46 @@ public class timeTableController {
         SettingForm settingFormHall = fillSettingForm(formHall,responseSettingHall);
         SettingForm settingFormTableTitle = fillSettingForm(formTabletitle,responseSettingTable);
         SettingForm settingText = fillSettingForm(formText,responseSettingText);
+        EventfieldsForm hidefieldsForm = new EventfieldsForm();
 
         NewModel.addObject("settingFormHall",settingFormHall);
         NewModel.addObject("settingFormTableTitle",settingFormTableTitle);
         NewModel.addObject("settingText",settingText);
-
+        NewModel.addObject("hidefieldsForm",hidefieldsForm);
+        NewModel.addObject("hallList",hallList);
         return  NewModel;
     }
     @Transactional
     @RequestMapping(value = { "/settings" }, method = RequestMethod.POST)
-    public ModelAndView settings(ModelAndView model, @ModelAttribute("settingForm") SettingForm settingForm) {
+    public ModelAndView settings(ModelAndView model, @ModelAttribute("settingForm") SettingForm settingForm,
+                                 @ModelAttribute("hidefieldsForm")EventfieldsForm hidefields) {
 
         Parameter parameter = new Parameter();
 
-           if(settingForm.getFormname().equals(formHall)) {
-               parameter = getFromForm(settingForm);
-               parameterRepository.saveParameter(parameter);
-             }
-           else if (settingForm.getFormname().equals(formTabletitle)) {
-               parameter = getFromForm(settingForm);
-               parameterRepository.saveParameter(parameter);
-           }
-           else if (settingForm.getFormname().equals(formText)) {
-               parameter = getFromForm(settingForm);
-               parameterRepository.saveParameter(parameter);
+            if(settingForm.getFormname() != null) {
+                if (settingForm.getFormname().equals(formHall)) {
+                    parameter = getFromForm(settingForm);
+                    parameterRepository.saveParameter(parameter);
+                } else if (settingForm.getFormname().equals(formTabletitle)) {
+                    parameter = getFromForm(settingForm);
+                    parameterRepository.saveParameter(parameter);
+                } else if (settingForm.getFormname().equals(formText)) {
+                    parameter = getFromForm(settingForm);
+                    parameterRepository.saveParameter(parameter);
+                }
+            }
+
+           else if(hidefields.getIdHall()!=null) {
+              Hall hall = hallRepository.getHallById(hidefields.getIdHall());
+              String fields = hidenfieldsfill(hidefields);
+              hall.setHiddencolloms(fields);
+              hallRepository.saveHall(hall);
            }
 
 
         return new ModelAndView("redirect:/settings");
 
     }
-
-    private Parameter getFromForm(SettingForm settingForm) {
-        Parameter newparameter = new Parameter();
-        newparameter.setTextbackground(settingForm.getTextbackground());
-        newparameter.setTextcolor(settingForm.getTextcolor());
-        newparameter.setTextfont(settingForm.getTextfont());
-        newparameter.setTextsize(settingForm.getTextsize());
-        newparameter.setParameter(settingForm.getParameter());
-        newparameter.setId(settingForm.getId());
-        return  newparameter;
-    }
-
 
     @Transactional
     @RequestMapping(value = { "/createDummies" }, method = RequestMethod.GET )
@@ -572,17 +571,46 @@ public ModelAndView users(Map<String, Object> model){
         return  formatForDateNow.format(dateNow)+"<br>"+formatForTimeNow.format(dateNow);
     }
 
-    private <T> List<T> fillResponse(List<T> tList)
+    private  List<?> fillRes(Class clazz,List<?>tlist){
+       return fillResponse(clazz,tlist);
+    }
+
+    private <T> List<T> fillResponse(Class claz,List<T> tList)
     {
+    	/*List<T> responses = new LinkedList<>();
+        Class responsesclass = responses.getClass();*/
+
     	List<T> responses = new LinkedList<>();
-        for(T t : tList){
-            
-            responses.add(t);
-         }
+        Class responsesclass = claz.getClass();
+
+    	Class clazz = tList.getClass();
+    	Field[] fields = clazz.getDeclaredFields();
+
+
+        for(Field field:fields){
+            try
+                {
+                    responsesclass.newInstance();
+                }
+                catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+                catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                Field[] responsefields = responsesclass.getDeclaredFields();
+                    for(Field responsefield:responsefields){
+                        if(field.getName().equals(responsefield.getName())){
+                            responsefield = field;
+                        }
+                    }
+                    responses.add((T) responsesclass);
+            }
         return responses;
-    	
+
     }
     
+
     private List<StatusResponse> fillStatusResponse(List<StatusEvent> statusEventList) {
         List<StatusResponse> responses = new LinkedList<>();
             for(StatusEvent statusEvent : statusEventList){
@@ -594,8 +622,10 @@ public ModelAndView users(Map<String, Object> model){
              }
             return responses;
     }
-    private  List<HallResponse> fillHallResponse (List<Hall> hallList){
 
+
+
+    private  List<HallResponse> fillHallResponse (List<Hall> hallList){
         List<HallResponse> halls = new LinkedList<>();
             for (Hall hall: hallList) {
                 HallResponse hallResponse = new HallResponse();
@@ -635,25 +665,23 @@ public ModelAndView users(Map<String, Object> model){
         return parameters;
     }
 
-    private String  reflectionfill(EventForm eventForm){
+    private String hidenfieldsfill(Object eventForm){
         Field[] fields = eventForm.getClass().getDeclaredFields();
         StringBuffer buffer = new StringBuffer();
-           try {
-               for (Field field : fields) {
-                   field.setAccessible(true);
-                   String name = field.getName();
-                   if(name.contains(hold)){
-                        Boolean value = (Boolean) field.get(eventForm);
-                        if(value){
-                            buffer.append(name.substring(hold.length(),name.length()));
-                            buffer.append(pivot);
-                        }
-                   }
-               }
-           }
-           catch (IllegalAccessException  e){
-               System.out.println(e.getStackTrace());
-           }
+        try {
+            for (Field field : fields) {
+                field.setAccessible(true);
+                String name = field.getName();
+                Boolean value = (Boolean) field.get(eventForm);
+                      if (value != null && value) {
+                             buffer.append(name);
+                             buffer.append(pivot);
+                     }
+            }
+        }
+        catch (Exception  e){
+            System.out.println(e.getStackTrace());
+        }
         return buffer.toString();
     }
 
@@ -662,9 +690,20 @@ public ModelAndView users(Map<String, Object> model){
         newEvent.setNumber(eventForm.getNumber());
         newEvent.setIdHall(eventForm.getHall_number());
         newEvent.setDescription(eventForm.getDescription());
-        newEvent.setDate(eventForm.getDate());
         newEvent.setIdStatus(eventForm.getEstatus());
         newEvent.setComposition(eventForm.getComposition());
+        newEvent.setContestation(eventForm.getContestation());
+        newEvent.setDefendant(eventForm.getDefendant());
+        newEvent.setPlaintiff(eventForm.getPlaintiff());
+        newEvent.setAdditionalstatus(eventForm.getAdditionalstatus());
+
+        Date time = eventForm.getDate();
+        String[] hours = (eventForm.getTime().split(timePivot));
+        time.setHours(Integer.parseInt(hours[0]));
+        time.setMinutes(Integer.parseInt(hours[1]));
+        newEvent.setTime(time);
+
+        newEvent.setDate(eventForm.getDate());
         return newEvent;
     }
 
@@ -692,6 +731,15 @@ public ModelAndView users(Map<String, Object> model){
                 response.setColor(statusEvent.getColor());
                 response.setStatus(statusEvent.getStatus());
                 response.setId(event.getId());
+                response.setAdditionalstatus(event.getAdditionalstatus());
+                response.setContestation(event.getContestation());
+                response.setDefendant(event.getDefendant());
+                response.setPlaintiff(event.getPlaintiff());
+
+                Date time =event.getTime();
+
+                response.setTime(event.getTime().toString());
+
                 eventsresponse.add(response);
             }
         return eventsresponse;
@@ -718,29 +766,7 @@ public ModelAndView users(Map<String, Object> model){
         return neweventForm;
     }
 
-    /*private EventForm sethideFields(String[] hiddenColomns, EventForm neweventForm) {
-        Field[] fields = neweventForm.getClass().getDeclaredFields();
 
-        for (String str: hiddenColomns) {
-            if(str.equals("number")){
-                neweventForm.setHoldnumber(true);
-            }
-            if(str.equals("description")){
-                neweventForm.setHolddescription(true);
-            }
-            if(str.equals("composition")){
-                neweventForm.setHoldcomposition(true);
-            }
-            if(str.equals("date")){
-                neweventForm.setHolddate(true);
-            }
-            if(str.equals("estatus")){
-                neweventForm.setHoldestatus(true);
-            }
-        }
-        return neweventForm;
-    }
-*/
     private static SettingForm fillSettingForm(String formName, ParameterResponse response){
         SettingForm newForm = new SettingForm();
         newForm.setFormname(formName);
@@ -753,6 +779,16 @@ public ModelAndView users(Map<String, Object> model){
         return newForm;
     }
 
+    private Parameter getFromForm(SettingForm settingForm) {
+        Parameter newparameter = new Parameter();
+        newparameter.setTextbackground(settingForm.getTextbackground());
+        newparameter.setTextcolor(settingForm.getTextcolor());
+        newparameter.setTextfont(settingForm.getTextfont());
+        newparameter.setTextsize(settingForm.getTextsize());
+        newparameter.setParameter(settingForm.getParameter());
+        newparameter.setId(settingForm.getId());
+        return  newparameter;
+    }
 
 
 

@@ -1,6 +1,7 @@
 package timetable.service;
 
 import org.apache.lucene.search.Query;
+
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
@@ -12,6 +13,8 @@ import timetable.repository.EventRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import java.sql.Time;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,8 +49,8 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public void updateEvent(int id, String number, String description, Date date, int idHall, int estatus,String composition) {
-        Event newEvent = new Event(id,number,description,date,idHall,estatus,composition);
+    public void updateEvent(int id, String number, Date time, String defendant, String plaintiff, String contestation, String description, Date date, String composition, String additionalstatus, int idStatus, int idHall) {
+        Event newEvent = new Event(id,number,time,defendant,plaintiff,contestation,description,date,composition,additionalstatus,idStatus,idHall);
         repository.save(newEvent);
     }
 

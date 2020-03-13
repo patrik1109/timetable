@@ -14,27 +14,27 @@
 <form th:action="@{/editEvent}" th:object="${eventForm}" id="myform" method="POST">
 
     Номер справи:
-    <input type="checkbox" unchecked th:field="*{holdnumber}"><label>Сховати</label><br/>
+
     <input required type="text" th:field="*{Number}">
     <br/>
     <br/>
     Зміст справи:
-    <input type="checkbox" checked th:field="*{holddescription}"><label>Сховати</label><br/>
+
     <textarea  rows = "15" cols = "45" th:field = "*{Description}" name="lines" form = "myform" >... </textarea>
     <br/>
     <br/>
     Cклад суду:
-    <input type="checkbox" checked th:field="*{holdcomposition}"><label>Сховати</label><br/>
+
     <textarea  rows = "15" cols = "45" th:field = "*{Composition}" name="lines" form = "myform" >... </textarea>
     <br/>
     <br/>
     Дата розгляду справи:
-    <input type="checkbox" checked th:field="*{holddate}"><label>Сховати</label><br/>
+
     <input required type="date" th:field="*{date}" />
     <br/>
     <br/>
     Статус справи:
-    <input type="checkbox" checked th:field="*{holdestatus}"><label>Сховати</label><br/>
+
     <select  th:field="*{estatus}">
         <option  th:each ="status : ${statuses}" th:value="${status.id}"><h2 th:utext="${status.status}"></h2></option>
     </select>
@@ -45,6 +45,10 @@
             <option  th:each ="hall : ${halls}" th:value="${hall.id}"><h2 th:utext="${hall.name}"></h2></option>
         </select>
     <br/>
+    <br/>
+    Час засiдання
+        <input required type="time" th:field="*{time}" value=0/>
+
     <br/>
     <input type="submit" value="Зберегти" />
 </form>
