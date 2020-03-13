@@ -146,6 +146,45 @@ public class timeTableController {
         return NewModel;
     }
 
+    @Transactional
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @RequestMapping(value = { "/refreshTable/{id}" }, method = RequestMethod.GET)
+    public ModelAndView refreshTable(@PathVariable Integer id) {
+        ModelAndView NewModel = new ModelAndView("refreshTable");
+        Hall hall =hallRepository.getHallById(id);
+        String  hallName = hall.getName();
+        String[] hiddenColomns =  hall.getHiddencolloms().split(pivot);
+        List<ParameterResponse> listparameter =fillParameterResponce(parameterRepository.findAll());
+        Date date =  new Date();
+        List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHall(date,id) );
+        NewModel.addObject("events",eventsresponse);
+        NewModel.addObject("hallName",hallName);
+        NewModel.addObject("dateTime",date);
+        NewModel.addObject("hiddenColomns",hiddenColomns);
+        if(listparameter != null && !listparameter.isEmpty() && listparameter.size()<4 ) {
+            
+        	ParameterResponse parameterHall = listparameter.get(0);
+        	ParameterResponse parameterTableTitle =  listparameter.get(1);
+        	ParameterResponse parameterText = listparameter.get(2);
+
+        	NewModel.addObject("parameterHall",parameterHall);
+        	NewModel.addObject("parameterTableTitle",parameterTableTitle );
+        	NewModel.addObject("parameterText",parameterText);
+
+        }
+        else {
+            ParameterResponse parameterHall = fillParameterResponcebyDefault();
+            ParameterResponse parameterTableTitle =  fillParameterResponcebyDefault();
+            ParameterResponse parameterText = fillParameterResponcebyDefault();
+
+            NewModel.addObject("parameterHall",parameterHall);
+            NewModel.addObject("parameterTableTitle",parameterTableTitle );
+            NewModel.addObject("parameterText",parameterText);
+
+        }
+        return NewModel;
+    }
+    
 
     @Transactional
     @DateTimeFormat(pattern = "yyyy-MM-dd")
