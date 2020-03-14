@@ -12,6 +12,7 @@ public class EventfieldsForm {
     Boolean description;  // сторони у справи та предмет спору
     Boolean idStatus;     // статус справи
     Boolean additionalStatus;  // доповнення до статусу
+
     Integer idHall; //
 
     public EventfieldsForm(Boolean number, Boolean composition, Boolean time, Boolean defendant, Boolean plaintiff, Boolean contestation, Boolean description, Boolean idStatus, Boolean additionalStatus, Integer idHall) {
