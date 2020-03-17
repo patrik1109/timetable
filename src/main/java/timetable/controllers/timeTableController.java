@@ -714,7 +714,9 @@ public ModelAndView users(Map<String, Object> model){
                 EventResponse response = new EventResponse();
                 StatusEvent statusEvent = statusEventRepository.getStatusEventById(event.getIdStatus());
                 response.setIdHall(event.getIdHall());
-                response.setDate(event.getDate());
+                String date = event.getDate().toString();
+                response.setDate(event.getDate().toString());
+
                 response.setDescription(event.getDescription());
                 response.setComposition(event.getComposition());
                 response.setNumber(event.getNumber());
@@ -725,7 +727,6 @@ public ModelAndView users(Map<String, Object> model){
                 response.setContestation(event.getContestation());
                 response.setDefendant(event.getDefendant());
                 response.setPlaintiff(event.getPlaintiff());
-                Date time =event.getTime();
                 response.setTime(event.getTime().toString());
                 eventsresponse.add(response);
             }
