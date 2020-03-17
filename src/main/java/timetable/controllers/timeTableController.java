@@ -1,8 +1,5 @@
 package timetable.controllers;
 
-
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -58,6 +55,7 @@ public class timeTableController {
     private volatile Hall hall;
     private volatile User user;
     private volatile List<Parameter> parameterList;
+    private Integer idHallbydefault;
     @Value("${error.message}")
 
     final private String hold = "hold";
@@ -132,13 +130,11 @@ public class timeTableController {
         	NewModel.addObject("parameterHall",parameterHall);
         	NewModel.addObject("parameterTableTitle",parameterTableTitle );
         	NewModel.addObject("parameterText",parameterText);
-
         }
         else {
             ParameterResponse parameterHall = fillParameterResponcebyDefault();
             ParameterResponse parameterTableTitle =  fillParameterResponcebyDefault();
             ParameterResponse parameterText = fillParameterResponcebyDefault();
-
             NewModel.addObject("parameterHall",parameterHall);
             NewModel.addObject("parameterTableTitle",parameterTableTitle );
             NewModel.addObject("parameterText",parameterText);
@@ -166,14 +162,14 @@ public class timeTableController {
 
    @DateTimeFormat(pattern = "yyyy-MM-dd")
    @RequestMapping(value = { "/hallEvents" }, method = RequestMethod.POST)
-   public ModelAndView editHallEvents( ModelAndView model,@ModelAttribute("hallEventsForm") HallEventsForm halleventsForm,
-                                       @ModelAttribute ("eventForm") EventForm eventForm ) {
+   public ModelAndView editHallEvents( ModelAndView model,
+                                       @ModelAttribute ("hallEventsForm") HallEventsForm halleventsForm,
+                                       @ModelAttribute ("eventForm") EventForm eventForm) {
 
         HallEventsForm newEventsForm = new HallEventsForm();
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
         List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
         EventForm neweventForm = new EventForm();
-
        if(halleventsForm.getDateStart()!=null) {
            Date dateStart = halleventsForm.getDateStart();
            int id = halleventsForm.getId();
@@ -292,20 +288,44 @@ public class timeTableController {
         //String userName = SecurityUtils.getUserName();
         List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
         List<UserResponse> users = fillUserResponse(userRepository.findAll());
+        Integer idhall = halls.get(0).getId();
         ModelAndView NewModel = new ModelAndView("index");
         NewModel.addObject("halls",halls);
         NewModel.addObject("users",users);
+        NewModel.addObject("idhall",idhall);
         return  NewModel;
     }
 
    
     
 
-    @RequestMapping(value = { "/settings" }, method = RequestMethod.GET)
-    public ModelAndView settings(Map<String, Object> model){
+    @RequestMapping(value = { "/settings/{idhall}" }, method = RequestMethod.GET)
+    public ModelAndView settings(Map<String, Object> model,@PathVariable Integer idhall){
+        idHallbydefault = idhall;
+        Hall hall = hallRepository.getHallById(idhall);
+        String[] hidencolomns = hall.getHiddencolloms().split(pivot);
+        String hallName = hall.getName();
+        EventfieldsForm hidefieldsForm = new EventfieldsForm();
+
+        Field[] fields = hidefieldsForm.getClass().getDeclaredFields();
+
+        for(String str : hidencolomns){
+            for(Field field :fields){
+                if(field.getName().equals(str)){
+                    try {
+                        field.setAccessible(true);
+                        field.set(hidefieldsForm,true);
+                    }
+                    catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+
         parameterList = parameterRepository.findAll();
         List<Hall> hallList = hallRepository.findAll();
-
         List<ParameterResponse> parameters = fillParameterResponce(parameterList);
         ModelAndView NewModel = new ModelAndView("settings");
 
@@ -316,45 +336,54 @@ public class timeTableController {
         SettingForm settingFormHall = fillSettingForm(formHall,responseSettingHall);
         SettingForm settingFormTableTitle = fillSettingForm(formTabletitle,responseSettingTable);
         SettingForm settingText = fillSettingForm(formText,responseSettingText);
-        EventfieldsForm hidefieldsForm = new EventfieldsForm();
+
+        HallForm hallForm = new HallForm();
+        hallForm.setId(idhall);
+        hallForm.setName(hallName);
 
         NewModel.addObject("settingFormHall",settingFormHall);
         NewModel.addObject("settingFormTableTitle",settingFormTableTitle);
+        NewModel.addObject("hallForm",hallForm);
         NewModel.addObject("settingText",settingText);
         NewModel.addObject("hidefieldsForm",hidefieldsForm);
         NewModel.addObject("hallList",hallList);
+        NewModel.addObject("hallName",hallName);
         return  NewModel;
     }
     @Transactional
     @RequestMapping(value = { "/settings" }, method = RequestMethod.POST)
-    public ModelAndView settings(ModelAndView model, @ModelAttribute("settingForm") SettingForm settingForm,
-                                 @ModelAttribute("hidefieldsForm")EventfieldsForm hidefields) {
+    public ModelAndView settings(ModelAndView model,
+                                 @ModelAttribute("settingForm") SettingForm settingFormHall,
+                                 @ModelAttribute("hidefieldsForm")EventfieldsForm hidefieldsForm,
+                                 @ModelAttribute("hallForm")HallForm hallForm ) {
 
-        Parameter parameter = new Parameter();
 
-            if(settingForm.getFormname() != null) {
-                if (settingForm.getFormname().equals(formHall)) {
-                    parameter = getFromForm(settingForm);
+            if(settingFormHall.getFormname() != null) {
+                Parameter parameter = new Parameter();
+                if (settingFormHall.getFormname().equals(formHall)) {
+                    parameter = getFromForm(settingFormHall);
                     parameterRepository.saveParameter(parameter);
-                } else if (settingForm.getFormname().equals(formTabletitle)) {
-                    parameter = getFromForm(settingForm);
+                } else if (settingFormHall.getFormname().equals(formTabletitle)) {
+                    parameter = getFromForm(settingFormHall);
                     parameterRepository.saveParameter(parameter);
-                } else if (settingForm.getFormname().equals(formText)) {
-                    parameter = getFromForm(settingForm);
+                } else if (settingFormHall.getFormname().equals(formText)) {
+                    parameter = getFromForm(settingFormHall);
                     parameterRepository.saveParameter(parameter);
                 }
             }
-
-           else if(hidefields.getIdHall()!=null) {
-              Hall hall = hallRepository.getHallById(hidefields.getIdHall());
-              String fields = hidenfieldsfill(hidefields);
+            //show hiden colomns in hall
+           else if(hallForm.getId()!=0){
+               return new ModelAndView("redirect:/settings/"+hallForm.getId());
+           }
+           else {
+              //Hall hall = hallRepository.getHallById(hidefieldsForm.getIdHall());
+              Hall hall = hallRepository.getHallById(idHallbydefault);
+              String fields = hidenfieldsfill(hidefieldsForm);
               hall.setHiddencolloms(fields);
               hallRepository.saveHall(hall);
            }
 
-
-        return new ModelAndView("redirect:/settings");
-
+        return new ModelAndView("redirect:/settings/"+idHallbydefault);
     }
 
     @Transactional
@@ -685,7 +714,9 @@ public ModelAndView users(Map<String, Object> model){
                 EventResponse response = new EventResponse();
                 StatusEvent statusEvent = statusEventRepository.getStatusEventById(event.getIdStatus());
                 response.setIdHall(event.getIdHall());
-                response.setDate(event.getDate());
+                String date = event.getDate().toString();
+                response.setDate(event.getDate().toString());
+
                 response.setDescription(event.getDescription());
                 response.setComposition(event.getComposition());
                 response.setNumber(event.getNumber());
@@ -696,11 +727,7 @@ public ModelAndView users(Map<String, Object> model){
                 response.setContestation(event.getContestation());
                 response.setDefendant(event.getDefendant());
                 response.setPlaintiff(event.getPlaintiff());
-
-                Date time =event.getTime();
-
                 response.setTime(event.getTime().toString());
-
                 eventsresponse.add(response);
             }
         return eventsresponse;
