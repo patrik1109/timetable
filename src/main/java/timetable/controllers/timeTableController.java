@@ -596,7 +596,7 @@ public ModelAndView users(Map<String, Object> model){
     public String getTime() {
         Date dateNow = new Date();
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd");
-        SimpleDateFormat formatForTimeNow = new SimpleDateFormat("hh:mm:ss");
+        SimpleDateFormat formatForTimeNow = new SimpleDateFormat("HH:mm:ss");
         return  formatForDateNow.format(dateNow)+"<br>"+formatForTimeNow.format(dateNow);
     }
 
