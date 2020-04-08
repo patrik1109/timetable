@@ -64,7 +64,7 @@
 
 <div class="subheader_placeholder">&nbsp;</div>
     <div th:with="count=${1}">
-        <table border="1">
+        <table border="1" id="eventTable">
             <tr >
                 <th class="tablesettingTitle" >№ з/п</th>
                 <th class="tablesettingTitle" name ="number">№ проведення</th>
@@ -98,7 +98,7 @@ $(document).ready(function() {
     	setTimeout(function(){
     		$("html, body").animate({ scrollTop:0 }, 0);   
     		//window.location.reload(true);
-    		
+    		refreshTable();
     		},100);
         }); 
 });
@@ -116,19 +116,20 @@ $(document).ready(function() {
 function refreshTable(){
 	
 	var xhr = new XMLHttpRequest();
-	var url = window.location.href; 
+ 	var base_url = window.location.origin;
+ 	var pathArray = window.location.pathname.split( '/' );
+	var hallId = pathArray[pathArray.length-1]; 
+	const url=base_url+'/refreshTable/'+hallId;
 	
-	alert(url);
+	console.log("url: "+url);
 	xhr.open("GET", url);
-	 
-	 //xhr.responseType = 'text';
 	 
 	 xhr.send();
 	 xhr.onload = function () {
 		    if (xhr.readyState === xhr.DONE) {
 		        if (xhr.status === 200) {
 
-		           // document.getElementById('current_date_time_block2').innerHTML = xhr.response;
+		           document.getElementById('eventTable').innerHTML = xhr.response;
 		        }
 		    }
 		};
@@ -152,7 +153,7 @@ setInterval(function () {
 	 
 	 //var pathArray = window.location.pathname.split( '/' );
 	 
-	 const url=base_url+'/getTime';
+	 const url=base_url+'/timetable/getTime';
 	 xhr.open("GET", url);
 	 
 	 xhr.responseType = 'text';

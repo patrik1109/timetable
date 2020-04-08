@@ -1,0 +1,14 @@
+ <tr >
+                <th class="tablesettingTitle" >№ з/п</th>
+                <th class="tablesettingTitle" name ="number">№ проведення</th>
+                <th class="tablesettingTitle" name ="composition">Склад суду</th>
+                <th class="tablesettingTitle" name ="description">Сторони у справі та предмет спору</th>
+                <th class="tablesettingTitle" name = "status">Статус</th>
+            </tr>
+            <tr th:each ="event,iter : ${events}" >
+                <td class="tablesettingText" th:utext="${iter.count}"></td>
+                <td class="tablesettingText" name ="number" th:utext="${event.number}">...</td>
+                <td class="tablesettingText" name ="composition" th:utext="${event.composition}">...</td>
+                <td class="tablesettingText" name ="description" th:utext="${event.description}">...</td>
+                <td th:style="'background-color : '+${event.color}" th:utext="${event.status}"  class="casestatuscol" name="status">...</td>
+            </tr>
