@@ -240,6 +240,10 @@ public class timeTableController {
             eventForm.setEstatus (event.getIdStatus());
             eventForm.setComposition(event.getComposition());
             eventForm.setTime(event.getTime().toString());
+            eventForm.setAdditionalstatus(event.getAdditionalstatus());
+            eventForm.setContestation(event.getContestation());
+            eventForm.setDefendant(event.getDefendant());
+            eventForm.setPlaintiff(event.getPlaintiff());
 
         newModel.addObject("eventForm", eventForm);
         newModel.addObject("halls",hallResponses);
