@@ -11,7 +11,9 @@ public class EventResponse {
     public int id;
     public String number;           // номер справи
     public String description;      // сторони у справи та предмет спору
-    public Date date;
+    //@DateTimeFormat(pattern = "yyyy-MM-dd")
+    //public Date date;
+    public String date;
     public int idHall;
     public String status;
     public String color;
@@ -105,11 +107,11 @@ public class EventResponse {
         this.description = description;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

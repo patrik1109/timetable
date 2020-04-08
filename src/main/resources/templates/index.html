@@ -21,7 +21,7 @@
 
     <div >
 
-        <h2 class="header_admin"><a  th:href="@{'hallEvents'}"> Редагування/</a> <a th:href="@{'settings'}"> Налаштування</a> </h2>
+        <h2 class="header_admin"><a  th:href="@{'hallEvents'}"> Редагування/</a> <a th:href="@{'settings/{id}'(id=${idhall})}"> Налаштування</a> </h2>
     </div>
     <div class="table1">
         <a th:href="@{'addHall'}"><button>Додати зал</button></a>
