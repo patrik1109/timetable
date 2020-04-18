@@ -72,8 +72,11 @@
                 <th class="tablesettingTitle" name ="composition">Склад суду</th>
                 <th class="tablesettingTitle" name ="time">Час слухання</th>
                 <th class="tablesettingTitle" name ="defendant">Позивач</th>
+                <th class="tablesettingTitle" name ="plaintiff">Вiдповидач</th>
+                <th class="tablesettingTitle" name ="contestation">Предмет позиву</th>
                 <th class="tablesettingTitle" name ="description">Сторони у справі та предмет спору</th>
                 <th class="tablesettingTitle showHallStatus" name = "status">Статус</th>
+                <th class="tablesettingTitle" name = "additionalstatus">Доповнення до статусу</th>
             </tr>
             <tr th:each ="event,iter : ${events}" >
 					<td class="tablesettingText"
@@ -83,8 +86,11 @@
                 <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="composition" th:utext="${event.composition}">...</td>
                 <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="time" th:utext="${event.time}">...</td>
                 <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="defendant" th:utext="${event.defendant}">...</td>
+                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="plaintiff" th:utext="${event.plaintiff}">...</td>
+                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="contestation" th:utext="${event.contestation}">...</td>
                 <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="description" th:utext="${event.description}">...</td>
                 <td class="tablesettingText showHallStatus" th:style="'background-color : '+${event.color}" th:utext="${event.status}"  name="status">...</td>
+                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="additionalstatus" th:utext="${event.additionalstatus}">...</td>
             </tr>
         </table>
     </div>
@@ -158,7 +164,6 @@ setInterval(function () {
 	 //var pathArray = window.location.pathname.split( '/' );
 	 
 	 const url=base_url+'/getTime';
-	  
 	 xhr.open("GET", url);
 	 
 	 xhr.responseType = 'text';

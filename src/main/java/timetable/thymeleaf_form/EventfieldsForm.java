@@ -11,7 +11,7 @@ public class EventfieldsForm {
     Boolean contestation; // предмет позиву
     Boolean description;  // сторони у справи та предмет спору
     Boolean idStatus;     // статус справи
-    Boolean additionalStatus;  // доповнення до статусу
+    Boolean additionalstatus;  // доповнення до статусу
 
     Integer idHall; //
 
@@ -24,7 +24,7 @@ public class EventfieldsForm {
         this.contestation = contestation;
         this.description = description;
         this.idStatus = idStatus;
-        this.additionalStatus = additionalStatus;
+        this.additionalstatus = additionalStatus;
         this.idHall = idHall;
     }
 
@@ -105,10 +105,10 @@ public class EventfieldsForm {
     }
 
     public Boolean getAdditionalStatus() {
-        return additionalStatus;
+        return additionalstatus;
     }
 
     public void setAdditionalStatus(Boolean additionalStatus) {
-        this.additionalStatus = additionalStatus;
+        this.additionalstatus = additionalStatus;
     }
 }

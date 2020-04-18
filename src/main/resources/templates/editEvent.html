@@ -18,16 +18,38 @@
     <input required type="text" th:field="*{Number}">
     <br/>
     <br/>
-    Зміст справи:
 
-    <textarea  rows = "15" cols = "45" th:field = "*{Description}" name="lines" form = "myform" >... </textarea>
-    <br/>
-    <br/>
     Cклад суду:
+    <textarea  rows = "5" cols = "45" th:field = "*{Composition}" name="lines" form = "myform" >... </textarea>
+    <br/>
+    <br/>
 
-    <textarea  rows = "15" cols = "45" th:field = "*{Composition}" name="lines" form = "myform" >... </textarea>
+    Час засiдання
+    <input required type="time" th:field="*{time}" value=0/>
+    <br/>
+
+    Позивач:
+    <textarea  rows = "1" cols = "45" th:field = "*{defendant}" name="lines" form = "myform" >... </textarea>
+    <br/>
+
+    Вiдповiдач:
+    <textarea  rows = "1" cols = "45" th:field = "*{plaintiff}" name="lines" form = "myform" >... </textarea>
+    <br/>
+
+    Предмет позиву:
+    <textarea  rows = "1" cols = "45" th:field = "*{contestation}" name="lines" form = "myform" >... </textarea>
+    <br/>
+
+    Зміст справи:
+    <textarea  rows = "10" cols = "45" th:field = "*{Description}" name="lines" form = "myform" >... </textarea>
     <br/>
     <br/>
+
+    Доповнення до статусу:
+    <textarea  rows = "1" cols = "45" th:field = "*{additionalstatus}" name="lines" form = "myform" >... </textarea>
+    <br/>
+    <br/>
+
     Дата розгляду справи:
 
     <input required type="date" th:field="*{date}" />
@@ -45,11 +67,7 @@
             <option  th:each ="hall : ${halls}" th:value="${hall.id}"><h2 th:utext="${hall.name}"></h2></option>
         </select>
     <br/>
-    <br/>
-    Час засiдання
-        <input required type="time" th:field="*{time}" value=0/>
 
-    <br/>
     <input type="submit" value="Зберегти" />
 </form>
 </body>
