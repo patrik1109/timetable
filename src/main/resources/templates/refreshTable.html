@@ -1,4 +1,7 @@
- <tr >
+ 
+  <div th:with="count=${1}">
+        <table border="1" >
+ 		<tr>
                 <th class="tablesettingTitle" >№ з/п</th>
                 <th class="tablesettingTitle" name ="number">№ проведення</th>
                 <th class="tablesettingTitle" name ="composition">Склад суду</th>
@@ -12,3 +15,6 @@
                 <td class="tablesettingText" name ="description" th:utext="${event.description}">...</td>
                 <td th:style="'background-color : '+${event.color}" th:utext="${event.status}"  class="casestatuscol" name="status">...</td>
             </tr>
+         </table>
+    </div>           
+ 
