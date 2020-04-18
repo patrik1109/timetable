@@ -113,7 +113,13 @@ public class timeTableController {
         ModelAndView NewModel = new ModelAndView("showHall");
         Hall hall =hallRepository.getHallById(id);
         String  hallName = hall.getName();
-        String[] hiddenColomns =  hall.getHiddencolloms().split(pivot);
+        String hidencoloms = hall.getHiddencolloms();
+        String[] hiddenColomns = new  String[0];
+
+        if(hidencoloms!=null) {
+            hiddenColomns = hall.getHiddencolloms().split(pivot);
+        }
+
         List<ParameterResponse> listparameter =fillParameterResponce(parameterRepository.findAll());
         Date date =  new Date();
         List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHall(date,id) );
@@ -329,9 +335,15 @@ public class timeTableController {
     public ModelAndView addEvent(Map<String, Object> model){
         //final String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
         //String userName = SecurityUtils.getUserName();
-        List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
-        List<UserResponse> users = fillUserResponse(userRepository.findAll());
-        Integer idhall = halls.get(0).getId();
+        List<HallResponse> halls = new LinkedList<>();
+        List<UserResponse> users = new LinkedList<>();
+        halls = fillHallResponse(hallRepository.findAll());
+        users = fillUserResponse(userRepository.findAll());
+        Integer idhall =0;
+
+            if(halls!=null) {
+                 idhall = halls.get(0).getId();
+            }
         ModelAndView NewModel = new ModelAndView("index");
         NewModel.addObject("halls",halls);
         NewModel.addObject("users",users);
@@ -346,18 +358,21 @@ public class timeTableController {
     public ModelAndView settings(Map<String, Object> model,@PathVariable Integer idhall){
         idHallbydefault = idhall;
         Hall hall = hallRepository.getHallById(idhall);
-        String[] hidencolomns = hall.getHiddencolloms().split(pivot);
         String hallName = hall.getName();
+        String hidencoloms = hall.getHiddencolloms();
+        String[] hidencolomns = new String[0];
         EventfieldsForm hidefieldsForm = new EventfieldsForm();
-
         Field[] fields = hidefieldsForm.getClass().getDeclaredFields();
 
-        for(String str : hidencolomns){
-            for(Field field :fields){
-                if(field.getName().equals(str)){
-                    try {
-                        field.setAccessible(true);
-                        field.set(hidefieldsForm,true);
+            if(hidencoloms!=null) {
+                hidencolomns = hall.getHiddencolloms().split(pivot);
+            }
+               for(String str : hidencolomns){
+                    for(Field field :fields){
+                        if(field.getName().equals(str)){
+                            try {
+                                field.setAccessible(true);
+                                field.set(hidefieldsForm,true);
                     }
                     catch (IllegalAccessException e) {
                         e.printStackTrace();
