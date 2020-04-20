@@ -8,7 +8,7 @@
 </head>
 
 
-<body>
+<body th:style="'background:url('+ @{/img/Dredd.jpg} +') no-repeat center center fixed;'">
 <div  th:if="${param.error}">
     Невiрне iм'я або пароль.
 </div>
