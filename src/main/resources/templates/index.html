@@ -2,72 +2,43 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-  <link th:href="@{/css/style.css}" rel="stylesheet" />
-
+    <title>Верховний суд Украiни</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}">
 </head>
 <style>
-    .header_admin
-    {
-       color: white;
-       font-family:Arial;
-    }
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css');
+
 </style>
-<body>
 
-<div class="content">
-<!--  <div class="subheader_placeholder_admin">&nbsp;</div>-->
-<div class="buttons_header">
+<body th:style="'background:url('+ @{/img/klov.jpg} +') no-repeat center fixed; background-size: cover;'">
 
-    <div >
+    <a class="navbar-logo" th:href="@{'index'}"><img th:src="@{/img/img.png}"  height="60"/></a>
+    <ul class="menu-main">
+    <li><a th:href="@{'hallEvents'}">Розклад</a></li>
+    <li><a th:href="@{'indexHall'}">Додати зал</a></li>
+    <li><a th:href="@{'indexUser'}">користувач</a></li>
+    <li><a th:href="@{'settings/{id}'(id=${idhall})}">Налаштування</a></li>
+  </ul>
 
-        <h2 class="header_admin"><a  th:href="@{'hallEvents'}"> Редагування/</a> <a th:href="@{'settings/{id}'(id=${idhall})}"> Налаштування</a> </h2>
-    </div>
-    <div class="table1">
-        <a th:href="@{'addHall'}"><button>Додати зал</button></a>
-    </div>
-    <div class="table2">
-        <a th:href="@{'addUser'}"><button>Додати користувача</button></a>
-    </div>
-    <br>
-</div>
-    <br>
-    <div class="table1">
-    <table >
-        <tr>
-            <th> Назва зали </th>
-            <th> Видалити </th>
-            <th> Редагувати</th>
-        </tr>
-        <tr th:each ="hall : ${halls}">
-            <td ><h3 th:utext="${hall.name}"></h3></td>
-            <td ><a th:href="@{'deleteHall/{id}'(id=${hall.id})}"
-                    onclick="return confirm('Ви дiйсно хочите видалити зал ?')"> <button >Видалити</button></a></td>
-            <td><a th:href="@{'editHall/{id}'(id=${hall.id})}">
-                <button>Редагувати</button></a></td>
-        </tr>
-    </table>
-</div>
 
-<div class="table2">
 
-    <table  >
-    <tr>
-        <th> Назва користувача </th>
-        <th> Видалити </th>
-        <th> Редагувати</th>
-    </tr>
-    <tr th:each ="user : ${users}">
-        <td ><h3 th:utext="${user.username}"></h3></td>
-        <td ><a th:href="@{'deleteUser/{id}'(id=${user.id})}"
-                onclick="return confirm('Ви дiйсно хочите видалити користувача ?')"> <button >Видалити</button></a></td>
-        <td><a th:href="@{'editUser/{id}'(id=${user.id})}">
-            <button>Редагувати</button></a></td>
-    </tr>
+
+  <div id="footer">
+     &copy; All rights reserved. E.O.I
+  </div>
+
+<!-- <table> -->
+
+
+
+<!-- <table> -->
+
 </table>
-</div>
 
-</div>
+
+
 
 </body>
 </html>
