@@ -2,13 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
+
+
 <head>
+  <meta charset="UTF-8">
     <title>Авторизацiя</title>
-    <link th:href="@{/css/login.css}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/log.css}">
 </head>
 
 
-<body th:style="'background:url('+ @{/img/Dredd.jpg} +') no-repeat center center fixed;'">
+<body th:style="'background:url('+ @{/img/klov.jpg} +') no-repeat center fixed; background-size: cover;'">
+
+<h1 id="loginHeader">Верховний Суд</h1>
+
 <div  th:if="${param.error}">
     Невiрне iм'я або пароль.
 </div>
@@ -16,16 +22,25 @@
     Вийти.
 </div>
 
-<h2 id="loginHeader">Верховний Суд</h2>
+<div id="wrapper">
 
 <form class="login_Form" ID="loginForm" th:action="@{/login}" method="post">
 
-    <div><label id="login_Label_User" hint="Username or Email address">  </label><br><input id="login_Input_email" type="text" name="username" /> </div><br>
+  <div><label id="login_Label_User" hint="Username or Email address">  </label>
+  <input id="login_Input_email" type="text" name="username" placeholder="username" /> </div>
 
-    <div><label id="login_Label_psw" hint=" Password: "></label><br><input id="login_Input_psw" type="password" name="password" /></div><br><br>
+  <div><label id="login_Label_psw" hint=" Password: "></label>
+  <input id="login_Input_psw" type="password" name="password" placeholder="password" /></div>
 
-    <div><input id="login_submit" type="submit" value="LOG IN"/></div>
+  <input id="login_submit" type="submit" value="&#xf0da;"/>
 </form>
 
+</div>
+<div id="footer">
+   &copy; All rights reserved. E.O.I
+  </div>
 </body>
+
+
+
 </html>

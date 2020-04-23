@@ -333,8 +333,7 @@ public class timeTableController {
     @Transactional
     @GetMapping(value = { "/", "/index" } )
     public ModelAndView addEvent(Map<String, Object> model){
-        //final String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
-        //String userName = SecurityUtils.getUserName();
+
         List<HallResponse> halls = new LinkedList<>();
         List<UserResponse> users = new LinkedList<>();
         halls = fillHallResponse(hallRepository.findAll());
@@ -351,7 +350,27 @@ public class timeTableController {
         return  NewModel;
     }
 
-   
+   @RequestMapping(value = {"indexHall"},method = RequestMethod.GET)
+   public ModelAndView indexHall(){
+       ModelAndView NewModel = new ModelAndView("indexHall");
+       List<HallResponse> halls = new LinkedList<>();
+       halls = fillHallResponse(hallRepository.findAll());
+       Integer idhall =0;
+
+       if(halls!=null) {
+           idhall = halls.get(0).getId();
+       }
+
+       NewModel.addObject("halls",halls);
+       NewModel.addObject("idhall",idhall);
+       return NewModel;
+   }
+
+    @RequestMapping(value = {"indexUser"},method = RequestMethod.GET)
+    public ModelAndView indexUser(){
+        ModelAndView NewModel = new ModelAndView("indexUser");
+        return NewModel;
+    }
     
 
     @RequestMapping(value = { "/settings/{idhall}" }, method = RequestMethod.GET)
@@ -472,7 +491,7 @@ public class timeTableController {
         newHall.setName(hallForm.getName());
         newHall.setDate(hallForm.getDate());
         hallRepository.saveHall(newHall);
-        return new ModelAndView("redirect:/index");
+        return new ModelAndView("redirect:/indexHall");
 
     }
 
@@ -482,7 +501,7 @@ public class timeTableController {
         Hall tmphall =  hallRepository.getHallById(id);
         int hall_Id = tmphall.getId();
         hallRepository.deleteHallbyId(hall_Id);
-        return new ModelAndView("redirect:/index");
+        return new ModelAndView("redirect:/indexHall");
     }
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
