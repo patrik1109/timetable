@@ -143,7 +143,7 @@ function refreshTable(){
 		        }
 		    }
 		};
-	
+		hideColumns();
 }
 
 setInterval(function () {
@@ -158,6 +158,10 @@ setInterval(function () {
 	 var xhr = new XMLHttpRequest();
 	 
 	 var base_url = window.location.origin;
+	 
+	 var path_name = window.location.pathname;
+	 
+	 var href = window.location.href;
 	 
 	 //var host = window.location.host;
 	 
