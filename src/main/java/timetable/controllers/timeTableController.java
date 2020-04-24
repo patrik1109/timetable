@@ -369,6 +369,9 @@ public class timeTableController {
     @RequestMapping(value = {"indexUser"},method = RequestMethod.GET)
     public ModelAndView indexUser(){
         ModelAndView NewModel = new ModelAndView("indexUser");
+        List<UserResponse> users = new LinkedList<>();
+        users = fillUserResponse(userRepository.findAll());
+        NewModel.addObject("users",users);
         return NewModel;
     }
     

@@ -1,0 +1,93 @@
+@charset "UTF-8";
+
+*{
+  font-family: 'Open Sans', 'sans-serif', 'FontAwesome';}
+
+/* .header_admin
+  {
+     color: white;
+     font-family:Arial;*/
+  }
+  #content {
+   width: 500px; /* Ширина слоя */
+   *margin: 0 auto 20px; /* Выравнивание по центру */
+  }
+  #footer {
+   position: fixed; /* Фиксированное положение */
+   left: 0; bottom: 0; /* Левый нижний угол */
+   padding: 10px; /* Поля вокруг текста */
+   background: rgb(0, 39, 78); /* Цвет фона */
+   color: #fff; /* Цвет текста */
+   width: 100%; /* Ширина слоя */
+   z-index:4}
+/*   #hheder {
+  position: fixed; /* Фиксированное положение */
+/*  left: 0; top: 0; /* Левый нижний угол */
+/*  padding: 30px; /* Поля вокруг текста */
+/*  background: rgb(0, 39, 78); /* Цвет фона */
+/*  color: #fff; /* Цвет текста */
+/*  width: 100%; /* Ширина слоя *
+ }*/
+ /*opacity: 0.8;*/
+ .menu-main {
+   list-style: none;
+   margin: 60px 0 8px;
+   marginLeft: 30px;
+   padding: 25px 0 5px;
+   text-align: center;
+   background: /* NOTE:  */;
+
+ }
+ .menu-main li {display: inline-block;}
+ .menu-main li:after {
+   content: "|";
+   color: #606060;
+   display: inline-block;
+   vertical-align:top;
+ }
+ .menu-main li:last-child:after {content: none;}
+ .menu-main a {
+   text-decoration: none;
+   font-family: 'Ubuntu Condensed', sans-serif;
+   letter-spacing: 1px;
+   position: relative;
+   padding-bottom: 5px;
+   margin: 0 34px 0 30px;
+   font-size: 17px;
+   text-transform: uppercase;
+   display: inline-block;
+   transition: color .2s;
+ }
+ .menu-main a, .menu-main a:visited {color: #9d999d;}
+ .menu-main a.current, .menu-main a:hover{color: rgb(0, 39, 78);}
+ .menu-main a:before,
+ .menu-main a:after {
+   content: "";
+   position: absolute;
+   height: 3px;
+   top: auto;
+   right: 50%;
+   bottom: -5px;
+   left: 50%;
+   background: rgb(0, 39, 78);;
+   transition: .8s;
+ }
+ .menu-main a:hover:before, .menu-main .current:before {left: 0;}
+ .menu-main a:hover:after, .menu-main .current:after {right: 0;}
+
+ @media (max-width: 550px) {
+ .menu-main {padding-top: 0;}
+ .menu-main li {display: block;}
+ .menu-main li:after {content: none;}
+ .menu-main a {
+   padding: 25px 0 20px;
+   margin: 0 30px;
+ }
+ }
+ .navbar-logo {display: inline-block;
+ position: absolute;
+ position: center;
+ top: 3%;
+ left: 50%;
+ /*margin-left: -160px;
+ margin-left: -160px;}*/
