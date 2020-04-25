@@ -370,8 +370,17 @@ public class timeTableController {
     public ModelAndView indexUser(){
         ModelAndView NewModel = new ModelAndView("indexUser");
         List<UserResponse> users = new LinkedList<>();
+        Integer idhall = 0;
+        List<HallResponse> halls = new LinkedList<>();
+
         users = fillUserResponse(userRepository.findAll());
+            halls = fillHallResponse(hallRepository.findAll());
+                if(halls!=null) {
+                    idhall = halls.get(0).getId();
+            }
+        NewModel.addObject("idhall",idhall);
         NewModel.addObject("users",users);
+
         return NewModel;
     }
     
@@ -533,7 +542,7 @@ public class timeTableController {
         Set<Event> events = hall.getEventSet();
         if (idHall !=0   ) {
             hallRepository.updateHall(idHall,nameHall,date,events,hiddencolloms);
-            return new ModelAndView("redirect:/index");
+            return new ModelAndView("redirect:/indexHall");
         }
         model.addObject("errorMessage", errorMessage);
 
