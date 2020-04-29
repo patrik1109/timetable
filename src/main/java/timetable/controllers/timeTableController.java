@@ -198,10 +198,12 @@ public class timeTableController {
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
         HallEventsForm hallEventsForm = new HallEventsForm();
         EventForm eventForm = new EventForm();
+        int hallid = halls.get(0).getId();
         NewModel.addObject("hallEventsForm",hallEventsForm);
         NewModel.addObject("eventForm",eventForm);
         NewModel.addObject("halls",halls);
         NewModel.addObject("statuses",statuses);
+        NewModel.addObject("idhall",hallid);
         return NewModel;
     }
 
@@ -210,7 +212,7 @@ public class timeTableController {
    public ModelAndView editHallEvents( ModelAndView model,
                                        @ModelAttribute ("hallEventsForm") HallEventsForm halleventsForm,
                                        @ModelAttribute ("eventForm") EventForm eventForm) {
-
+        //ModelAndView NewModel = new ModelAndView("hallEvents");
         HallEventsForm newEventsForm = new HallEventsForm();
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
         List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
@@ -226,7 +228,7 @@ public class timeTableController {
            model.addObject("eventForm",neweventForm);
            model.addObject("events",eventsresponse);
            model.addObject("hallName",hallName);
-           model.addObject("hallid",hallid);
+           model.addObject("idhall",hallid);
        }
        else if(eventForm.getDate()!=null){
            int idHall = eventForm.getHall_number();
@@ -242,7 +244,7 @@ public class timeTableController {
            model.addObject("eventForm",neweventForm);
            model.addObject("events",eventsresponse);
            model.addObject("hallName",hallName);
-           model.addObject("hallid",idHall);
+           model.addObject("idhall",idHall);
        }
        model.addObject("hallEventsForm",newEventsForm);
        model.addObject("halls",halls);
@@ -254,12 +256,13 @@ public class timeTableController {
 
 
     @GetMapping("/delete/{id}")
-     public ModelAndView delete(@PathVariable Integer id) {
+     public ModelAndView delete(ModelAndView model,@PathVariable Integer id) {
         Event tmpevent = eventRepository.getEventById(id);
         int hall_Id = tmpevent.getIdHall();
         eventRepository.deleteEventbyId(id);
 
         return new ModelAndView("redirect:/hallEvents");
+
     }
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
