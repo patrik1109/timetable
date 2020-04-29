@@ -1,229 +1,310 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-     <link th:href="@{/css/style.css}" rel="stylesheet" />
+	<title>settings</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/Table1/vendor/bootstrap/css/bootstrap.min.css}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/Table1/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/Table1/vendor/animate/animate.css}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/Table1/vendor/select2/select2.min.css}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/Table1/vendor/perfect-scrollbar/perfect-scrollbar.css}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/Table1/css/util.css}">
+
+
+  <link th:href="@{/css/settings.css}" rel="stylesheet" />
+	<!--<link th:href="@{/css/main.css}" rel="stylesheet" />-->
+
 </head>
 
-<style>
-     .settingTable
-    {
-        width:400px;
-        border: 1px solid #ddd;
-        text-align: center;
-    }
-    .settingForm
-    {
-        padding:10px;
-    }
-    .UpDownLoadDB
-    {
-        border: 1px solid #ddd;
-        position: fixed; top: 20%; left: 60%;
-        text-align:center;
-    }
-    .UpDownLoadHall
-    {
 
-        border: 1px solid #ddd;
-        position: fixed; top: 16%; left: 60%;
-        text-align:center;
-    }
 
-</style>
+<body th:style="'background:url('+ @{/img/klov.jpg} +') no-repeat center fixed; background-size: cover;'">
+	<a class="navbar-logo" th:href="@{'/index'}"><img th:src="@{/img/img.png}"  height="60"/></a>
+	<ul class="menu-main">
+	<li><a th:href="@{'/hallEvents'}">Розклад</a></li>
+	<li><a th:href="@{'/indexHall'}">Додати зал</a></li>
+	<li><a th:href="@{'/indexUser'}">користувач</a></li>
+	<li><a th:href="@{'/settings/{id}'(id=${idhall})}">Налаштування</a></li>
+</ul>
 
-<body>
-<div class="header sticky" >
-    <div class="right_title"><header><h2>&nbsp;</h2></header></div>
-    <div class="center_title"><header><h2> Верховний суд </h2></header></div>
-</div>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<a th:href="@{'/index'}"><button>Повернутися</button></a>
-<br/>
-<div>
+<div id="footer">
+   &copy; All rights reserved. E.O.I
+  </div>
+
+	<!--tabl4-->
+
+	<form class="UpDownLoadDB" th:action="@{/settings}" th:object="${hidefieldsForm}" method="POST">
+		<div class="limiter">
+			<div class="container-table100">
+			  <div class="wrap-table100">
+					<div class="table100 ver5 m-b-30">
+						<table data-vertable="ver5">
+							<thead>
+								<tr class="row100 head">
+									<th class="column100 column1" data-column="column20">
+										<div>
+												<form class="UpDownLoadHall" th:action="@{/settings}" th:object="${hallForm}" method="POST">
+														<select  th:field="*{id}">
+																<option  th:each ="hall : ${hallList}" th:value="${hall.id}"><h2 th:utext="${hall.name}"></h2></option>
+														</select>
+														<button><div type="submit" class="galka">&#10004;</div></button>
+												</form>
+										</div>
+									</th>
+									<th class="column100 column2" data-column="column21"><h3 th:style = font-size : 10px; th:utext="${hallName}"></h3></th>
+									<th class="column100 column3" data-column="column22"></th>
+								</tr>
+							</thead>
+<form class="UpDownLoadDB" th:action="@{/settings}" th:object="${hidefieldsForm}" method="POST">
+							<thead>
+								<tr class="row100 head">
+									<th class="column100 column1" data-column="column20">Назва</th>
+									<th class="column100 column2" data-column="column21">Сховати\Показати</th>
+									<th class="column100 column3" data-column="column22">Ширина колонки</th>
+								</tr>
+							</thead>
+
+							<tbody>
+								<tr class="row100">
+									<td class="column100 column1" data-column="column20">Час слухання</td>
+									<td class="column100 column2" data-column="column21"><input type="checkbox" unchecked th:field="*{time}"/></td>
+									<td class="column100 column3" data-column="column22"></td>
+		 					 </tr>
+							 <tr class="row100">
+							 	<td class="column100 column1" data-column="column20">Позивач</td>
+							 	<td class="column100 column2" data-column="column21"><input type="checkbox" unchecked th:field="*{defendant}"/></td>
+							 	<td class="column100 column3" data-column="column22"></td>
+							 </tr>
+							 <tr class="row100">
+							 	<td class="column100 column1" data-column="column20">Вiдповiдач</td>
+							 	<td class="column100 column2" data-column="column21"><input type="checkbox" unchecked th:field="*{plaintiff}"/></td>
+							 	<td class="column100 column3" data-column="column22"></td>
+							 </tr>
+							 <tr class="row100">
+							 	<td class="column100 column1" data-column="column20">Предмет позиву</td>
+							 	<td class="column100 column2" data-column="column21"><input type="checkbox" unchecked th:field="*{contestation}"/></td>
+							 	<td class="column100 column3" data-column="column22"></td>
+							 </tr>
+							 <tr class="row100">
+								 <td class="column100 column1" data-column="column20">Скдад суду</td>
+								 <td class="column100 column2" data-column="column21"><input type="checkbox" unchecked th:field="*{composition}"/></td>
+								 <td class="column100 column3" data-column="column22"></td>
+							</tr>
+							<tr class="row100">
+								<td class="column100 column1" data-column="column20">Сторони у справi та предмет спору</td>
+								<td class="column100 column2" data-column="column21"><input type="checkbox" unchecked th:field="*{description}"/></td>
+								<td class="column100 column3" data-column="column22"></td>
+						 </tr>
+						 <tr class="row100">
+							 <td class="column100 column1" data-column="column20">Доповнення до статусу</td>
+							 <td class="column100 column2" data-column="column21"><input type="checkbox" unchecked th:field="*{additionalStatus}"/></td>
+							 <td class="column100 column3" data-column="column22"></td>
+						</tr>
+
+	            </tbody>
+							<tbody>
+								<tr class="row100">
+									<td class="column100 column1" data-column="column20"><button><div type="submit" class="galka">&#10004;</div></button></td></td>
+									<td class="column100 column2" data-column="column21"></td>
+									<td class="column100 column3" data-column="column22"></td>
+							</tr>
+	            </tbody>
+	</form>
+						</table>
+					</div>
+			 </div>
+	  	</div>
+	  </div>
+	</div>
+
+
+	<!--tabl4-->
+
+
+<!--tabl1-->
 <form  class="settingForm" th:action="@{/settings}" th:object="${settingFormHall}" method="POST">
     <div >
         <input type="text"   hidden="true"  th:field="*{formname}"/>
         <input type="text"   hidden="true"  th:field="*{parameter}"/>
         <input type="text"   hidden="true"  th:field="*{id}"/>
-        <table class="settingTable">
-            <tr>
-                <th> Назва зали  </th>
-                <th> Колір тексту</th>
-                <th> Шрифт </th>
-                <th> Висота шрифту </th>
-                <th> Колір підложки</th>
-            </tr>
-            <tr >
-                <!--th:attr="value = ${client.name}"-->
-                <td  th:utext="*{parameter}"></td>
-                <td > <input type="color" th:field="*{textcolor}" /> </td>
-                <td>
-                    <select  th:field="*{textfont}">
-                        <option th:value="Serif"> Serif </option>
-                        <option value="Arial"> Arial </option>
-                        <option value="Sans-Serif"> Sans-Serif </option>
-                        <option value="Tahoma"> Tahoma </option>
-                        <option value="Verdana"> Verdana </option>
-                        <option value="Lucida Sans Unicode"> Lucida Sans Unicode </option>
-                    </select>
-                </td>
-                <td> <input type="number"  th:field="*{textsize}" > </td>
-                <td> <input type="color" th:field="*{textbackground}">
-                </td>
-            </tr>
+	<div class="limiter">
+		<div class="container-table100">
+		  <div class="wrap-table100">
+				<div class="table100 ver5 m-b-30">
+					<table data-vertable="ver5">
+						<thead>
+							<tr class="row100 head">
+								<th class="column100 column1" data-column="column1">Назва</th>
+								<th class="column100 column2" data-column="column2">Колір тексту</th>
+								<th class="column100 column3" data-column="column3">Шрифт</th>
+								<th class="column100 column4" data-column="column4">Висота шрифту</th>
+								<th class="column100 column5" data-column="column5">Колір підложки</th>
+								<th class="column100 column6" data-column="column5">Зберегти</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1" th:utext="*{parameter}"></td>
+								<td class="column100 column2" data-column="column2"><input type="color" th:field="*{textcolor}" /></td>
+								<td class="column100 column3" data-column="column3">
+									<select  th:field="*{textfont}">
+										<option th:value="Serif"> Serif </option>
+										<option value="Arial"> Arial </option>
+										<option value="Sans-Serif"> Sans-Serif </option>
+										<option value="Tahoma"> Tahoma </option>
+										<option value="Verdana"> Verdana </option>
+										<option value="Lucida Sans Unicode"> Lucida Sans Unicode </option>
+								  </select>
+							</td>
+								<td class="column100 column4" data-column="column4"><input type="number"  th:field="*{textsize}" /></td>
+								<td class="column100 column5" data-column="column5"><input type="color" th:field="*{textbackground}"/></td>
+								<td class="column100 column5" data-column="column6"><button><div type="submit" class="galka">&#10004;</div></button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+		 </div>
+  	</div>
+  </div>
+</div>
+</form>
 
-        </table>
-        <br/>
-    </div>
-        <input type="submit" name="" value="Зберегти" />
-    </form>
+<!--tabl1-->
+
+
+
+<!--tabl2-->
 
 <form class="settingForm" th:action="@{/settings}" th:object="${settingFormTableTitle}" method="POST">
     <div >
-        <input type="text"   hidden="true"  th:field="*{formname}"/>
-        <input type="text"   hidden="true"  th:field="*{parameter}"/>
-        <input type="text"   hidden="true"  th:field="*{id}"/>
-        <table class="settingTable">
-            <tr>
-                <th> Назва зали  </th>
-                <th> Колір тексту</th>
-                <th> Шрифт </th>
-                <th> Висота шрифту </th>
-                <th> Колір підложки</th>
-            </tr>
-            <tr >
-               <td  th:utext="*{parameter}" ></td>
-                <td > <input type="color" th:field="*{textcolor}" > </td>
-                <td>
-                    <select  th:field="*{textfont}">
-                        <option th:value="Serif"> Serif </option>
-                        <option value="Arial"> Arial </option>
-                        <option value="Sans-Serif"> Sans-Serif </option>
-                        <option value="Tahoma"> Tahoma </option>
-                        <option value="Verdana"> Verdana </option>
-                        <option value="Lucida Sans Unicode"> Lucida Sans Unicode </option>
-                    </select>
-                </td>
-                <td> <input type="number"  th:field="*{textsize}" > </td>
-                <td> <input type="color" th:field="*{textbackground}" >
-                </td>
-            </tr>
-
-        </table>
-        <br/>
-    </div>
-    <input type="submit" value="Зберегти" />
+			<input type="text"   hidden="true"  th:field="*{formname}"/>
+			<input type="text"   hidden="true"  th:field="*{parameter}"/>
+			<input type="text"   hidden="true"  th:field="*{id}"/>
+	<div class="limiter">
+		<div class="container-table100">
+		  <div class="wrap-table100">
+				<div class="table100 ver5 m-b-30">
+					<table data-vertable="ver5">
+						<thead>
+							<tr class="row100 head">
+								<th class="column100 column1" data-column="column1">Назва</th>
+								<th class="column100 column2" data-column="column2">Колір тексту</th>
+								<th class="column100 column3" data-column="column3">Шрифт</th>
+								<th class="column100 column4" data-column="column4">Висота шрифту</th>
+								<th class="column100 column5" data-column="column5">Колір підложки</th>
+								<th class="column100 column6" data-column="column5">Зберегти</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1" th:utext="*{parameter}"></td>
+								<td class="column100 column2" data-column="column2"><input type="color" th:field="*{textcolor}" /></td>
+								<td class="column100 column3" data-column="column3">
+									<select  th:field="*{textfont}">
+										<option th:value="Serif"> Serif </option>
+										<option value="Arial"> Arial </option>
+										<option value="Sans-Serif"> Sans-Serif </option>
+										<option value="Tahoma"> Tahoma </option>
+										<option value="Verdana"> Verdana </option>
+										<option value="Lucida Sans Unicode"> Lucida Sans Unicode </option>
+								  </select>
+							</td>
+								<td class="column100 column4" data-column="column4"><input type="number"  th:field="*{textsize}" /></td>
+								<td class="column100 column5" data-column="column5"><input type="color" th:field="*{textbackground}"/></td>
+								<td class="column100 column5" data-column="column6"><button><div type="submit" class="galka">&#10004;</div></button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+		 </div>
+  	</div>
+  </div>
+</div>
 </form>
 
+
+<!--tabl2-->
+
+
+
+<!--tabl3-->
 
 <form class="settingForm" th:action="@{/settings}" th:object="${settingText}" method="POST">
     <div >
         <input type="text"   hidden="true"  th:field="*{formname}"/>
         <input type="text"   hidden="true"  th:field="*{parameter}"/>
         <input type="text"   hidden="true"  th:field="*{id}"/>
-        <table class="settingTable">
-            <tr>
-                <th> Назва зали  </th>
-                <th> Колір тексту</th>
-                <th> Шрифт </th>
-                <th> Висота шрифту </th>
-
-            </tr>
-            <tr >
-                <td  th:utext="*{parameter}"   ></td>
-                <td > <input type="color" th:field="*{textcolor}"  th:value="${textcolor}"/> </td>
-                <td>
-                    <select  th:field="*{textfont}">
-                        <option th:value="Serif"> Serif </option>
-                        <option value="Arial"> Arial </option>
-                        <option value="Sans-Serif"> Sans-Serif </option>
-                        <option value="Tahoma"> Tahoma </option>
-                        <option value="Verdana"> Verdana </option>
-                        <option value="Lucida Sans Unicode"> Lucida Sans Unicode </option>
-                    </select>
-                </td>
-                <td> <input type="number"  th:field="*{textsize}" th:value="${textsize}"> </td>
-
-                </td>
-            </tr>
-
-        </table>
-        <br/>
-    </div>
-    <input type="submit" value="Зберегти" />
+	<div class="limiter">
+		<div class="container-table100">
+		  <div class="wrap-table100">
+				<div class="table100 ver5 m-b-30">
+					<table data-vertable="ver5">
+						<thead>
+							<tr class="row100 head">
+								<th class="column100 column1" data-column="column10">Назва</th>
+								<th class="column100 column2" data-column="column11">Колір тексту</th>
+								<th class="column100 column3" data-column="column12">Шрифт</th>
+								<th class="column100 column4" data-column="column13">Висота шрифту</th>
+								<th class="column100 column6" data-column="column14">Зберегти</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="row100">
+								<td class="column100 column1" data-column="column10" th:utext="*{parameter}"></td>
+								<td class="column100 column2" data-column="column11"><input type="color" th:field="*{textcolor}" /></td>
+								<td class="column100 column3" data-column="column12">
+									<select  th:field="*{textfont}">
+										<option th:value="Serif"> Serif </option>
+										<option value="Arial"> Arial </option>
+										<option value="Sans-Serif"> Sans-Serif </option>
+										<option value="Tahoma"> Tahoma </option>
+										<option value="Verdana"> Verdana </option>
+										<option value="Lucida Sans Unicode"> Lucida Sans Unicode </option>
+								  </select>
+							</td>
+								<td class="column100 column4" data-column="column13"><input type="number"  th:field="*{textsize}" /></td>
+								<td class="column100 column5" data-column="column14"><button><div type="submit" class="galka">&#10004;</div></button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+		 </div>
+  	</div>
+  </div>
+</div>
 </form>
-</div>
-
-<div>
-    <form class="UpDownLoadHall" th:action="@{/settings}" th:object="${hallForm}" method="POST">
-        <select  th:field="*{id}">
-            <option  th:each ="hall : ${hallList}" th:value="${hall.id}"><h2 th:utext="${hall.name}"></h2></option>
-        </select>
-        <input type="submit" value="Показати зал" />
-    </form>
-</div>
 
 
-<div>
-    <form class="UpDownLoadDB" th:action="@{/settings}" th:object="${hidefieldsForm}" method="POST">
-
-        <h3  th:style = font-size : 10px; th:utext="${hallName}"></h3>
-         <table class="settingTable">
-
-         <tr>
-            <td>Час слухання</td>
-            <td><input type="checkbox" unchecked th:field="*{time}"></td>
-            <td>Сховати\Показати</td>
-        </tr>
-        <tr>
-            <td>Позивач</td>
-            <td><input type="checkbox" unchecked th:field="*{defendant}"></td>
-            <td>Сховати\Показати</td>
-        </tr>
-        <tr>
-            <td>Вiдповiдач</td>
-            <td><input type="checkbox" unchecked th:field="*{plaintiff}"></td>
-            <td>Сховати\Показати</td>
-        </tr>
-            <tr>
-                <td>Предмет позиву</td>
-                <td><input type="checkbox" unchecked th:field="*{contestation}"></td>
-                <td>Сховати\Показати</td>
-            </tr>
-            <tr>
-                <td>Скдад суду</td>
-                <td><input type="checkbox" unchecked th:field="*{composition}"></td>
-                <td>Сховати\Показати</td>
-            </tr>
-            <tr>
-                <td>Сторони у справi та предмет спору</td>
-                <td><input type="checkbox" unchecked th:field="*{description}"></td>
-                <td>Сховати\Показати</td>
-            </tr>
-            <tr>
-                <td>Доповнення до статусу</td>
-                <td><input type="checkbox" unchecked th:field="*{additionalStatus}"></td>
-                <td>Сховати\Показати</td>
-            </tr>
-        </table>
-        <input type="submit" value="Зберегти" />
-    </form>
-    </br>
+<!--tabl3-->
 
 
-</table>
 
 
-</div>
+
+
+
+
+
+<!--===============================================================================================-->
+	<script src="@{/Table1/vendor/jquery/jquery-3.2.1.min.js}"></script>
+<!--===============================================================================================-->
+	<script src="@{/Table1/vendor/bootstrap/js/popper.js}"></script>
+	<script src="@{/Table1/vendor/bootstrap/js/bootstrap.min.js}"></script>
+<!--===============================================================================================-->
+	<script src="@{/Table1/vendor/select2/select2.min.js}"></script>
+<!--===============================================================================================-->
+	<script src="@{/Table1/js/main.js"></script>
+
+
 
 
 </body>
 </html>
-
