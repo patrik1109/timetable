@@ -1,13 +1,10 @@
 package timetable.entities;
 
-import org.hibernate.search.annotations.Field;
+
 import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.TermVector;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import timetable.enums.UserRole;
-
 import java.util.Date;
-
+import java.util.Set;
 import javax.persistence.*;
 
 
@@ -16,14 +13,12 @@ import javax.persistence.*;
 @Table(name="user")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO )
     int id;
 
     @Column(nullable = false, unique = true)
     String username;
-
-    @Column(name = "role")
-    UserRole role;
 
     @Column(name = "email")
     String email;
@@ -36,8 +31,14 @@ public class User {
 
     @Column(name = "name")
     String name;
-    
-    
+
+   /* @Column(name = "role")
+    UserRole role;*/
+
+
+    //@CollectionTable(name="user_role",joinColumns = @JoinColumn(name="id"))
+    @Enumerated(EnumType.ORDINAL)
+    private UserRole role;
     
     
     public String getEmail() {
@@ -106,7 +107,13 @@ public class User {
         this.password = password;
     }
 
+    public UserRole getRoles() {
+        return role;
+    }
 
+    public void setRoles (UserRole role) {
+        this.role = role;
+    }
 
 
 

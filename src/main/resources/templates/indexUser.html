@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head>
+	<title>Table V04</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link th:href="@{/css/indexUser.css}" rel="stylesheet">
+</head>
+<style>
+
+</style>
+
+
+<body th:style="'background:url('+ @{/img/klov.jpg} +') no-repeat center fixed; background-size: cover;'">
+	<a class="navbar-logo" th:href="@{'/index'}"><img th:src="@{/img/img.png}"  height="60"/></a>
+	<ul class="menu-main">
+	<li><a th:href="@{'/hallEvents'}">Розклад</a></li>
+	<li><a th:href="@{'/indexHall'}">Додати зал</a></li>
+	<li><a th:href="@{'/indexUser'}">користувач</a></li>
+	<li><a th:href="@{'/settings/{id}'(id=${idhall})}">Налаштування</a></li>
+</ul>
+
+<div id="footer">
+   &copy; All rights reserved. E.O.I
+  </div>
+
+
+	<!--tabl1-->
+
+		<div class="limiter">
+			<div class="container-table100">
+				<div class="wrap-table100">
+					<div class="table100 ver5 m-b-30">
+						<table data-vertable="ver5">
+							<thead>
+								<tr class="row100 head">
+									<th class="cell100 column1" data-column="column1">Назва користувача</th>
+									<th class="cell100 column2" data-column="column2">Cтатус</th>
+									<th class="cell100 column3" data-column="column3">Зал</th>
+									<th class="cell100 column4" data-column="column4">Редагуваты</th>
+									<th class="cell100 column5" data-column="column5">Видалити</th>
+									<th class="cell100 column6" data-column="column6"><a th:href="@{'addUser'}"><button><div class="table-add">&#10010;</button></a></th>
+								</tr>
+							</thead>
+					<div class="table100-body js-pscroll">
+							<tbody>
+								<tr class="row100" th:each ="user : ${users}">
+									<td class="cell100 column1" data-column="column1"><h3 th:utext="${user.username}"></h3></td>
+									<td class="cell100 column2" data-column="column1">admin or user</td>
+									<td class="cell100 column3" data-column="column1">название залов</td>
+									<td class="cell100 column4" data-column="column1">
+										<a th:href="@{'editUser/{id}'(id=${user.id})}"><button ><div class="krest">&#9998;</button></a>
+									</td>
+									<td class="cell100 column5" data-column="column1">
+										<a th:href="@{'deleteUser/{id}'(id=${user.id})}"
+														onclick="return confirm('Ви дiйсно хочите видалити користувача ?')"> <button ><div class="krest1">&#10008;</button></a></td>
+
+								</tr>
+							</tbody>
+					 </div>
+						</table>
+				 </div>
+			 </div>
+
+		</div>
+	</div>
+
+
+		<script>
+			$('.js-pscroll').each(function(){
+				var ps = new PerfectScrollbar(this);
+
+				$(window).on('resize', function(){
+					ps.update();
+				})
+			});
+
+
+		</script>
+	<!--===============================================================================================-->
+
+
+
+</body>
+</html>

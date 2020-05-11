@@ -1,28 +1,103 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
 <head>
-    <meta charset="UTF-8">
-    <title>New hall</title>
-    <link th:href="@{/css/style.css}" rel="stylesheet" />
+	<title>addHall</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/Table1/vendor/bootstrap/css/bootstrap.min.css}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/Table1/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/Table1/vendor/animate/animate.css}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/Table1/vendor/select2/select2.min.css}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/Table1/vendor/perfect-scrollbar/perfect-scrollbar.css}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/Table1/css/util.css}">
+
+
+  <link th:href="@{/css/addHall.css}" rel="stylesheet" />
+	<link th:href="@{/css/main.css}" rel="stylesheet" />
+
 </head>
-<body>
-<br/>
-<a th:href="@{'/indexHall'}"><button>Повернутися</button></a><br/>
-<h2>Додати зал засiдань</h2>
-<form th:action="@{/addHall}" th:object="${hallForm}" method="POST">
 
-    Назва зали:
-    <input required type="text" th:field="*{name}" value=0/>
-    <br/>
-    <br/>
-    Дата:
-    <input required type="date" th:field="*{date}" value=" " />
-    <br/>
-    <br/>
 
-    <input type="submit" value="Додати зал" />
+<body th:style="'background:url('+ @{/img/klov.jpg} +') no-repeat center fixed; background-size: cover;'">
+	<a class="navbar-logo" th:href="@{'/index'}"><img th:src="@{/img/img.png}"  height="60"/></a>
+	<ul class="menu-main">
+	<li><a th:href="@{'/hallEvents'}">Розклад</a></li>
+	<li><a th:href="@{'/indexHall'}">Додати зал</a></li>
+	<li><a th:href="@{'/indexUser'}">користувач</a></li>
+	<li><a th:href="@{'/settings/{id}'(id=${idhall})}">Налаштування</a></li>
+</ul>
 
-</form>
-<br>
+
+  <div id="footer">
+     &copy; All rights reserved. E.O.I
+    </div>
+  <div class="table100-body js-pscroll">
+
+
+    <!--tabl1-->
+    <form th:action="@{/addHall}" th:object="${hallForm}" method="POST">
+
+    	<div class="limiter">
+    		<div class="container-table100">
+    		  <div class="wrap-table100">
+    				<div class="table100 ver5 m-b-30">
+    					<table data-vertable="ver5">
+    						<thead>
+    							<tr class="row100 head">
+    								<th class="column100 column1" data-column="column1">Назва</th>
+    								<th class="column100 column2" data-column="column2">Дата</th>
+    								<th class="column100 column6" data-column="column3">Зберегти</th>
+    							</tr>
+    						</thead>
+            <div class="table100-body js-pscroll">
+    						<tbody>
+    							<tr class="row100">
+    								<td class="column100 column1" data-column="column1"><input required type="text" th:field="*{name}" value=0/></td>
+    								<td class="column100 column2" data-column="column2"><input required type="date" th:field="*{date}" value=" " /></td>
+    								<td class="column100 column3" data-column="column3"><button><div type="submit" class="galka">&#10004;</div></button> </td>   							</td>
+    							</tr>
+    						</tbody>
+             </div>
+              </table>
+    		   </div>
+    		 </div>
+
+      </div>
+    </div>
+    </form>
+
+    <!--tabl1-->
+
+
+
+
+<!--===============================================================================================-->
+  <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+  <script src="vendor/bootstrap/js/popper.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+  <script src="vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+  <script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+  <script>
+    $('.js-pscroll').each(function(){
+      var ps = new PerfectScrollbar(this);
+
+      $(window).on('resize', function(){
+        ps.update();
+      })
+    });
+    </script>
+  <!--===============================================================================================-->
+    <script src="js/main.js"></script>
+
 </body>
 </html>

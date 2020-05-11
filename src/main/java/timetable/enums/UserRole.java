@@ -2,6 +2,6 @@ package timetable.enums;
 
 public enum UserRole {
     USER,
-    SUPERUSER,
-    ADMIN;
+    ADMIN,
+    SUPERADMIN,
 }

@@ -1,74 +1,221 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Редагування справи</title>
-    <link th:href="@{/css/style.css}" rel="stylesheet" />
-</head>
+	<title>editEvent</title>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<body>
-<h1>Редагування розгляду справи </h1>
 
-<a href = "/hallEvents"><button>Повернутися</button></a> <br><br>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/editEvents.css}">
+<!--		<link rel="stylesheet" type="text/css" th:href="@{/editEventsCSS/main.css}">
+	===============================================================================================-->
 
-<form th:action="@{/editEvent}" th:object="${eventForm}" id="myform" method="POST">
 
-    Номер справи:
 
-    <input required type="text" th:field="*{Number}">
-    <br/>
-    <br/>
 
-    Cклад суду:
-    <textarea  rows = "5" cols = "45" th:field = "*{Composition}" name="lines" form = "myform" >... </textarea>
-    <br/>
-    <br/>
 
-    Час засiдання
-    <input required type="time" th:field="*{time}" value=0/>
-    <br/>
 
-    Позивач:
-    <textarea  rows = "1" cols = "45" th:field = "*{defendant}" name="lines" form = "myform" >... </textarea>
-    <br/>
+<body th:style="'background:url('+ @{/img/klov.jpg} +') no-repeat center fixed; background-size: cover;'">
+	<a class="navbar-logo" th:href="@{'/index'}"><img th:src="@{/img/img.png}"  height="60"/></a>
+<!--	<ul class="menu-main">
+	<li><a th:href="@{'/hallEvents'}">Розклад</a></li>
+	<li><a th:href="@{'/idexHall'}">Додати зал</a></li>
+	<li><a th:href="@{'/inexUser'}">користувач</a></li>
+	<li><a th:href="@{'/settings/{id}'(id=${idhall})}">Налаштування</a></li>
+</ul> -->
 
-    Вiдповiдач:
-    <textarea  rows = "1" cols = "45" th:field = "*{plaintiff}" name="lines" form = "myform" >... </textarea>
-    <br/>
 
-    Предмет позиву:
-    <textarea  rows = "1" cols = "45" th:field = "*{contestation}" name="lines" form = "myform" >... </textarea>
-    <br/>
+  <div id="footer">
+   &copy; All rights reserved. E.O.I
+  </div>
 
-    Зміст справи:
-    <textarea  rows = "10" cols = "45" th:field = "*{Description}" name="lines" form = "myform" >... </textarea>
-    <br/>
-    <br/>
 
-    Доповнення до статусу:
-    <textarea  rows = "1" cols = "45" th:field = "*{additionalstatus}" name="lines" form = "myform" >... </textarea>
-    <br/>
-    <br/>
+<a href = "/hallEvents"><button ><div class="vozvrat">&#10150;</button></a>
 
-    Дата розгляду справи:
 
-    <input required type="date" th:field="*{date}" />
-    <br/>
-    <br/>
-    Статус справи:
+	<!--tabl1-->
+	<form th:action="@{/editEvent}" th:object="${eventForm}" id="myform" method="POST">
 
-    <select  th:field="*{estatus}">
-        <option  th:each ="status : ${statuses}" th:value="${status.id}"><h2 th:utext="${status.status}"></h2></option>
-    </select>
-    <br/>
-    <br/>
-    Оберiть номер зали:
-       <select  th:field="*{Hall_number}">
-            <option  th:each ="hall : ${halls}" th:value="${hall.id}"><h2 th:utext="${hall.name}"></h2></option>
-        </select>
-    <br/>
+		<div class="limiter">
+			<div class="container-table100">
+				<div class="wrap-table100">
+					<div class="table100 ver5 m-b-100">
+						<table data-vertable="ver5">
+							<thead>
+								<tr class="row100 head">
+									<th class="column100 column1" data-column="column1">Назва</th>
+									<th class="column100 column2" data-column="column2">Ведіть чи оберіть текст(дату)</th>
+								</tr>
+							</thead>
+							</table>
+						</div>
+			<!--		<div class="table100-body js-pscroll"> -->
+			<div class="table100-body js-pscroll">
+				<table>
+							<tbody>
+								<tr class="row100">
+									<td class="column100 column1" data-column="column1">Номер справи</td>
+									<td class="column100 column2" data-column="column2"><textarea placeholder="Введіть текст" class="txta" th:field="*{Number}"></textarea></td>
+								</tr>
+								<tr class="row100">
+									<td class="column100 column1" data-column="column1">Cклад суду</td>
+									<td class="column100 column2" data-column="column2"><textarea placeholder="TВведіть текст" class="txta" th:field = "*{Composition}"></textarea></td>
+								</tr>
+								<tr class="row100">
+									<td class="column100 column1" data-column="column1">Час засiдання</td>
+									<td class="column100 column2" data-column="column2"><textarea placeholder="Введіть текст" class="txta" th:field="*{time}"></textarea></td>
+								</tr>
+								<tr class="row100">
+									<td class="column100 column1" data-column="column1">Позивач</td>
+									<td class="column100 column2" data-column="column2"><textarea placeholder="Введіть текст" class="txta" th:field = "*{defendant}"></textarea></td>
+								</tr>
+								<tr class="row100">
+									<td class="column100 column1" data-column="column1">Вiдповiдач</td>
+									<td class="column100 column2" data-column="column2"><textarea placeholder="Введіть текст" class="txta" th:field = "*{plaintiff}"></textarea></td>
+								</tr>
+								<tr class="row100">
+									<td class="column100 column1" data-column="column1">Предмет позиву</td>
+									<td class="column100 column2" data-column="column2"><textarea placeholder="Введіть текст" class="txta" th:field = "*{contestation}"></textarea></td>
+								</tr>
+								<tr class="row100">
+									<td class="column100 column1" data-column="column1">Зміст справи</td>
+									<td class="column100 column2" data-column="column2"><textarea placeholder="Введіть текст" class="txta" th:field = "*{Description}"></textarea></td>
+								</tr>
+								<tr class="row100">
+									<td class="column100 column1" data-column="column1">Доповнення до статусу</td>
+									<td class="column100 column2" data-column="column2"><textarea placeholder="Введіть текст" class="txta" th:field = "*{additionalstatus}"></textarea></td>
+								</tr>
+								<tr class="row100">
+									<td class="column100 column1" data-column="column1">Дата розгляду справ</td>
+									<td class="column100 column2" data-column="column2"><input required type="date" th:field="*{date}" /></td>
+								</tr>
+								<tr class="row100">
+									<td class="column100 column1" data-column="column1">Статус справи</td>
+									<td class="column100 column2" data-column="column2"><select  th:field="*{estatus}">
+									<option  th:each ="status : ${statuses}" th:value="${status.id}"><h2 th:utext="${status.status}"></h2></option>
+									</select>
+								  </td>
+									<tr class="row100">
+										<td class="column100 column1" data-column="column1">Оберiть номер зали</td>
+										<td class="column100 column2" data-column="column2">
+											<select  th:field="*{Hall_number}"><option  th:each ="hall : ${halls}" th:value="${hall.id}"><h2 th:utext="${hall.name}"></h2></option>
+	                 </select>
+									  </td>
+										<tr class="row100">
+											<td class="column100 column1" data-column="column1">Зберегти</td>
+											<td class="column100 column3" data-column="column3"><input type="submit" value="" /><button ><div class="galka">&#10004;</div></button></td>
+							  	</tr>
 
-    <input type="submit" value="Зберегти" />
+							</tbody>
+
+
+				<!-- </div> -->
+				 	</table>
+			 </div>
+     </div>
+		</div>
+	</div>
+	</form>
+
+	<!--tabl1-->
+
+
+
+
+
+
+<!--tabl2-->
+
+<!--tabl2-->
+
+<!--tabl3-->
+
+<!--tabl3-->
+
+<!--tabl4-->
+
+
+
+<!--tabl4-->
+
+
+
+
+<!-- -->
+
 </form>
+<!-- script textarea
+<script>
+// Targets all textareas with class "txta"
+let textareas = document.querySelectorAll('.txta'),
+    hiddenDiv = document.createElement('div'),
+    content = null;
+
+// Adds a class to all textareas
+for (let j of textareas) {
+  j.classList.add('txtstuff');
+}
+
+// Build the hidden div's attributes
+
+// The line below is needed if you move the style lines to CSS
+// hiddenDiv.classList.add('hiddendiv');
+
+// Add the "txta" styles, which are common to both textarea and hiddendiv
+// If you want, you can remove those from CSS and add them via JS
+hiddenDiv.classList.add('txta');
+
+// Add the styles for the hidden div
+// These can be in the CSS, just remove these three lines and uncomment the CSS
+hiddenDiv.style.display = 'none';
+hiddenDiv.style.whiteSpace = 'pre-wrap';
+hiddenDiv.style.wordWrap = 'break-word';
+
+// Loop through all the textareas and add the event listener
+for(let i of textareas) {
+  (function(i) {
+    // Note: Use 'keyup' instead of 'input'
+    // if you want older IE support
+    i.addEventListener('input', function() {
+
+      // Append hiddendiv to parent of textarea, so the size is correct
+      i.parentNode.appendChild(hiddenDiv);
+
+      // Remove this if you want the user to be able to resize it in modern browsers
+      i.style.resize = 'none';
+
+      // This removes scrollbars
+      i.style.overflow = 'hidden';
+
+      // Every input/change, grab the content
+      content = i.value;
+
+      // Add the same content to the hidden div
+
+      // This is for old IE
+      content = content.replace(/\n/g, '<br>');
+
+      // The <br ..> part is for old IE
+      // This also fixes the jumpy way the textarea grows if line-height isn't included
+      hiddenDiv.innerHTML = content + '<br style="line-height: 3px;">';
+
+      // Briefly make the hidden div block but invisible
+      // This is in order to read the height
+      hiddenDiv.style.visibility = 'hidden';
+      hiddenDiv.style.display = 'block';
+      i.style.height = hiddenDiv.offsetHeight + 'px';
+
+      // Make the hidden div display:none again
+      hiddenDiv.style.visibility = 'visible';
+      hiddenDiv.style.display = 'none';
+    });
+  })(i);
+}
+</script>
+script textarea -->
+
+
+
+
 </body>
 </html>
