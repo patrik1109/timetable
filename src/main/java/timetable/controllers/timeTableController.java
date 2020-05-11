@@ -3,6 +3,7 @@ package timetable.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import timetable.thymeleaf_form.HallEventsForm;
 import timetable.thymeleaf_form.HallForm;
 import timetable.thymeleaf_form.UserForm;
 import timetable.utils.DummyContentUtil;
+import timetable.utils.FillForms;
 
 import java.sql.Time;
 import java.util.*;
@@ -74,7 +76,7 @@ public class timeTableController {
     @RequestMapping(value = { "/AddEvent" }, method = RequestMethod.GET )
     public ModelAndView addEvent(ModelAndView model){
         ModelAndView newModel = new ModelAndView("AddEvent");
-        List<HallResponse> hallResponses = fillHallResponse(hallRepository.findAll());
+        List<HallResponse> hallResponses = FillForms.fillHallResponse(hallRepository.findAll());
 
 
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
@@ -194,7 +196,7 @@ public class timeTableController {
     @RequestMapping(value = { "/hallEvents" }, method = RequestMethod.GET)
     public ModelAndView editHallEvents() {
         ModelAndView NewModel = new ModelAndView("hallEvents");
-        List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
+        List<HallResponse> halls = FillForms.fillHallResponse(hallRepository.findAll());
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
         HallEventsForm hallEventsForm = new HallEventsForm();
         EventForm eventForm = new EventForm();
@@ -215,7 +217,7 @@ public class timeTableController {
         //ModelAndView NewModel = new ModelAndView("hallEvents");
         HallEventsForm newEventsForm = new HallEventsForm();
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
-        List<HallResponse> halls = fillHallResponse(hallRepository.findAll());
+        List<HallResponse> halls = FillForms.fillHallResponse(hallRepository.findAll());
         EventForm neweventForm = new EventForm();
        if(halleventsForm.getDateStart()!=null) {
            Date dateStart = halleventsForm.getDateStart();
@@ -277,7 +279,7 @@ public class timeTableController {
         eventForm = sethideFields(hiddenColomns,eventForm);
 
 
-        List<HallResponse> hallResponses = fillHallResponse(hallRepository.findAll());
+        List<HallResponse> hallResponses = FillForms.fillHallResponse(hallRepository.findAll());
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
 
 
@@ -333,14 +335,14 @@ public class timeTableController {
     //   PART OF HALL CONTROLLERS
     //
 
-    @Transactional
+   /* @Transactional
     @GetMapping(value = { "/", "/index" } )
     public ModelAndView addEvent(Map<String, Object> model){
 
         List<HallResponse> halls = new LinkedList<>();
         List<UserResponse> users = new LinkedList<>();
-        halls = fillHallResponse(hallRepository.findAll());
-        users = fillUserResponse(userRepository.findAll());
+        halls = FillForms.fillHallResponse(hallRepository.findAll());
+        users = FillForms.fillUserResponse(userRepository.findAll());
         Integer idhall =0;
 
             if(halls!=null) {
@@ -351,13 +353,13 @@ public class timeTableController {
         NewModel.addObject("users",users);
         NewModel.addObject("idhall",idhall);
         return  NewModel;
-    }
+    }*/
 
    @RequestMapping(value = {"indexHall"},method = RequestMethod.GET)
    public ModelAndView indexHall(){
        ModelAndView NewModel = new ModelAndView("indexHall");
        List<HallResponse> halls = new LinkedList<>();
-       halls = fillHallResponse(hallRepository.findAll());
+       halls = FillForms.fillHallResponse(hallRepository.findAll());
        Integer idhall =0;
 
        if(halls!=null) {
@@ -369,24 +371,7 @@ public class timeTableController {
        return NewModel;
    }
 
-    @RequestMapping(value = {"indexUser"},method = RequestMethod.GET)
-    public ModelAndView indexUser(){
-        ModelAndView NewModel = new ModelAndView("indexUser");
-        List<UserResponse> users = new LinkedList<>();
-        Integer idhall = 0;
-        List<HallResponse> halls = new LinkedList<>();
 
-        users = fillUserResponse(userRepository.findAll());
-            halls = fillHallResponse(hallRepository.findAll());
-                if(halls!=null) {
-                    idhall = halls.get(0).getId();
-            }
-        NewModel.addObject("idhall",idhall);
-        NewModel.addObject("users",users);
-
-        return NewModel;
-    }
-    
 
     @RequestMapping(value = { "/settings/{idhall}" }, method = RequestMethod.GET)
     public ModelAndView settings(Map<String, Object> model,@PathVariable Integer idhall){
@@ -551,93 +536,7 @@ public class timeTableController {
 
         return model;
     }
-//=========================================================================================================================
-    //
-    // USERS PART METHODS
-    //
-//=========================================================================================================================
-@Transactional
-@GetMapping(value = {  "/users" } )
-public ModelAndView users(Map<String, Object> model){
-    List<User> userList = userRepository.findAll();
-    List<UserResponse> responses =  new LinkedList<>();
-        for (User user : userList )
-            {
-                UserResponse response = new UserResponse();
-                response.setId(user.getId());
-                response.setUsername(user.getUsername());
-                response.setRole(user.getRole());
-                response.setPassword(user.getPassword());
 
-                responses.add(response);
-            }
-
-    ModelAndView NewModel = new ModelAndView("userList");
-    NewModel.addObject("users",responses);
-    return  NewModel;
-}
-
-    @GetMapping("/deleteUser/{id}")
-    public ModelAndView deleteUser(@PathVariable Integer id) {
-        userRepository.deleteUserbyId(id);
-        return new ModelAndView("redirect:/index");
-    }
-
-    @Transactional
-    @RequestMapping(value = { "/addUser" }, method = RequestMethod.GET )
-    public ModelAndView addUser(ModelAndView model){
-        ModelAndView newModel = new ModelAndView("addUser");
-        UserForm userForm = new UserForm();
-        newModel.addObject("userForm", userForm);
-        return  newModel;
-    }
-
-    @RequestMapping(value = { "/addUser" }, method = RequestMethod.POST)
-    public ModelAndView addUser(ModelAndView model, @ModelAttribute("userForm") UserForm userForm) {
-        User newUser = new User();
-        newUser.setName(userForm.getUsername());
-        newUser.setUsername(userForm.getUsername());
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String password = passwordEncoder.encode(userForm.getPassword());
-        newUser.setPassword(password);
-        newUser.setRole(userForm.getRole());
-        userRepository.saveUser(newUser);
-        return new ModelAndView("redirect:/index");
-    }
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @RequestMapping(value = { "/editUser/{id}" }, method = RequestMethod.GET)
-    public ModelAndView editUser(@PathVariable Integer id) {
-        ModelAndView newModel = new ModelAndView("editUser");
-        UserForm userForm = new UserForm();
-        user = userRepository.getUserById(id);
-            userForm.setUsername(user.getUsername());
-            userForm.setRole(user.getRole());
-            userForm.setPassword(user.getPassword());
-             newModel.addObject("userForm", userForm);
-             newModel.addObject("user",user);
-        return  newModel;
-    }
-
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @RequestMapping(value = { "/editUser" }, method = RequestMethod.POST)
-    public ModelAndView editUser(ModelAndView model,    @ModelAttribute("userForm") UserForm userForm) {
-        int id = user.getId();
-        String name =userForm.getUsername();
-        String email = userForm.getEmail();      
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String password = passwordEncoder.encode(userForm.getPassword());
-        UserRole role =userForm.getRole();
-
-        if (id !=0   ) {
-            userRepository.updateUser(id,name,role, email, password);
-            return new ModelAndView("redirect:/index");
-        }
-        model.addObject("errorMessage", errorMessage);
-
-        return model;
-    }
 //===========================================================================================================================
   //
   // SUPPORT PART OF METHODS
@@ -707,30 +606,6 @@ public ModelAndView users(Map<String, Object> model){
 
 
 
-    private  List<HallResponse> fillHallResponse (List<Hall> hallList){
-        List<HallResponse> halls = new LinkedList<>();
-            for (Hall hall: hallList) {
-                HallResponse hallResponse = new HallResponse();
-                hallResponse.setName(hall.getName());
-                hallResponse.setDate(hall.getDate());
-                hallResponse.setId(hall.getId());
-                hallResponse.setEventSet(hall.getEventSet());
-            halls.add(hallResponse);
-        }
-      return  halls;
-    }
-    private List<UserResponse> fillUserResponse(List<User> userList) {
-        List<UserResponse> users = new LinkedList<>();
-        for(User user : userList){
-            UserResponse userResponse = new UserResponse();
-            userResponse.setId(user.getId());
-            userResponse.setUsername(user.getUsername());
-            userResponse.setPassword(user.getPassword());
-            userResponse.setRole(user.getRole());
-            users.add(userResponse);
-        }
-        return users;
-    }
 
     private List<ParameterResponse> fillParameterResponce(List<Parameter> parameterList) {
         List<ParameterResponse> parameters = new LinkedList<>();
