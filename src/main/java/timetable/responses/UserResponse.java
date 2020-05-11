@@ -1,18 +1,19 @@
 package timetable.responses;
 
-import timetable.enums.UserRole;
+import timetable.enums.Role;
+import timetable.enums.Role;
 
 public class UserResponse {
     int id;
     String username;
     String name;
-    UserRole role;
+    Role role;
     String password;
 
     public UserResponse() {
     }
 
-    public UserResponse(int id, String username, UserRole role, String password) {
+    public UserResponse(int id, String username, Role role, String password) {
         this.id = id;
         this.username = username;
         this.role = role;
@@ -45,11 +46,11 @@ public class UserResponse {
         this.username = username;
     }
 
-    public UserRole getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

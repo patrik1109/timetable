@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import timetable.entities.User;
-import timetable.enums.UserRole;
+import timetable.enums.Role;
 import timetable.repository.UserRepository;
 import timetable.responses.HallResponse;
 import timetable.responses.UserResponse;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@PreAuthorize("hasAuthority('ADMIN')")
+//@PreAuthorize("hasAuthority('ADMIN')")
 public class secyrityController {
     @Autowired
     UserService userRepository;
@@ -125,7 +125,7 @@ public class secyrityController {
         String email = userForm.getEmail();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String password = passwordEncoder.encode(userForm.getPassword());
-        UserRole role =userForm.getRole();
+        Role role =userForm.getRole();
 
         if (id !=0   ) {
             userRepository.updateUser(id,name,role, email, password);

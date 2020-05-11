@@ -1,16 +1,17 @@
 package timetable.thymeleaf_form;
 
-import timetable.enums.UserRole;
+import timetable.enums.Role;
+import timetable.enums.Role;
 
 public class UserForm {
     int id;
     String username;
-    UserRole role;
+    Role role;
     String email;
     String password;
     String confirmpassword;
 
-    public UserForm(int id, String username, UserRole role, String email, String password, String confirmpassword) {
+    public UserForm(int id, String username, Role role, String email, String password, String confirmpassword) {
         this.id = id;
         this.username = username;
         this.role = role;
@@ -56,11 +57,11 @@ public class UserForm {
         this.username = username;
     }
 
-    public UserRole getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

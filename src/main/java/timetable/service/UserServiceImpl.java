@@ -5,13 +5,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import timetable.entities.Event;
 import timetable.entities.User;
-import timetable.enums.UserRole;
+import timetable.enums.Role;
 import timetable.repository.UserRepository;
-
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class UserServiceImpl implements UserService,UserDetailsService {
@@ -42,7 +40,7 @@ public class UserServiceImpl implements UserService,UserDetailsService {
     }
 
     @Override
-    public void updateUser(int id, String username, UserRole role, String email, String password) {
+    public void updateUser(int id, String username, Role role, String email, String password) {
     	User updUser = repository.getById(id);
     	if(updUser != null) 
     	{

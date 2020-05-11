@@ -2,7 +2,8 @@ package timetable.entities;
 
 
 import org.hibernate.search.annotations.Indexed;
-import timetable.enums.UserRole;
+import timetable.enums.Role;
+import timetable.enums.Role;
 import java.util.Date;
 import java.util.Set;
 import javax.persistence.*;
@@ -38,7 +39,7 @@ public class User {
 
     //@CollectionTable(name="user_role",joinColumns = @JoinColumn(name="id"))
     @Enumerated(EnumType.ORDINAL)
-    private UserRole role;
+    private Role role;
     
     
     public String getEmail() {
@@ -91,11 +92,11 @@ public class User {
         this.username = username;
     }
 
-    public UserRole getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -107,11 +108,11 @@ public class User {
         this.password = password;
     }
 
-    public UserRole getRoles() {
+    public Role getRoles() {
         return role;
     }
 
-    public void setRoles (UserRole role) {
+    public void setRoles (Role role) {
         this.role = role;
     }
 
