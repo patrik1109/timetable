@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService,UserDetailsService {
     	if(updUser != null) 
     	{
     		updUser.setUsername(username);
-    		updUser.setRole(role);
+    		//updUser.setRole(role);
     		updUser.setEmail(email);
     		updUser.setPassword(password);
     		repository.save(updUser);
