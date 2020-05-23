@@ -47,7 +47,7 @@
 							<tbody>
 								<tr class="row100" th:each ="user : ${users}">
 									<td class="cell100 column1" data-column="column1"><h3 th:utext="${user.username}"></h3></td>
-									<td class="cell100 column2" data-column="column1">admin or user</td>
+									<td class="cell100 column2" data-column="column1"><h3 th:utext="${user.roles}"></h3></td>
 									<td class="cell100 column3" data-column="column1">название залов</td>
 									<td class="cell100 column4" data-column="column1">
 										<a th:href="@{'editUser/{id}'(id=${user.id})}"><button ><div class="krest">&#9998;</button></a>

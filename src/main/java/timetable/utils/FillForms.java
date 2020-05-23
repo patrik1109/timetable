@@ -1,9 +1,8 @@
 package timetable.utils;
 
 import timetable.entities.Hall;
-import timetable.entities.User;
 import timetable.responses.HallResponse;
-import timetable.responses.UserResponse;
+
 
 import java.util.LinkedList;
 import java.util.List;
@@ -25,7 +24,7 @@ public  class FillForms {
         return  halls;
     }
 
-    public static List<UserResponse> fillUserResponse(List<User> userList) {
+  /*  public static List<UserResponse> fillUserResponse(List<User> userList) {
         List<UserResponse> users = new LinkedList<>();
         for(User user : userList){
             UserResponse userResponse = new UserResponse();
@@ -36,5 +35,5 @@ public  class FillForms {
             users.add(userResponse);
         }
         return users;
-    }
+    }*/
 }
