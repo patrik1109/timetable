@@ -4,29 +4,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import timetable.entities.*;
-import timetable.enums.UserRole;
 import timetable.responses.EventResponse;
 import timetable.responses.*;
 import timetable.service.*;
 import timetable.thymeleaf_form.*;
 import timetable.responses.HallResponse;
-import timetable.responses.UserResponse;
 import timetable.service.EventService;
 import timetable.service.HallService;
-import timetable.service.UserService;
 import timetable.thymeleaf_form.EventForm;
 import timetable.thymeleaf_form.HallEventsForm;
 import timetable.thymeleaf_form.HallForm;
-import timetable.thymeleaf_form.UserForm;
-import timetable.utils.DummyContentUtil;
 import timetable.utils.FillForms;
-
-import java.sql.Time;
 import java.util.*;
 
 import java.lang.reflect.Field;
@@ -41,9 +35,6 @@ public class timeTableController {
     HallService hallRepository;
 
     @Autowired
-    UserService userRepository;
-
-    @Autowired
     StatusEventService statusEventRepository;
 
     @Autowired
@@ -55,7 +46,6 @@ public class timeTableController {
 
     private volatile Event event;
     private volatile Hall hall;
-    private volatile User user;
     private volatile List<Parameter> parameterList;
     private Integer idHallbydefault;
     @Value("${error.message}")
@@ -300,6 +290,11 @@ public class timeTableController {
         newModel.addObject("statuses",statuses);
         return  newModel;
     }
+    @RequestMapping(value = {"/my-error-page"},method = RequestMethod.GET)
+    public ModelAndView errorPage(){
+        return new ModelAndView("errorPage");
+    }
+
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @RequestMapping(value = { "/editEvent" }, method = RequestMethod.POST)
@@ -335,45 +330,49 @@ public class timeTableController {
     //   PART OF HALL CONTROLLERS
     //
 
-   /* @Transactional
-    @GetMapping(value = { "/", "/index" } )
-    public ModelAndView addEvent(Map<String, Object> model){
 
+    @GetMapping(value = {"/" } )
+    public ModelAndView main(Map<String, Object> model){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username =new String();
+        if(principal instanceof UserDetails){
+            username = ((UserDetails) principal).getUsername();
+        }
+        else{
+            username = principal.toString();
+        }
+        ModelAndView newmodel = new ModelAndView("greeting");
+        newmodel.addObject("username",username);
+        return newmodel;
+    }
+    @GetMapping(value = {"/index"} )
+    public ModelAndView index(Map<String, Object> model){
         List<HallResponse> halls = new LinkedList<>();
-        List<UserResponse> users = new LinkedList<>();
-        halls = FillForms.fillHallResponse(hallRepository.findAll());
-        users = FillForms.fillUserResponse(userRepository.findAll());
-        Integer idhall =0;
+           halls = FillForms.fillHallResponse(hallRepository.findAll());
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username =new String();
+        if(principal instanceof UserDetails){
+            username = ((UserDetails) principal).getUsername();
+        }
+        else{
+            username = principal.toString();
+        }
+
+
+           Integer idhall =0;
 
             if(halls!=null) {
                  idhall = halls.get(0).getId();
             }
         ModelAndView NewModel = new ModelAndView("index");
         NewModel.addObject("halls",halls);
-        NewModel.addObject("users",users);
         NewModel.addObject("idhall",idhall);
         return  NewModel;
-    }*/
-
-   @RequestMapping(value = {"indexHall"},method = RequestMethod.GET)
-   public ModelAndView indexHall(){
-       ModelAndView NewModel = new ModelAndView("indexHall");
-       List<HallResponse> halls = new LinkedList<>();
-       halls = FillForms.fillHallResponse(hallRepository.findAll());
-       Integer idhall =0;
-
-       if(halls!=null) {
-           idhall = halls.get(0).getId();
-       }
-
-       NewModel.addObject("halls",halls);
-       NewModel.addObject("idhall",idhall);
-       return NewModel;
-   }
-
-
+    }
 
     @RequestMapping(value = { "/settings/{idhall}" }, method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" )
     public ModelAndView settings(Map<String, Object> model,@PathVariable Integer idhall){
         idHallbydefault = idhall;
         Hall hall = hallRepository.getHallById(idhall);
@@ -428,6 +427,7 @@ public class timeTableController {
         return  NewModel;
     }
     @Transactional
+    @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" )
     @RequestMapping(value = { "/settings" }, method = RequestMethod.POST)
     public ModelAndView settings(ModelAndView model,
                                  @ModelAttribute("settingForm") SettingForm settingFormHall,
@@ -448,12 +448,10 @@ public class timeTableController {
                     parameterRepository.saveParameter(parameter);
                 }
             }
-            //show hiden colomns in hall
            else if(hallForm.getId()!=0){
                return new ModelAndView("redirect:/settings/"+hallForm.getId());
            }
            else {
-              //Hall hall = hallRepository.getHallById(hidefieldsForm.getIdHall());
               Hall hall = hallRepository.getHallById(idHallbydefault);
               String fields = hidenfieldsfill(hidefieldsForm);
               hall.setHiddencolloms(fields);
@@ -463,18 +461,25 @@ public class timeTableController {
         return new ModelAndView("redirect:/settings/"+idHallbydefault);
     }
 
-    @Transactional
-    @RequestMapping(value = { "/createDummies" }, method = RequestMethod.GET )
-    public String createDummies() {
-    	
-    	List<User> users = DummyContentUtil.generateDummyUsers();
-    	
-    	users.stream().forEach((u) -> {userRepository.saveUser(u);});
-    	
-        return  "OK";
+    @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" )
+    @RequestMapping(value = {"indexHall"},method = RequestMethod.GET)
+    public ModelAndView indexHall(){
+        ModelAndView NewModel = new ModelAndView("indexHall");
+        List<HallResponse> halls = new LinkedList<>();
+        halls = FillForms.fillHallResponse(hallRepository.findAll());
+        Integer idhall =0;
+
+        if(halls!=null) {
+            idhall = halls.get(0).getId();
+        }
+
+        NewModel.addObject("halls",halls);
+        NewModel.addObject("idhall",idhall);
+        return NewModel;
     }
 
     @Transactional
+    @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" )
     @RequestMapping(value = { "/addHall" }, method = RequestMethod.GET )
     public ModelAndView addHall(ModelAndView model){
         ModelAndView newModel = new ModelAndView("addHall");
@@ -484,6 +489,7 @@ public class timeTableController {
         return  newModel;
     }
 
+    @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" )
     @RequestMapping(value = { "/addHall" }, method = RequestMethod.POST)
     public ModelAndView addHall(ModelAndView model, @ModelAttribute("hallForm") HallForm hallForm) {
 
@@ -495,7 +501,7 @@ public class timeTableController {
 
     }
 
-
+    @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" )
     @GetMapping("/deleteHall/{id}")
     public ModelAndView deleteHall(@PathVariable Integer id) {
         Hall tmphall =  hallRepository.getHallById(id);
@@ -505,6 +511,7 @@ public class timeTableController {
     }
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" )
     @RequestMapping(value = { "/editHall/{id}" }, method = RequestMethod.GET)
     public ModelAndView editHall(@PathVariable Integer id) {
         ModelAndView newModel = new ModelAndView("editHall");
@@ -521,6 +528,7 @@ public class timeTableController {
 
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" )
     @RequestMapping(value = { "/editHall" }, method = RequestMethod.POST)
     public ModelAndView editHall(ModelAndView model,    @ModelAttribute("eventHall") HallForm hallForm) {
         String hiddencolloms = new String();
@@ -536,6 +544,7 @@ public class timeTableController {
 
         return model;
     }
+
 
 //===========================================================================================================================
   //

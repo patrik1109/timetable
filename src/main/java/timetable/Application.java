@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
-import timetable.entities.User;
-import timetable.utils.DummyContentUtil;
+
 
 
 @SpringBootApplication
@@ -21,6 +20,6 @@ public class Application extends SpringBootServletInitializer{
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(Application.class);
     }
-    
+
    
 }

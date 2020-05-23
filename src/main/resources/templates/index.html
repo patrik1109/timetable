@@ -14,6 +14,10 @@
 
 <body th:style="'background:url('+ @{/img/klov.jpg} +') no-repeat center fixed; background-size: cover;'">
 
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+
     <a class="navbar-logo" th:href="@{'index'}"><img th:src="@{/img/img.png}"  height="60"/></a>
     <ul class="menu-main">
     <li><a th:href="@{'hallEvents'}">Розклад</a></li>

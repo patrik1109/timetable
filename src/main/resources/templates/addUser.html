@@ -1,47 +1,110 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
 <head>
-    <meta charset="UTF-8">
-    <title>Новий користувач</title>
-    <link th:href="@{/css/style.css}" rel="stylesheet" />
+	<title>addHall</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/Table1/vendor/bootstrap/css/bootstrap.min.css}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/Table1/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/Table1/vendor/animate/animate.css}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/Table1/vendor/select2/select2.min.css}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/Table1/vendor/perfect-scrollbar/perfect-scrollbar.css}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/Table1/css/util.css}">
+
+
+  <link th:href="@{/css/addUser.css}" rel="stylesheet}">
+	<link th:href="@{/css/main.css}" rel="stylesheet}">
+
 
 </head>
-<body>
 
 
-<a th:href="@{'/index'}"><button>Повернутися</button></a>
-<br>
-<br>
-<h2>Створити нового користувача</h2>
-<br>
+<body th:style="'background:url('+ @{/img/klov.jpg} +') no-repeat center fixed; background-size: cover;'">
+	<!--<a class="navbar-logo" th:href="@{'/index'}"><img th:src="@{/img/img.png}"  height="60"/></a>
+	<ul class="menu-main">
+	<li><a th:href="@{'/hallEvents'}">Розклад</a></li>
+	<li><a th:href="@{'/idexHall'}">Додати зал</a></li>
+	<li><a th:href="@{'/inexUser'}">користувач</a></li>
+	<li><a th:href="@{'/settings/{id}'(id=${idhall})}">Налаштування</a></li>
+ </ul>-->
+
+
+  <div id="footer">
+     &copy; All rights reserved. E.O.I
+    </div>
+
+
+<!--tabl1-->
 <form th:action="@{/addUser}" th:object="${userForm}" method="POST">
 
-    Назва користувача:
-    <input required type="text" th:field="*{username}" value=0/>
-    <br/>
-    <br/>
-    Пароль:
-    <input required type="password" th:field="*{password}" value=0 />
-    <br/>
-    <br/>
-    Пiтвердiть пароль:
-    <input required type="password" th:field="*{confirmpassword}" value=0 />
-    <br/>
-    <br/>
+  <div class="limiter">
+    <div class="container-table100">
+      <div class="wrap-table100">
+        <div class="table100 ver5 m-b-30">
+          <table data-vertable="ver5">
+            <thead>
+              <tr class="row100 head">
+                <th class="column100 column1" data-column="column1">Назва користувача</th>
+                <th class="column100 column2" data-column="column2">Пароль</th>
+                <th class="column100 column3" data-column="column3">Підтвердження</th>
+                <th class="column100 column4" data-column="column4">Стaтус кор.</th>
+                <!--<th class="column100 column5" data-column="column5">Оберіть зали</th>-->
+                <th class="column100 column5" data-column="column6">Додати</th>
+              </tr>
+            </thead>
+        <div class="table100-body js-pscroll">
+            <tbody>
+              <tr class="row100">
+                <td class="column100 column1" data-column="column1"><input required type="text" th:field="*{username}" value=0/></td>
+                <td class="column100 column2" data-column="column2"><input required type="password" th:field="*{password}" value=0 /></td>
+                <td class="column100 column3" data-column="column3"><input required type="password" th:field="*{confirmpassword}" value=0 /></td>
+                <td class="column100 column4" data-column="column4">
+                  <select  th:field="*{role}">
+                      <option  th:each ="role : ${T(timetable.enums.Role).values()}"
+                               th:value="${role}"><h2 th:utext="${role}"></h2></option>
+                  </select>
+                </td>
+               <td class="column100 column6" data-column="column6"><button><div type="submit" class="galka">&#10004;</div></button> </td>   							</td>
+              </tr>
+            </tbody>
+         </div>
+          </table>
+       </div>
+     </div>
 
-
-    Оберіть статус користувача:
-    <select  th:field="*{role}">
-        <option  th:each ="role : ${T(timetable.enums.UserRole).values()}"
-                 th:value="${role}"><h2 th:utext="${role}"></h2></option>
-    </select>
-    <br>
-    <br>
-
-    <input type="submit" value="Додати користувача" />
-
+  </div>
+</div>
 </form>
-<br>
-<br>
+
+<!--tabl1-->
+
+<!--===============================================================================================-->
+  <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+  <script src="vendor/bootstrap/js/popper.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+  <script src="vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+  <script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+  <script>
+    $('.js-pscroll').each(function(){
+      var ps = new PerfectScrollbar(this);
+
+      $(window).on('resize', function(){
+        ps.update();
+      })
+    });
+    </script>
+  <!--===============================================================================================-->
+    <script src="js/main.js"></script>
+
 </body>
 </html>
