@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
 <head>
-	<title>addHall</title>
+	<title>addUser</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -42,7 +42,7 @@
 
 
 <!--tabl1-->
-<form th:action="@{/addUser}" th:object="${userForm}" method="POST">
+<form th:action="@{/addUser}" name="userForm" th:object="${userForm}" method="POST">
 
   <div class="limiter">
     <div class="container-table100">
@@ -55,7 +55,6 @@
                 <th class="column100 column2" data-column="column2">Пароль</th>
                 <th class="column100 column3" data-column="column3">Підтвердження</th>
                 <th class="column100 column4" data-column="column4">Стaтус кор.</th>
-                <!--<th class="column100 column5" data-column="column5">Оберіть зали</th>-->
                 <th class="column100 column5" data-column="column6">Додати</th>
               </tr>
             </thead>
@@ -71,7 +70,9 @@
                                th:value="${role}"><h2 th:utext="${role}"></h2></option>
                   </select>
                 </td>
-               <td class="column100 column6" data-column="column6"><button><div type="submit" class="galka">&#10004;</div></button> </td>   							</td>
+               <td class="column100 column6" data-column="column6">
+                   <button onclick="return checkpassword()">
+                   <div type="submit" class="galka">&#10004;</div></button> </td>   							</td>
               </tr>
             </tbody>
          </div>
@@ -105,6 +106,18 @@
     </script>
   <!--===============================================================================================-->
     <script src="js/main.js"></script>
+<script>
+    function checkpassword() {
+    if(document.userForm.password.value != document.userForm.confirmpassword.value) {
+        alert("Будь ласка перевiрте пароль");
+        return false;
+    }
+
+    else {
+        document.userForm.submit();
+    }
+}
+</script>
 
 </body>
 </html>
