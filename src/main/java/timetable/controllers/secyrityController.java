@@ -8,8 +8,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
 import timetable.entities.User;
-import timetable.enums.Role;
+
+
 import timetable.repository.UserRepo;
 import timetable.responses.HallResponse;
 import timetable.service.HallService;
@@ -19,12 +21,10 @@ import timetable.utils.FillForms;
 import java.util.*;
 
 import static java.util.Collections.*;
-import static timetable.enums.Role.ADMIN;
-import static timetable.enums.Role.USER;
+
 
 @RestController
 @PreAuthorize("hasAuthority('SUPERADMIN')")
-//@PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" )
 public class secyrityController {
     @Autowired
     UserRepo userRepo;
@@ -73,6 +73,7 @@ public class secyrityController {
 
     @RequestMapping(value = { "/addUser" }, method = RequestMethod.POST)
     public ModelAndView addUser(ModelAndView model, @ModelAttribute("userForm") UserForm userForm,User user) {
+
         user.setActive(true);
         user.setRoles(singleton(userForm.getRole()));
 

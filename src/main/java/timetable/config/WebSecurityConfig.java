@@ -8,8 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-/*import timetable.back.CustomAccessDeniedHandler;*/
-
 import javax.sql.DataSource;
 
 
@@ -29,7 +27,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/showHall/{id}").permitAll()
                     .anyRequest().authenticated()
-                    .antMatchers("/indexUser").access("hasRole('ADMIN')")
+                    .antMatchers("/indexUser").access("hasRole('SADMIN')")
+
                 .and()
                     .formLogin()
                     .loginPage("/login")
