@@ -69,8 +69,6 @@ public class timeTableController {
     public ModelAndView addEvent(ModelAndView model){
         ModelAndView newModel = new ModelAndView("AddEvent");
         List<HallResponse> hallResponses = FillForms.fillHallResponse(hallRepository.findAll());
-
-
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
         EventForm eventForm = new EventForm();
         Date date = new Date();
@@ -211,6 +209,7 @@ public class timeTableController {
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
         List<HallResponse> halls = FillForms.fillHallResponse(hallRepository.findAll());
         EventForm neweventForm = new EventForm();
+
        if(halleventsForm.getDateStart()!=null) {
            Date dateStart = halleventsForm.getDateStart();
            int id = halleventsForm.getId();
@@ -318,9 +317,10 @@ public class timeTableController {
         String plaintiff = eventForm.getPlaintiff();
         String contestation = eventForm.getContestation();
         String additionalstatus = eventForm.getAdditionalstatus();
+        boolean hide = eventForm.isHide();
 
         if (idEvent !=0   ) {
-            eventRepository.updateEvent(idEvent,numberEvent,time,defendant,plaintiff,contestation,description,date,composition,additionalstatus,estatus,idHall);
+            eventRepository.updateEvent(idEvent,numberEvent,time,defendant,plaintiff,contestation,description,date,composition,additionalstatus,estatus,idHall,hide);
             return new ModelAndView("redirect:/hallEvents");
         }
         model.addObject("errorMessage", errorMessage);
@@ -428,6 +428,7 @@ public class timeTableController {
         NewModel.addObject("hallName",hallName);
         return  NewModel;
     }
+
     @Transactional
     @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" )
     @RequestMapping(value = { "/settings" }, method = RequestMethod.POST)
@@ -670,7 +671,7 @@ public class timeTableController {
         time.setHours(Integer.parseInt(hours[0]));
         time.setMinutes(Integer.parseInt(hours[1]));
         newEvent.setTime(time);
-
+        newEvent.setHide(eventForm.isHide());
         newEvent.setDate(eventForm.getDate());
         return newEvent;
     }
@@ -706,6 +707,7 @@ public class timeTableController {
                 response.setDefendant(event.getDefendant());
                 response.setPlaintiff(event.getPlaintiff());
                 response.setTime(event.getTime().toString());
+                response.setHide(event.isHide());
                 eventsresponse.add(response);
             }
         return eventsresponse;

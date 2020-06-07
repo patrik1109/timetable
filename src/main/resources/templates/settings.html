@@ -28,18 +28,18 @@
 
 <body th:style="'background:url('+ @{/img/klov.jpg} +') no-repeat center fixed; background-size: cover;'">
 	<a class="navbar-logo" th:href="@{'/index'}"><img th:src="@{/img/img.png}"  height="60"/></a>
+
 	<ul class="menu-main">
-	<li><a th:href="@{'/hallEvents'}">Розклад</a></li>
-	<li><a th:href="@{'/indexHall'}">Додати зал</a></li>
-	<li><a th:href="@{'/indexUser'}">користувач</a></li>
-	<li><a th:href="@{'/settings/{id}'(id=${idhall})}">Налаштування</a></li>
-</ul>
+		<li><a th:href="@{'/hallEvents'}">Розклад</a></li>
+		<li><a th:href="@{'/indexHall'}">Додати зал</a></li>
+		<li><a th:href="@{'/indexUser'}">користувач</a></li>
+		<li><a th:href="@{'/settings/{id}'(id=${idhall})}">Налаштування</a></li>
+	</ul>
 
 <div id="footer">
    &copy; All rights reserved. E.O.I
-  </div>
+</div>
 
-	<!--tabl4-->
 
 	<form class="UpDownLoadDB" th:action="@{/settings}" th:object="${hidefieldsForm}" method="POST">
 		<div class="limiter">

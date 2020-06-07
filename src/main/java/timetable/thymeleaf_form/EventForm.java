@@ -32,7 +32,19 @@ public class EventForm {
     public Date date;
 
     public int Hall_number;
+
     public int estatus;
+
+    public boolean hide;
+
+
+    public boolean isHide() {
+        return hide;
+    }
+
+    public void setHide(boolean hide) {
+        this.hide = hide;
+    }
 
     public String getAdditionalstatus() {
         return additionalstatus;
