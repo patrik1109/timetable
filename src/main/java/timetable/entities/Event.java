@@ -59,10 +59,13 @@ public class Event implements Serializable {
 
 	private int idHall;
 
+	@Column(name="hide")
+	private boolean hide;
+
     public Event() {
     }
 
-    public Event(int id, String number, Date time, String defendant, String plaintiff, String contestation, String description, Date date, String composition, String additionalstatus, int idStatus, int idHall) {
+    public Event(int id, String number, Date time, String defendant, String plaintiff, String contestation, String description, Date date, String composition, String additionalstatus, int idStatus, int idHall,boolean hide) {
         this.id = id;
         this.number = number;
         this.time = time;
@@ -75,6 +78,15 @@ public class Event implements Serializable {
         this.additionalstatus = additionalstatus;
         this.idStatus = idStatus;
         this.idHall = idHall;
+        this.hide = hide;
+    }
+
+    public boolean isHide() {
+        return hide;
+    }
+
+    public void setHide(boolean hide) {
+        this.hide = hide;
     }
 
     public Date getTime() {

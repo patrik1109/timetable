@@ -118,7 +118,10 @@
 										<td class="column100 column13" data-column="column14">
 											<span class="table-down glyphicon glyphicon-arrow-down"><button >&#11015;</button></span>
 										</td>
-										<td class="column100 column14" data-column="column15"><input type="checkbox  th:!!!!!! " unchecked field=""></td>
+										<!--<td th:text="#{|bool.${event.hide}|}">yes</td>-->
+										<td class="column100 column14" data-column="column15"th:text="${event.hide}? #{true} : #{false}" ></td>
+
+
 										<td class="column100 column15" data-column="column16">
 											<a th:href="@{'/editEvent/{id}'(id=${event.id})}" class="caseeditcol_admin redog"><button>&#9998;</button></a>
 										</td>
@@ -146,11 +149,11 @@
 										</td>
 										<td class="column100 column10" data-column="column10"><input required type="date" th:field="*{date}" value=0 /></td>
 										<td class="column100 column11" data-column="column11"><textarea placeholder="Доповненя до статусу" class="txta" th:field="*{additionalstatus}"></textarea></td>
-                    <td class="column100 column11" data-column="column11">
+                   					    <td class="column100 column11" data-column="column11">
 											<select  th:field="*{Hall_number}">
 													<option  th:each ="hall : ${halls}" th:value="${hall.id}"><h2 th:utext="${hall.name}"></h2></option>
 											</select>
-                    </td>
+                    					</td>
 										<td class="column100 column12" data-column="column12">
 											<span class="table-up glyphicon glyphicon-arrow-up"><button >&#11014;</button></span>
 										</td>
@@ -158,7 +161,7 @@
 											<span class="table-down glyphicon glyphicon-arrow-down"><button >&#11015;</button></span>
 										</td>
 										<td class="column100 column14" data-column="column14">
-											<input type="checkbox  !!!!!!!!!!!" unchecked field="">
+											<input type="checkbox" unchecked th:field="*{hide}">
 										</td>
 										<td class="column100 column15" data-column="column15">
 											<a href="@{'/editEvent/{id}'(id=${event.id})}  th:!!!!!!!!!!!!" class="caseeditcol_admin redog"><button>&#9998;</button></a>

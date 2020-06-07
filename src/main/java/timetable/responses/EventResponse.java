@@ -24,6 +24,15 @@ public class EventResponse {
     public String plaintiff;        // видповидач
     public String contestation;      // предмет позиву
     public String additionalstatus;   // доповнення до статусу
+    public boolean hide;
+
+    public boolean isHide() {
+        return hide;
+    }
+
+    public void setHide(boolean hide) {
+        this.hide = hide;
+    }
 
     public String getTime() {
         return time;
