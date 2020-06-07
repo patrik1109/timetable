@@ -20,6 +20,7 @@ public class errorHandler implements ErrorController {
 
     @RequestMapping(value = {"/error-page"},method = RequestMethod.GET)
     public ModelAndView errorPage(){
+
         return new ModelAndView("errorPage");
     }
 
@@ -47,7 +48,7 @@ public class errorHandler implements ErrorController {
             Integer statusCode = Integer.valueOf(status.toString());
 
             if(statusCode == HttpStatus.NOT_FOUND.value()) {
-                return new ModelAndView("redirect:/error404");//404
+                return new ModelAndView("redirect:/index");//404
             }
             else if(statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
                 return new ModelAndView("redirect:/error500");//500

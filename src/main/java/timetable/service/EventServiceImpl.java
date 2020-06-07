@@ -100,5 +100,10 @@ public class EventServiceImpl implements EventService{
         return repository.findAllWithCreationDateTimeandIdHall(date,id_hall);
     }
 
+    @Override
+    public List<Event> findAllByDateAndIdHallAndNohidden(Date date, int id_hall,boolean  flag) {
+        return repository.findAllWithDateandIdHallandNohidden(date,id_hall,flag);
+    }
+
 
 }
