@@ -19,6 +19,9 @@ public interface EventRepository extends JpaRepository<Event,Integer> {
     @Query(value= "select e from Event e where e.date = :date AND e.idHall =:idHall")
     List<Event> findAllWithCreationDateTimeandIdHall(@Param("date") Date date, @Param("idHall") int idHall );
 
+    @Query(value= "select e from Event e where e.date = :date AND e.idHall =:idHall AND e.hide =:flag")
+    List<Event> findAllWithDateandIdHallandNohidden(@Param("date") Date date, @Param("idHall") int idHall, @Param("flag") boolean flag);
+
 
   /*  @Query(value= "select e from Event e where e.date > :datestart AND e.date < :datefinish AND e.idHall =:idHall")
     List<Event> findAllWithCreationDateTimeandIdHall(@Param("datestart") Date datestart,@Param("datefinish") Date datefinish, @Param("idHall") int idHall );*/

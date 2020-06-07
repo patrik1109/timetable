@@ -8,23 +8,158 @@
     <!--<link rel="stylesheet" href="styles.css">-->
    <title>Авторизацiя</title>
 </head>
+<style>
 
+h1{
+  color: rgb(0, 39, 78);
+  margin: 20px auto 0;
+  width: 400px;
+  /*text-align: center;*/
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  margin-left: -160px;
+  margin-left: -160px;
+}
+
+ #bu{
+  color: white;
+  margin: 20px auto 0;
+  width: 400px;
+  /*text-align: center;*/
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  margin-left: -160px;
+  margin-left: -160px;
+}
+
+#wrapper{
+  position: absolute;
+  width: 320px;
+  left: 50%;
+  margin-left: -160px;
+  top: 60%;
+  margin-left: -160px;
+  opacity: 0.8;
+}
+
+/* === Sign in Form === */
+#loginForm {
+  height: 90px;
+  width: 300px;
+  border-radius: 8px;
+  position: relative;
+}
+#loginForm::before {
+  display: block;
+  position: relative;
+  height: 2px;
+  background: rgb(52, 56, 61);
+  content: '';
+  top: 44px;
+  margin-left: 20px;
+  z-index: 1;
+}
+#login_Input_email:last-of-type{
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+
+}
+
+#login_Input_psw:last-of-type{
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;}
+
+#login_Input_email[type="text"],
+#login_Input_psw[type="password"],
+#login_submit[type="submit"]
+{
+  background: rgb(28, 30, 33);
+  box-shadow: inset -100px -100px 0 rgb(28, 30, ); /*Prevent yellow autofill color*/
+  color: rgb(52, 56, 61);
+}
+#login_Input_email[type="text"],
+#login_Input_psw[type="password"]{
+  position: relative;
+  display: block;
+  width: 280px;
+  height: 45px;
+  border: 0;
+  outline: 0;
+  top: -2px;
+  padding: 0 0 0 20px;
+  font-weight: 700;
+}
+#login_Input_email[type="text"]:focus,
+#login_Input_psw[type="password"]:focus{
+  color: rgb(255, 255, 255);
+}
+#login_submit[type="submit"]{
+  display: block;
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  color: rgb(226, 15, 15);
+  border-radius: 50px;
+  outline: 0;
+  z-index: 2;
+  top: 19px;
+  right: -24px;
+  border: 3px solid rgb(52, 56, 61);
+  font-size: 25px;
+  text-indent: 0px;
+  padding-left: 9px;
+  padding-bottom: 3px;
+  text-align: center;
+}
+#login_submit[type="submit"]:hover{
+  color: rgb(0, 255, 21);
+  text-shadow: 0 0 10px rgb(0, 126, 165);
+  cursor: pointer;
+}
+
+#content {
+width: 500px; /* Ширина слоя */
+*margin: 0 auto 20px; /* Выравнивание по центру */
+}
+#footer {
+position: fixed; /* Фиксированное положение */
+left: 0; bottom: 0; /* Левый нижний угол */
+padding: 10px; /* Поля вокруг текста */
+background: rgb(0, 39, 78); /* Цвет фона */
+color: #fff; /* Цвет текста */
+width: 100%; /* Ширина слоя */}
+
+
+body{
+  background: url(grey);
+}
+</style>
 <body>
 
-<div th:if="${param.error}">
+<div id="bu" th:if="${param.error}">
     Invalid username and password.
 </div>
-<div th:if="${param.logout}">
+<div id="bu" th:if="${param.logout}">
     You have been logged out.
 </div>
 
-<h1 id="loginHeader">Верховний Суд</h1>
+<h1>Верховний Суд</h1>
+<div id="wrapper">
+<form class="login_Form" ID="loginForm" th:action="@{/login}" method="post">
+    <div ><label><input id="login_Input_email" type="text" name="username" placeholder="username"/> </label></div>
+    <div ><label><input id="login_Input_psw" type="password" name="password" placeholder="password"/> </label></div>
 
-<form th:action="@{/login}" method="post">
-    <div><label> User Name : <input type="text" name="username"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
-
-    <div><input type="submit" value="Sign In"/></div>
+    <div><input  id="login_submit" type="submit" value="&#xf061;"/></div>
 </form>
+
+
+</div>
+</div>
+<div id="footer">
+   &copy; All rights reserved. E.O.I
+  </div>
+
 </body>
 </html>
