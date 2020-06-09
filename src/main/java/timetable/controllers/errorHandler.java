@@ -48,7 +48,7 @@ public class errorHandler implements ErrorController {
             Integer statusCode = Integer.valueOf(status.toString());
 
             if(statusCode == HttpStatus.NOT_FOUND.value()) {
-                return new ModelAndView("redirect:/index");//404
+                return new ModelAndView("redirect:/");//404
             }
             else if(statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
                 return new ModelAndView("redirect:/error500");//500
