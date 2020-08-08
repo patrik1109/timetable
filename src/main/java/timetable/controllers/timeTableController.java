@@ -185,7 +185,7 @@ public class timeTableController {
     @Transactional
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @RequestMapping(value = { "/hallEvents" }, method = RequestMethod.GET)
-    public ModelAndView editHallEvents() {
+    public ModelAndView HallEvents() {
         ModelAndView NewModel = new ModelAndView("hallEvents");
         List<HallResponse> halls = FillForms.fillHallResponse(hallRepository.findAll());
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
@@ -202,7 +202,7 @@ public class timeTableController {
 
    @DateTimeFormat(pattern = "yyyy-MM-dd")
    @RequestMapping(value = { "/hallEvents" }, method = RequestMethod.POST)
-   public ModelAndView editHallEvents( ModelAndView model,
+   public ModelAndView HallEvents( ModelAndView model,
                                        @ModelAttribute ("hallEventsForm") HallEventsForm halleventsForm,
                                        @ModelAttribute ("eventForm") EventForm eventForm) {
         //ModelAndView NewModel = new ModelAndView("hallEvents");

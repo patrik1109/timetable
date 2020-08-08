@@ -53,11 +53,12 @@
 								</tr>
 								<tr class="row100">
 									<td class="column100 column1" data-column="column1">Cклад суду</td>
-									<td class="column100 column2" data-column="column2"><textarea placeholder="TВведіть текст" class="txta" th:field = "*{Composition}"></textarea></td>
+									<td class="column100 column2" data-column="column2"><textarea placeholder="ВВведіть текст" class="txta" th:field = "*{Composition}"></textarea></td>
 								</tr>
 								<tr class="row100">
 									<td class="column100 column1" data-column="column1">Час засiдання</td>
-									<td class="column100 column2" data-column="column2"><textarea placeholder="Введіть текст" class="txta" th:field="*{time}"></textarea></td>
+									<!--<td class="column100 column2" data-column="column2"><textarea placeholder="Введіть текст" class="txta" th:field="*{time}"></textarea></td>-->
+									<td class="column100 column2" data-column="column2"><input required type="time" th:field="*{time}"></textarea></td>
 								</tr>
 								<tr class="row100">
 									<td class="column100 column1" data-column="column1">Позивач</td>
