@@ -31,12 +31,22 @@ public class EventForm {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date date;
 
-    public int Hall_number;
+    public int Hall_number; //номер зали де проходить засiдання
 
     public int estatus;
 
-    public boolean hide;
+    public boolean hide; //сховати показати засiдання
 
+    public int ordernumber; //номер засiдання для сортування
+
+
+    public int getOrdernumber() {
+        return ordernumber;
+    }
+
+    public void setOrdernumber(int ordernumber) {
+        this.ordernumber = ordernumber;
+    }
 
     public boolean isHide() {
         return hide;

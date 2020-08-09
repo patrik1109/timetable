@@ -62,23 +62,36 @@ public class Event implements Serializable {
 	@Column(name="hide")
 	private boolean hide;
 
+	@Column(name="ordernumber")
+    int ordernumber;
+
+
     public Event() {
     }
 
-    public Event(int id, String number, Date time, String defendant, String plaintiff, String contestation, String description, Date date, String composition, String additionalstatus, int idStatus, int idHall,boolean hide) {
+    public Event(int id, String number, String defendant, String plaintiff, String contestation, String description, Date date, Date time, String composition, String additionalstatus, int idStatus, int idHall, boolean hide, int ordernumber) {
         this.id = id;
         this.number = number;
-        this.time = time;
         this.defendant = defendant;
         this.plaintiff = plaintiff;
         this.contestation = contestation;
         this.description = description;
         this.date = date;
+        this.time = time;
         this.composition = composition;
         this.additionalstatus = additionalstatus;
         this.idStatus = idStatus;
         this.idHall = idHall;
         this.hide = hide;
+        this.ordernumber = ordernumber;
+    }
+
+    public int getOrdernumber() {
+        return ordernumber;
+    }
+
+    public void setOrdernumber(int ordernumber) {
+        this.ordernumber = ordernumber;
     }
 
     public boolean isHide() {

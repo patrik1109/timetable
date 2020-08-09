@@ -48,6 +48,7 @@ public class timeTableController {
     private volatile Hall hall;
     private volatile List<Parameter> parameterList;
     private Integer idHallbydefault;
+    private Integer lastordernumber;
     @Value("${error.message}")
 
     final private String hold = "hold";
@@ -85,6 +86,9 @@ public class timeTableController {
 
     @RequestMapping(value = { "/AddEvent" }, method = RequestMethod.POST)
     public ModelAndView addEvent(ModelAndView model, @ModelAttribute("eventForm") EventForm eventForm) {
+        if(lastordernumber == null){
+            lastordernumber =0;
+        }
         Event newEvent = new Event();
         newEvent.setDate(eventForm.getDate());
         newEvent.setDescription(eventForm.getDescription());
@@ -92,8 +96,12 @@ public class timeTableController {
         newEvent.setNumber(eventForm.getNumber());
         newEvent.setIdStatus(eventForm.getEstatus());
         newEvent.setComposition(eventForm.getComposition());
+        newEvent.setOrdernumber(lastordernumber);
         eventRepository.saveEvent(newEvent);
+        lastordernumber++;
         int hall_Id = eventForm.getHall_number();
+
+
         return new ModelAndView("redirect:/hallEvents");
     }
 
@@ -214,7 +222,10 @@ public class timeTableController {
        if(halleventsForm.getDateStart()!=null) {
            Date dateStart = halleventsForm.getDateStart();
            int id = halleventsForm.getId();
+
            List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHall(dateStart, id));
+           List<EventResponse> eventresponseOrdered = fillEventRenspose(eventRepository.findAllWithDateandIdHallandNohiddenOrdered(dateStart, id,false));
+
            Hall hall =  hallRepository.getHallById(id);
            String hallName = hall.getName();
            Integer hallid = id;
@@ -319,9 +330,10 @@ public class timeTableController {
         String contestation = eventForm.getContestation();
         String additionalstatus = eventForm.getAdditionalstatus();
         boolean hide = eventForm.isHide();
+        int ordernumber = eventForm.getOrdernumber();
 
         if (idEvent !=0   ) {
-            eventRepository.updateEvent(idEvent,numberEvent,time,defendant,plaintiff,contestation,description,date,composition,additionalstatus,estatus,idHall,hide);
+            eventRepository.updateEvent(idEvent,numberEvent,time,defendant,plaintiff,contestation,description,date,composition,additionalstatus,estatus,idHall,hide,ordernumber);
             return new ModelAndView("redirect:/hallEvents");
         }
         model.addObject("errorMessage", errorMessage);
@@ -656,6 +668,9 @@ public class timeTableController {
     }
 
     private Event fillEventfromEventForm(EventForm eventForm) {
+        if(lastordernumber == null){
+            lastordernumber =0;
+        }
         Event newEvent = new Event();
         newEvent.setNumber(eventForm.getNumber());
         newEvent.setIdHall(eventForm.getHall_number());
@@ -666,6 +681,8 @@ public class timeTableController {
         newEvent.setDefendant(eventForm.getDefendant());
         newEvent.setPlaintiff(eventForm.getPlaintiff());
         newEvent.setAdditionalstatus(eventForm.getAdditionalstatus());
+        newEvent.setOrdernumber(lastordernumber);
+        lastordernumber++;
 
         Date time = eventForm.getDate();
         String[] hours = (eventForm.getTime().split(timePivot));
