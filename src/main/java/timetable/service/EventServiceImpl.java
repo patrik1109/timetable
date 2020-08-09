@@ -49,8 +49,8 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public void updateEvent(int id, String number, Date time, String defendant, String plaintiff, String contestation, String description, Date date, String composition, String additionalstatus, int idStatus, int idHall,boolean hide) {
-        Event newEvent = new Event(id,number,time,defendant,plaintiff,contestation,description,date,composition,additionalstatus,idStatus,idHall,hide);
+    public void updateEvent(int id, String number, Date time, String defendant, String plaintiff, String contestation, String description, Date date, String composition, String additionalstatus, int idStatus, int idHall,boolean hide,int ordernumber) {
+        Event newEvent = new Event(id,number,defendant,plaintiff,contestation,description,date,time,composition,additionalstatus,idStatus,idHall,hide,ordernumber);
         repository.save(newEvent);
     }
 
@@ -102,6 +102,11 @@ public class EventServiceImpl implements EventService{
 
     @Override
     public List<Event> findAllByDateAndIdHallAndNohidden(Date date, int id_hall,boolean  flag) {
+        return repository.findAllWithDateandIdHallandNohidden(date,id_hall,flag);
+    }
+
+    @Override
+    public List<Event>  findAllWithDateandIdHallandNohiddenOrdered (Date date, int id_hall,boolean  flag) {
         return repository.findAllWithDateandIdHallandNohidden(date,id_hall,flag);
     }
 
