@@ -20,4 +20,6 @@ public interface EventService {
     List<Event> findAllByDateAndIdHall(Date datestart, int id_hall );
     List<Event> findAllByDateAndIdHallAndNohidden(Date datestart, int id_hall,boolean flag);
     List<Event> findAllWithDateandIdHallandNohiddenOrdered (Date datestart, int id_hall,boolean flag);
+    List<Event> findAllWithDateandIdHallOrdered(Date date, int idHall);
+    Integer findMaxOrderNumberByDate(Date date,int idHall);
 }
