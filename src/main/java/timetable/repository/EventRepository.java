@@ -9,6 +9,7 @@ import timetable.entities.Event;
 import java.util.Date;
 import java.util.List;
 
+
 public interface EventRepository extends JpaRepository<Event,Integer> {
     List<Event> findAllByOrderByDateAsc();
 
@@ -22,12 +23,15 @@ public interface EventRepository extends JpaRepository<Event,Integer> {
     @Query(value= "select e from Event e where e.date = :date AND e.idHall =:idHall AND e.hide =:flag")
     List<Event> findAllWithDateandIdHallandNohidden(@Param("date") Date date, @Param("idHall") int idHall, @Param("flag") boolean flag);
 
-    @Query(value= "select e from Event e where e.date = :date AND e.idHall =:idHall AND e.hide =:flag order by ordernumber")
+    @Query(value= "select e from Event e where e.date = :date AND e.idHall =:idHall AND e.hide =:flag order by e.ordernumber")
     List<Event> findAllWithDateandIdHallandNohiddenOrdered(@Param("date") Date date, @Param("idHall") int idHall, @Param("flag") boolean flag);
-  /*  @Query(value= "select e from Event e where e.date > :datestart AND e.date < :datefinish AND e.idHall =:idHall")
-    List<Event> findAllWithCreationDateTimeandIdHall(@Param("datestart") Date datestart,@Param("datefinish") Date datefinish, @Param("idHall") int idHall );*/
 
-    /*List<Event> findAllByDateAndId_Hall(Date date,int idHall );*/
+    @Query(value= "select max(e.ordernumber) from Event e where e.date = :date AND e.idHall =:idHall ")
+    Integer findMaxOrderNumberByDate(@Param("date") Date date, @Param("idHall") int idHall);
+
+    @Query(value= "select e from Event e where e.date = :date AND e.idHall =:idHall  order by e.ordernumber")
+    List<Event> findAllWithDateandIdHallOrdered(@Param("date") Date date, @Param("idHall") int idHall);
+
 
 
 }

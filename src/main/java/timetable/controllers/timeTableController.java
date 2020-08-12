@@ -21,6 +21,8 @@ import timetable.thymeleaf_form.EventForm;
 import timetable.thymeleaf_form.HallEventsForm;
 import timetable.thymeleaf_form.HallForm;
 import timetable.utils.FillForms;
+
+import java.time.LocalDateTime;
 import java.util.*;
 
 import java.lang.reflect.Field;
@@ -47,8 +49,12 @@ public class timeTableController {
     private volatile Event event;
     private volatile Hall hall;
     private volatile List<Parameter> parameterList;
+
+    private volatile List<EventResponse> eventsresponse ;
+    private volatile Date currentdate ;
+
     private Integer idHallbydefault;
-    private Integer lastordernumber;
+
     @Value("${error.message}")
 
     final private String hold = "hold";
@@ -65,46 +71,47 @@ public class timeTableController {
 
 
 
-    @Transactional
-    @RequestMapping(value = { "/AddEvent" }, method = RequestMethod.GET )
-    public ModelAndView addEvent(ModelAndView model){
-        ModelAndView newModel = new ModelAndView("AddEvent");
-        List<HallResponse> hallResponses = FillForms.fillHallResponse(hallRepository.findAll());
-        List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
-        EventForm eventForm = new EventForm();
-        Date date = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.add(Calendar.DATE, 1); 
-        eventForm.setDate(cal.getTime());
-        
-        newModel.addObject("eventForm", eventForm);
-        newModel.addObject("halls",hallResponses);
-        newModel.addObject("statuses",statuses);
-        return  newModel;
-    }
 
-    @RequestMapping(value = { "/AddEvent" }, method = RequestMethod.POST)
-    public ModelAndView addEvent(ModelAndView model, @ModelAttribute("eventForm") EventForm eventForm) {
-        if(lastordernumber == null){
-            lastordernumber =0;
-        }
-        Event newEvent = new Event();
-        newEvent.setDate(eventForm.getDate());
-        newEvent.setDescription(eventForm.getDescription());
-        newEvent.setIdHall(eventForm.getHall_number());
-        newEvent.setNumber(eventForm.getNumber());
-        newEvent.setIdStatus(eventForm.getEstatus());
-        newEvent.setComposition(eventForm.getComposition());
-        newEvent.setOrdernumber(lastordernumber);
-        eventRepository.saveEvent(newEvent);
-        lastordernumber++;
-        int hall_Id = eventForm.getHall_number();
+
+
+
+    @RequestMapping(value = { "/upevent/{id}" }, method = RequestMethod.GET)
+    public ModelAndView upevent(@PathVariable Integer id) {
+        Event temporaryevent = eventRepository.getEventById(id);
+        int tempordernumber = temporaryevent.getOrdernumber();
+        List<Event> eventList = eventRepository.findAllWithDateandIdHallOrdered(temporaryevent.getDate(),temporaryevent.getIdHall());
+
+                if(eventList.get(0).equals(temporaryevent)){
+                    return new ModelAndView("redirect:/hallEvents");
+                }
+                Event swapevent = eventList.get(temporaryevent.getOrdernumber()-1);
+                    temporaryevent.setOrdernumber(swapevent.getOrdernumber());
+                    swapevent.setOrdernumber(tempordernumber);
+                    eventRepository.saveEvent(temporaryevent);
+                    eventRepository.saveEvent(swapevent);
 
 
         return new ModelAndView("redirect:/hallEvents");
     }
 
+    @RequestMapping(value = { "/downevent/{id}" }, method = RequestMethod.GET)
+    public ModelAndView downevent(@PathVariable Integer id) {
+        Event temporaryevent = eventRepository.getEventById(id);
+        int tempordernumber = temporaryevent.getOrdernumber();
+        List<Event> eventList = eventRepository.findAllWithDateandIdHallOrdered(temporaryevent.getDate(),temporaryevent.getIdHall());
+
+                if(eventList.get(eventList.size()-1).equals(temporaryevent)){
+                    return new ModelAndView("redirect:/hallEvents");
+                    }
+                    Event swapevent = eventList.get(temporaryevent.getOrdernumber()+1);
+                        temporaryevent.setOrdernumber(swapevent.getOrdernumber());
+                        swapevent.setOrdernumber(tempordernumber);
+                        eventRepository.saveEvent(temporaryevent);
+                        eventRepository.saveEvent(swapevent);
+
+
+        return new ModelAndView("redirect:/hallEvents");
+    }
 
     @Transactional
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -199,12 +206,23 @@ public class timeTableController {
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
         HallEventsForm hallEventsForm = new HallEventsForm();
         EventForm eventForm = new EventForm();
+
         int hallid = halls.get(0).getId();
+
+                if(eventsresponse != null ){
+                    eventsresponse = fillEventRenspose(eventRepository.findAllWithDateandIdHallandNohiddenOrdered(currentdate,hall.getId(),false));
+                    NewModel.addObject("events",eventsresponse);
+
+                }
+
+
+
         NewModel.addObject("hallEventsForm",hallEventsForm);
         NewModel.addObject("eventForm",eventForm);
         NewModel.addObject("halls",halls);
         NewModel.addObject("statuses",statuses);
         NewModel.addObject("idhall",hallid);
+
         return NewModel;
     }
 
@@ -213,20 +231,18 @@ public class timeTableController {
    public ModelAndView HallEvents( ModelAndView model,
                                        @ModelAttribute ("hallEventsForm") HallEventsForm halleventsForm,
                                        @ModelAttribute ("eventForm") EventForm eventForm) {
-        //ModelAndView NewModel = new ModelAndView("hallEvents");
+
         HallEventsForm newEventsForm = new HallEventsForm();
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
         List<HallResponse> halls = FillForms.fillHallResponse(hallRepository.findAll());
         EventForm neweventForm = new EventForm();
 
        if(halleventsForm.getDateStart()!=null) {
-           Date dateStart = halleventsForm.getDateStart();
+          currentdate = halleventsForm.getDateStart();
            int id = halleventsForm.getId();
 
-           List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHall(dateStart, id));
-           List<EventResponse> eventresponseOrdered = fillEventRenspose(eventRepository.findAllWithDateandIdHallandNohiddenOrdered(dateStart, id,false));
-
-           Hall hall =  hallRepository.getHallById(id);
+           eventsresponse = fillEventRenspose(eventRepository.findAllWithDateandIdHallandNohiddenOrdered(currentdate, id,false));
+           hall =  hallRepository.getHallById(id);
            String hallName = hall.getName();
            Integer hallid = id;
 
@@ -237,14 +253,18 @@ public class timeTableController {
        }
        else if(eventForm.getDate()!=null){
            int idHall = eventForm.getHall_number();
-           Date date = eventForm.getDate();
-           Hall hall = hallRepository.getHallById(idHall);
+           currentdate = eventForm.getDate();
+           hall = hallRepository.getHallById(idHall);
            String hallName = hall.getName();
+
+
            Event newEvent =  fillEventfromEventForm(eventForm);
+
+
            hallRepository.saveHall(hall);
            eventRepository.saveEvent(newEvent);
-           List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHall(date, idHall));
-           halleventsForm.setDateStart(date);
+           eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHall(currentdate, idHall));
+           halleventsForm.setDateStart(currentdate);
            halleventsForm.setId(idHall);
            model.addObject("eventForm",neweventForm);
            model.addObject("events",eventsresponse);
@@ -262,9 +282,21 @@ public class timeTableController {
 
     @GetMapping("/delete/{id}")
      public ModelAndView delete(ModelAndView model,@PathVariable Integer id) {
-        Event tmpevent = eventRepository.getEventById(id);
-        int hall_Id = tmpevent.getIdHall();
+        Event temporaryevent = eventRepository.getEventById(id);
         eventRepository.deleteEventbyId(id);
+        List<Event> eventList = eventRepository.findAllWithDateandIdHallOrdered(temporaryevent.getDate(),temporaryevent.getIdHall());
+
+            for(int i=temporaryevent.getOrdernumber();i<eventList.size();i++){
+                Event event = eventList.get(i);
+                int ordernumber = event.getOrdernumber();
+                    ordernumber--;
+                        event.setOrdernumber(ordernumber);
+                        eventRepository.deleteEventbyId(event.getId());
+                        eventRepository.saveEvent(event);
+            }
+
+
+
 
         return new ModelAndView("redirect:/hallEvents");
 
@@ -668,9 +700,12 @@ public class timeTableController {
     }
 
     private Event fillEventfromEventForm(EventForm eventForm) {
+        int idHall =  eventForm.getHall_number();
+        Integer lastordernumber = eventRepository.findMaxOrderNumberByDate(currentdate,idHall);
+
         if(lastordernumber == null){
-            lastordernumber =0;
-        }
+                lastordernumber =0;
+            }
         Event newEvent = new Event();
         newEvent.setNumber(eventForm.getNumber());
         newEvent.setIdHall(eventForm.getHall_number());
@@ -681,8 +716,8 @@ public class timeTableController {
         newEvent.setDefendant(eventForm.getDefendant());
         newEvent.setPlaintiff(eventForm.getPlaintiff());
         newEvent.setAdditionalstatus(eventForm.getAdditionalstatus());
-        newEvent.setOrdernumber(lastordernumber);
-        lastordernumber++;
+        newEvent.setOrdernumber(++lastordernumber);
+
 
         Date time = eventForm.getDate();
         String[] hours = (eventForm.getTime().split(timePivot));
@@ -711,9 +746,7 @@ public class timeTableController {
                 EventResponse response = new EventResponse();
                 StatusEvent statusEvent = statusEventRepository.getStatusEventById(event.getIdStatus());
                 response.setIdHall(event.getIdHall());
-                String date = event.getDate().toString();
                 response.setDate(event.getDate().toString());
-
                 response.setDescription(event.getDescription());
                 response.setComposition(event.getComposition());
                 response.setNumber(event.getNumber());
@@ -726,6 +759,7 @@ public class timeTableController {
                 response.setPlaintiff(event.getPlaintiff());
                 response.setTime(event.getTime().toString());
                 response.setHide(event.isHide());
+                response.setOrdernymber(event.getOrdernumber());
                 eventsresponse.add(response);
             }
         return eventsresponse;

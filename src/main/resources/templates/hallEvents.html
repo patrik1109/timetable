@@ -109,15 +109,26 @@
 										<td class="column100 column9" data-column="column9" th:utext="${event.status}">...</td>
 										<td class="column100 column10" data-column="column10" th:utext="${event.date}">...</td>
 										<td class="column100 column11" data-column="column11" th:utext="${event.additionalstatus}">...</td>
-										<td class="column100 column11" data-column="column12" >
-
+										<td class="column100 column12" data-column="column12" >
+										<td class="column100 column13" data-column="column13"  hidden="true" th:utext="${event.ordernymber}">...</td>
 									</td>
+
+										<!-- SWAP EVENT BLOCK START-->
+
+
 										<td class="column100 column12" data-column="column13">
-											<span class="table-up glyphicon glyphicon-arrow-up"><button >&#11014;</button></span>
+											<a th:href="@{'/upevent/{id}'(id=${event.id})}">
+												<span class="table-up glyphicon glyphicon-arrow-up"><button>&#11014;</button></span></a>
 										</td>
+
+
 										<td class="column100 column13" data-column="column14">
+											<a th:href="@{'/downevent/{id}'(id=${event.id})}">
 											<span class="table-down glyphicon glyphicon-arrow-down"><button >&#11015;</button></span>
 										</td>
+
+
+										<!-- SWAP EVENT BLOCK END-->
 
 										<td class="column100 column13" data-column="column14">
 											<input type="checkbox"  th:checked="${event.hide}" />
@@ -187,64 +198,7 @@
 
 
 
-<!-- script textarea
-<script>
-var $TABLE = $('#table');
-var $BTN = $('#export-btn');
-var $EXPORT = $('#export');
 
-$('.table-add').click(function () {
-  var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide table-line');
-  $TABLE.find('table').append($clone);
-});
-
-$('.table-remove').click(function () {
-  $(this).parents('tr').detach();
-});
-
-$('.table-up').click(function () {
-  var $row = $(this).parents('tr');
-  if ($row.index() === 1) return; // Don't go above the header
-  $row.prev().before($row.get(0));
-});
-
-$('.table-down').click(function () {
-  var $row = $(this).parents('tr');
-  $row.next().after($row.get(0));
-});
-
-// A few jQuery helpers for exporting only
-jQuery.fn.pop = [].pop;
-jQuery.fn.shift = [].shift;
-
-$BTN.click(function () {
-  var $rows = $TABLE.find('tr:not(:hidden)');
-  var headers = [];
-  var data = [];
-
-  // Get the headers (add special header logic here)
-  $($rows.shift()).find('th:not(:empty)').each(function () {
-    headers.push($(this).text().toLowerCase());
-  });
-
-  // Turn all existing rows into a loopable array
-  $rows.each(function () {
-    var $td = $(this).find('td');
-    var h = {};
-
-    // Use the headers from earlier to name our hash keys
-    headers.forEach(function (header, i) {
-      h[header] = $td.eq(i).text();
-    });
-
-    data.push(h);
-  });
-
-  // Output the result
-  $EXPORT.text(JSON.stringify(data));
-});
-</script>
--->
 
 <script>
 // Targets all textareas with class "txta"
@@ -313,18 +267,10 @@ for(let i of textareas) {
   })(i);
 }
 </script>
-<!-- script textarea -->
-
-
-
-
-
-
-
-
 
 </body>
 </html>
+
 <!--оберить дату и зал-->
 <script>
     let temp = 0;
@@ -356,6 +302,7 @@ for(let i of textareas) {
     else {
         document.dateForm.submit();
     }
-}
+
+ }
 </script>
 <!--оберить дату и зал-->

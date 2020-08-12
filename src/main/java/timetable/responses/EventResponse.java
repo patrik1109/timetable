@@ -24,7 +24,17 @@ public class EventResponse {
     public String plaintiff;        // видповидач
     public String contestation;      // предмет позиву
     public String additionalstatus;   // доповнення до статусу
-    public boolean hide;
+    public boolean hide;               //приховати-показати засiдання
+    public Integer ordernymber;         //порядок показу засiданнь
+
+
+    public Integer getOrdernymber() {
+        return ordernymber;
+    }
+
+    public void setOrdernymber(Integer ordernymber) {
+        this.ordernymber = ordernymber;
+    }
 
     public boolean isHide() {
         return hide;
