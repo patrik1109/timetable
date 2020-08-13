@@ -85,7 +85,7 @@ public class timeTableController {
                 if(eventList.get(0).equals(temporaryevent)){
                     return new ModelAndView("redirect:/hallEvents");
                 }
-                Event swapevent = eventList.get(temporaryevent.getOrdernumber()-1);
+                Event swapevent = eventList.get(tempordernumber-1);
                     temporaryevent.setOrdernumber(swapevent.getOrdernumber());
                     swapevent.setOrdernumber(tempordernumber);
                     eventRepository.saveEvent(temporaryevent);
@@ -102,13 +102,13 @@ public class timeTableController {
         List<Event> eventList = eventRepository.findAllWithDateandIdHallOrdered(temporaryevent.getDate(),temporaryevent.getIdHall());
 
                 if(eventList.get(eventList.size()-1).equals(temporaryevent)){
-                    return new ModelAndView("redirect:/hallEvents");
-                    }
-                    Event swapevent = eventList.get(temporaryevent.getOrdernumber()+1);
-                        temporaryevent.setOrdernumber(swapevent.getOrdernumber());
-                        swapevent.setOrdernumber(tempordernumber);
-                        eventRepository.saveEvent(temporaryevent);
-                        eventRepository.saveEvent(swapevent);
+                     return new ModelAndView("redirect:/hallEvents");
+                 }
+                    Event swapevent = eventList.get(tempordernumber+1);
+                    temporaryevent.setOrdernumber(swapevent.getOrdernumber());
+                    swapevent.setOrdernumber(tempordernumber);
+                    eventRepository.saveEvent(temporaryevent);
+                    eventRepository.saveEvent(swapevent);
 
 
         return new ModelAndView("redirect:/hallEvents");
@@ -708,6 +708,9 @@ public class timeTableController {
         if(lastordernumber == null){
                 lastordernumber =0;
             }
+        else {
+            lastordernumber++;
+        }
         Event newEvent = new Event();
         newEvent.setNumber(eventForm.getNumber());
         newEvent.setIdHall(eventForm.getHall_number());
@@ -718,7 +721,7 @@ public class timeTableController {
         newEvent.setDefendant(eventForm.getDefendant());
         newEvent.setPlaintiff(eventForm.getPlaintiff());
         newEvent.setAdditionalstatus(eventForm.getAdditionalstatus());
-        newEvent.setOrdernumber(++lastordernumber);
+        newEvent.setOrdernumber(lastordernumber);
 
 
         Date time = eventForm.getDate();
