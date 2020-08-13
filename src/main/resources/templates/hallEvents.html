@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<link rel="stylesheet" type="text/css" th:href="@{/Table1/css/util.css}">
-		<link th:href="@{/css/hallEvents.css}" rel="stylesheet" />
+	    <link th:href="@{/css/hallEvents.css}" rel="stylesheet" />
 </head>
 
 
@@ -123,7 +123,7 @@
 
 
 										<td class="column100 column13" data-column="column14">
-											<a th:href="@{'/downevent/{id}'(id=${event.id})}">
+											<a th:href="@{'/downevent/{id}'(id=${event.id})}"></a>
 											<span class="table-down glyphicon glyphicon-arrow-down"><button >&#11015;</button></span>
 										</td>
 
@@ -141,7 +141,9 @@
 											<a th:href="@{'/delete/{id}'(id=${event.id})}" onclick="return confirm('Ви дiйсно хочите видалити засiдання ?')" class="table-remove glyphicon glyphicon-remove">
 											<button><div class="krest1">&#10008;</div></button></a>
 										</td>
-										<td class="column100 column17" data-column="column18"><button ><div type="submit" class="galka">&#10004;</div></button></td>
+										<td class="column100 column17" data-column="column18">
+											<button ><div type="submit" class="galka">&#10004;</div></button>
+										</td>
 							</tr>
 
 							<tr class="row100">
@@ -183,17 +185,12 @@
 											<button>&#10008;</button></a>
 										</td>
 										<td class="column100 column17" data-column="column17"><button ><div type="submit" class="galka">&#10004;</div></button></td>
-									</tr>
-
-          </form>
-
-
-
-
+							</tr>
+					</form>
 		</table>
-	</div>
- </div>
-</div>
+	 </div>
+    </div>
+  </div>
 </div>
 
 
@@ -291,6 +288,7 @@ for(let i of textareas) {
    }
 
    function checkform() {
+
     if(document.dateForm.hidden_id.value == "0") {
         alert("Будь ласка оберiть залу");
         return false;
@@ -299,9 +297,9 @@ for(let i of textareas) {
         alert("Будь ласка оберiть дату");
         return false;
     }
-    else {
-        document.dateForm.submit();
-    }
+
+    document.dateForm.submit();
+
 
  }
 </script>

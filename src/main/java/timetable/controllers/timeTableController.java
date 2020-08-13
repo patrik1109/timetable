@@ -1,5 +1,6 @@
 package timetable.controllers;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -225,6 +226,7 @@ public class timeTableController {
 
         return NewModel;
     }
+
 
    @DateTimeFormat(pattern = "yyyy-MM-dd")
    @RequestMapping(value = { "/hallEvents" }, method = RequestMethod.POST)
