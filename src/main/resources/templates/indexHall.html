@@ -47,7 +47,8 @@
 									<td class="column100 column1" data-column="column1"><h3 th:utext="${hall.name}"></h3></td>
 									<td class="column100 column2" data-column="column2"><a th:href="@{'deleteHall/{id}'(id=${hall.id})}" onclick="return confirm('Ви дiйсно хочите видалити зал ?')"> <button ><div class="krest1">&#10008;</button></a></td>
 									<td class="column100 column3" data-column="column3"><a th:href="@{'editHall/{id}'(id=${hall.id})}">
-	                    <button><div class="krest">&#9998;</button></a></td>
+										<button><div class="krest">&#9998;</div></button></a>
+									</td>
 								</tr>
 							</tbody>
 					 </div>
