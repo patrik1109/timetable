@@ -51,7 +51,7 @@
 					    </div>
 					    <input required type="text" name="hidden_id" hidden="true" id="hidden_id"    th:field="*{id}"/>
 					    <div id="according_to">
-					        <button ><input type="submit" onclick="return checkform()" value="" /><div class="galka" style="position: center">&#10004;</div></button>
+					        <input type="submit" onclick="return checkform();" value="&#10004;" class="galka" style="position: center"/>
 					    </div>
 					 </td>
 						<td class="column100 column200" data-column="column200" th:each ="hall,stats : ${halls}" th:id="${hall.id}" onclick="setColor(this.id)"><h3 th:utext="${hall.name}"></h3></td>
@@ -287,6 +287,7 @@ for(let i of textareas) {
          temp = id;
    }
 
+<<<<<<< HEAD
    function checkform() {
 
     if(document.dateForm.hidden_id.value == "0") {
@@ -302,5 +303,21 @@ for(let i of textareas) {
 
 
  }
+=======
+    function checkform(){
+	   
+    	if(document.dateForm.hidden_id.value == "0") {
+        	alert("Будь ласка оберiть залу");
+        	return false;
+    	}
+ 		else if(document.dateForm.dateStart.value == 0){
+        	alert("Будь ласка оберiть дату");
+        	return false;
+    	}
+    	else {
+        	document.dateForm.submit();
+    	}
+ 	}
+
 </script>
 <!--оберить дату и зал-->
