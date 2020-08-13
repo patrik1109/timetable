@@ -130,8 +130,7 @@ public class timeTableController {
 
         List<ParameterResponse> listparameter =fillParameterResponce(parameterRepository.findAll());
         Date date =  new Date();
-        //List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHall(date,id) );
-        List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHallAndNohidden(date,id,false));
+        List<EventResponse> eventsresponse = fillEventRenspose(eventRepository.findAllWithDateandIdHallandNohiddenOrdered(date,id,false));
         NewModel.addObject("events",eventsresponse);
         NewModel.addObject("hallName",hallName);
         NewModel.addObject("dateTime",date);
