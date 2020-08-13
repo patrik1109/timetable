@@ -6,6 +6,11 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}">
 </head>
 <style>
+.emptyButton {
+   background-color: transparent;
+   border: none;
+}
+
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css');
@@ -14,9 +19,7 @@
 
 <body th:style="'background:url('+ @{/img/klov.jpg} +') no-repeat center fixed; background-size: cover;'">
 
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign Out"/>
-    </form>
+  
 
     <a class="navbar-logo" th:href="@{'index'}"><img th:src="@{/img/img.png}"  height="60"/></a>
     <ul class="menu-main">
@@ -24,6 +27,7 @@
     <li><a th:href="@{'indexHall'}">Додати зал</a></li>
     <li><a th:href="@{'indexUser'}">користувач</a></li>
     <li><a th:href="@{'settings/{id}'(id=${idhall})}">Налаштування</a></li>
+    <li><form th:action="@{/logout}" method="post"><button class="emptyButton"><a type="submit">Разлогінітся</a></button></form></li>
   </ul>
 
 
