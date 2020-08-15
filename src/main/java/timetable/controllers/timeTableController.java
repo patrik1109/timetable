@@ -1,6 +1,7 @@
 package timetable.controllers;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -199,6 +200,7 @@ public class timeTableController {
 
     @Transactional
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" +"|| hasAuthority('USER')")
     @RequestMapping(value = { "/hallEvents" }, method = RequestMethod.GET)
     public ModelAndView HallEvents() {
         ModelAndView NewModel = new ModelAndView("hallEvents");
@@ -228,6 +230,7 @@ public class timeTableController {
 
 
    @DateTimeFormat(pattern = "yyyy-MM-dd")
+   @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" +"|| hasAuthority('USER')")
    @RequestMapping(value = { "/hallEvents" }, method = RequestMethod.POST)
    public ModelAndView HallEvents( ModelAndView model,
                                        @ModelAttribute ("hallEventsForm") HallEventsForm halleventsForm,
@@ -257,11 +260,7 @@ public class timeTableController {
            currentdate = eventForm.getDate();
            hall = hallRepository.getHallById(idHall);
            String hallName = hall.getName();
-
-
            Event newEvent =  fillEventfromEventForm(eventForm);
-
-
            hallRepository.saveHall(hall);
            eventRepository.saveEvent(newEvent);
            eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHall(currentdate, idHall));
@@ -280,7 +279,7 @@ public class timeTableController {
 
 
 
-
+    @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" +"|| hasAuthority('USER')")
     @GetMapping("/delete/{id}")
      public ModelAndView delete(ModelAndView model,@PathVariable Integer id) {
         Event temporaryevent = eventRepository.getEventById(id);
@@ -303,6 +302,12 @@ public class timeTableController {
 
     }
 
+    @RequestMapping(value = {"/my-error-page"},method = RequestMethod.GET)
+    public ModelAndView errorPage(){
+        return new ModelAndView("errorPage");
+    }
+
+    @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" +"|| hasAuthority('USER')")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @RequestMapping(value = { "/editEvent/{id}" }, method = RequestMethod.GET)
     public ModelAndView editEvent(@PathVariable Integer id) {
@@ -318,7 +323,7 @@ public class timeTableController {
         List<HallResponse> hallResponses = FillForms.fillHallResponse(hallRepository.findAll());
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
 
-
+            eventForm.setIdEvent(id);
             eventForm.setDate(event.getDate());
             eventForm.setDescription(event.getDescription());
             eventForm.setHall_number(event.getIdHall());
@@ -336,49 +341,50 @@ public class timeTableController {
         newModel.addObject("statuses",statuses);
         return  newModel;
     }
-    @RequestMapping(value = {"/my-error-page"},method = RequestMethod.GET)
-    public ModelAndView errorPage(){
-        return new ModelAndView("errorPage");
-    }
 
 
+    @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" +"|| hasAuthority('USER')")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @RequestMapping(value = { "/editEvent" }, method = RequestMethod.POST)
     public ModelAndView editEvent(ModelAndView model,    @ModelAttribute("eventForm") EventForm eventForm) {
-        Integer idEvent = event.getId();
-        Integer idHall = eventForm.getHall_number();
-        String numberEvent = eventForm.getNumber();
-        String description = (eventForm.getDescription());
-        String composition = (eventForm.getComposition());
-        int estatus = eventForm.getEstatus();
-        Date date= eventForm.getDate();
 
-        Date time = new Date();
-        String[] hours = (eventForm.getTime().split(timePivot));
-        time.setHours(Integer.parseInt(hours[0]));
-        time.setMinutes(Integer.parseInt(hours[1]));
+        int idHall = eventForm.getHall_number();
+        hall = hallRepository.getHallById(idHall);
+        String hallName = hall.getName();
+        Event newEvent =  fillEventfromEventForm(eventForm);
+        Integer idEvent = newEvent.getId();
+        Event temporaryevent = eventRepository.getEventById(idEvent);
 
-        String defendant = eventForm.getDefendant();
-        String plaintiff = eventForm.getPlaintiff();
-        String contestation = eventForm.getContestation();
-        String additionalstatus = eventForm.getAdditionalstatus();
-        boolean hide = eventForm.isHide();
-        int ordernumber = eventForm.getOrdernumber();
+        hall.setName(hallName);
+        hallRepository.saveHall(hall);
+        eventRepository.deleteEventbyId(idEvent);
+        eventRepository.saveEvent(newEvent);
+        eventsresponse = fillEventRenspose(eventRepository.findAllWithDateandIdHallOrdered(currentdate, idHall));
 
-        if (idEvent !=0   ) {
-            eventRepository.updateEvent(idEvent,numberEvent,time,defendant,plaintiff,contestation,description,date,composition,additionalstatus,estatus,idHall,hide,ordernumber);
-            return new ModelAndView("redirect:/hallEvents");
+
+
+        List<Event> eventList = eventRepository.findAllWithDateandIdHallOrdered(temporaryevent.getDate(),temporaryevent.getIdHall());
+
+        for(int i=temporaryevent.getOrdernumber();i<eventList.size();i++){
+            Event event = eventList.get(i);
+            int ordernumber = event.getOrdernumber();
+            ordernumber--;
+            event.setOrdernumber(ordernumber);
+            eventRepository.deleteEventbyId(event.getId());
+            eventRepository.saveEvent(event);
         }
-        model.addObject("errorMessage", errorMessage);
 
-        return model;
+
+
+
+        return new ModelAndView("redirect:/hallEvents");
     }
 
     //
     //   PART OF HALL CONTROLLERS
     //
 
-
+    @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" +"|| hasAuthority('USER')")
     @GetMapping(value = {"/" } )
     public ModelAndView main(Map<String, Object> model){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -393,6 +399,8 @@ public class timeTableController {
         newmodel.addObject("username",username);
         return newmodel;
     }
+
+    @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" +"|| hasAuthority('USER')")
     @GetMapping(value = {"/index"} )
     public ModelAndView index(Map<String, Object> model){
         List<HallResponse> halls = new LinkedList<>();
@@ -702,7 +710,9 @@ public class timeTableController {
 
     private Event fillEventfromEventForm(EventForm eventForm) {
         int idHall =  eventForm.getHall_number();
-        Integer lastordernumber = eventRepository.findMaxOrderNumberByDate(currentdate,idHall);
+        Date date = eventForm.getDate();
+
+        Integer lastordernumber = eventRepository.findMaxOrderNumberByDate(date,idHall);
 
         if(lastordernumber == null){
                 lastordernumber =0;
@@ -711,6 +721,7 @@ public class timeTableController {
             lastordernumber++;
         }
         Event newEvent = new Event();
+        newEvent.setId(eventForm.getIdEvent());
         newEvent.setNumber(eventForm.getNumber());
         newEvent.setIdHall(eventForm.getHall_number());
         newEvent.setDescription(eventForm.getDescription());
@@ -761,12 +772,18 @@ public class timeTableController {
                 response.setContestation(event.getContestation());
                 response.setDefendant(event.getDefendant());
                 response.setPlaintiff(event.getPlaintiff());
-                response.setTime(event.getTime().toString());
+                response.setTime(timeformater(event));
                 response.setHide(event.isHide());
                 response.setOrdernymber(event.getOrdernumber());
                 eventsresponse.add(response);
             }
         return eventsresponse;
+    }
+
+    private String timeformater (Event event){
+        String time = new String();
+            time = time+event.getTime().getHours()+":"+event.getTime().getMinutes();
+        return time;
     }
 
     private EventForm sethideFields(String[] hiddenColomns, EventForm neweventForm) {
