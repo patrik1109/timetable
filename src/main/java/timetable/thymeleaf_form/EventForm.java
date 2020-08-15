@@ -11,6 +11,8 @@ import java.util.Date;
 
 public class EventForm {
 
+    int idEvent;
+
     public String number; // номер справи
 
     public String description; // сторони у справи та предмет спору
@@ -39,6 +41,13 @@ public class EventForm {
 
     public int ordernumber; //номер засiдання для сортування
 
+    public int getIdEvent() {
+        return idEvent;
+    }
+
+    public void setIdEvent(int idEvent) {
+        this.idEvent = idEvent;
+    }
 
     public int getOrdernumber() {
         return ordernumber;

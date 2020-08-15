@@ -20,16 +20,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
+
    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
 
                 .authorizeRequests()
-                    .antMatchers("/showHall/{id}").permitAll()
-                    .anyRequest().authenticated()
-                    .antMatchers("/indexUser").access("hasRole('SADMIN')")
-
-                .and()
+                    .antMatchers("/showHall/**","/refreshTable").permitAll()
+                   // .anyRequest().authenticated()
+                  //  .antMatchers("/indexUser").access("hasRole('SADMIN')")
+                    .antMatchers("hallEvents").access("hasRole('SADMIN')")
+               .and()
                     .formLogin()
                     .loginPage("/login")
                     .permitAll()
@@ -38,6 +39,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
                  ;
     }
+
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
