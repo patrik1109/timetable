@@ -208,22 +208,29 @@ public class timeTableController {
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
         HallEventsForm hallEventsForm = new HallEventsForm();
         EventForm eventForm = new EventForm();
+        String hallName = new String();
+
+        Date today = new Date();
+         eventForm.setDate(today);
 
         int hallid = halls.get(0).getId();
 
                 if(eventsresponse != null ){
-                    eventsresponse = fillEventRenspose(eventRepository.findAllWithDateandIdHallandNohiddenOrdered(currentdate,hall.getId(),false));
+                    eventsresponse = fillEventRenspose(eventRepository.findAllWithDateandIdHallOrdered(currentdate,hall.getId()));
                     NewModel.addObject("events",eventsresponse);
 
                 }
 
-
+        if(hall!=null){
+            hallName = hall.getName();
+        }
 
         NewModel.addObject("hallEventsForm",hallEventsForm);
         NewModel.addObject("eventForm",eventForm);
         NewModel.addObject("halls",halls);
         NewModel.addObject("statuses",statuses);
         NewModel.addObject("idhall",hallid);
+        NewModel.addObject("hallName",hallName);
 
         return NewModel;
     }
@@ -239,17 +246,22 @@ public class timeTableController {
         HallEventsForm newEventsForm = new HallEventsForm();
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
         List<HallResponse> halls = FillForms.fillHallResponse(hallRepository.findAll());
+
+
+        String hallName = new String();
+
         EventForm neweventForm = new EventForm();
+            Date today = new Date();
+            neweventForm.setDate(today);
 
        if(halleventsForm.getDateStart()!=null) {
           currentdate = halleventsForm.getDateStart();
-           int id = halleventsForm.getId();
-
-           eventsresponse = fillEventRenspose(eventRepository.findAllWithDateandIdHallandNohiddenOrdered(currentdate, id,false));
+          hall = hallRepository.findHallById(halleventsForm.getId());
+          int id = halleventsForm.getId();
+           hallName = hall.getName();
+           eventsresponse = fillEventRenspose(eventRepository.findAllWithDateandIdHallOrdered(currentdate, id));
            hall =  hallRepository.getHallById(id);
-           String hallName = hall.getName();
            Integer hallid = id;
-
            model.addObject("eventForm",neweventForm);
            model.addObject("events",eventsresponse);
            model.addObject("hallName",hallName);
@@ -259,11 +271,21 @@ public class timeTableController {
            int idHall = eventForm.getHall_number();
            currentdate = eventForm.getDate();
            hall = hallRepository.getHallById(idHall);
-           String hallName = hall.getName();
-           Event newEvent =  fillEventfromEventForm(eventForm);
-           hallRepository.saveHall(hall);
-           eventRepository.saveEvent(newEvent);
-           eventsresponse = fillEventRenspose(eventRepository.findAllByDateAndIdHall(currentdate, idHall));
+           hallName = hall.getName();
+           Event oldevent = eventRepository.findEventByNumber(eventForm.getNumber());
+                 if(oldevent == null){
+                     Integer lastnumber = eventRepository.findMaxOrderNumberByDate(eventForm.getDate(),eventForm.getHall_number());
+                        if(lastnumber == null){
+                             lastnumber=0;
+                        }
+                        else {
+                            lastnumber++;
+                        }
+                     Event newEvent = fillEventfromEventForm(eventForm,lastnumber);
+                     eventRepository.saveEvent(newEvent);
+                 }
+
+           eventsresponse = fillEventRenspose(eventRepository.findAllWithDateandIdHallOrdered(currentdate, idHall));
            halleventsForm.setDateStart(currentdate);
            halleventsForm.setId(idHall);
            model.addObject("eventForm",neweventForm);
@@ -271,9 +293,12 @@ public class timeTableController {
            model.addObject("hallName",hallName);
            model.addObject("idhall",idHall);
        }
+
        model.addObject("hallEventsForm",newEventsForm);
        model.addObject("halls",halls);
        model.addObject("statuses",statuses);
+       model.addObject("hallName",hallName);
+
        return model;
    }
 
@@ -335,6 +360,8 @@ public class timeTableController {
             eventForm.setContestation(event.getContestation());
             eventForm.setDefendant(event.getDefendant());
             eventForm.setPlaintiff(event.getPlaintiff());
+            eventForm.setOrdernumber(event.getOrdernumber());
+            eventForm.setHide(event.isHide());
 
         newModel.addObject("eventForm", eventForm);
         newModel.addObject("halls",hallResponses);
@@ -351,33 +378,107 @@ public class timeTableController {
         int idHall = eventForm.getHall_number();
         hall = hallRepository.getHallById(idHall);
         String hallName = hall.getName();
-        Event newEvent =  fillEventfromEventForm(eventForm);
-        Integer idEvent = newEvent.getId();
-        Event temporaryevent = eventRepository.getEventById(idEvent);
+
+        Integer idEvent = eventForm.getIdEvent();
+        Event oldEvent = eventRepository.findEventById(idEvent);
+        Date oldDate = oldEvent.getDate();
+        int oldIdHall = oldEvent.getIdHall();
+        int oldorderNumber = oldEvent.getOrdernumber();
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-DD");
+        String oldDatestr = format.format(oldEvent.getDate());
+        String newDatestr = format.format(eventForm.getDate());
+
+
+        Event newEvent =  new Event();
+
+
 
         hall.setName(hallName);
         hallRepository.saveHall(hall);
-        eventRepository.deleteEventbyId(idEvent);
-        eventRepository.saveEvent(newEvent);
-        eventsresponse = fillEventRenspose(eventRepository.findAllWithDateandIdHallOrdered(currentdate, idHall));
 
+        //1. remove from one hall to other
+            if(oldIdHall != eventForm.getHall_number()){
+                int ordernumber = 0 ;
+                    try {
+                         ordernumber = eventRepository.findMaxOrderNumberByDate(eventForm.getDate(), eventForm.getHall_number());
+                         ordernumber++;
+                        }
+                    catch (NullPointerException e){
 
-
-        List<Event> eventList = eventRepository.findAllWithDateandIdHallOrdered(temporaryevent.getDate(),temporaryevent.getIdHall());
-
-        for(int i=temporaryevent.getOrdernumber();i<eventList.size();i++){
-            Event event = eventList.get(i);
-            int ordernumber = event.getOrdernumber();
-            ordernumber--;
-            event.setOrdernumber(ordernumber);
-            eventRepository.deleteEventbyId(event.getId());
-            eventRepository.saveEvent(event);
-        }
+                        }
+                    newEvent = fillEventfromEventForm(eventForm,ordernumber);
+                    eventRepository.saveEvent(newEvent);
 
 
 
 
-        return new ModelAndView("redirect:/hallEvents");
+
+                List<Event> eventList = eventRepository.findAllWithDateandIdHallOrdered(oldDate,oldIdHall);
+                            if(eventList.size()==1){
+                                Event event = eventList.get(0);
+                                event.setOrdernumber(0);
+                                int id = event.getId();
+                                eventRepository.deleteEventbyId(event.getId());
+                                eventRepository.saveEvent(event);
+
+                            }
+                            else {
+                                for (int i = oldorderNumber; i < eventList.size(); i++) {
+                                    Event event = eventList.get(i);
+                                    int eventOrdernumber = event.getOrdernumber();
+                                    eventOrdernumber--;
+                                    event.setOrdernumber(eventOrdernumber);
+                                    eventRepository.deleteEventbyId(event.getId());
+                                    eventRepository.saveEvent(event);
+                                }
+                            }
+            }
+
+          //2. Edit event in one hall and one day
+             else if(oldIdHall == eventForm.getHall_number() && oldDatestr.equals(newDatestr)){
+                    newEvent = fillEventfromEventForm(eventForm,oldorderNumber);
+                    eventRepository.saveEvent(newEvent);
+            }
+
+          //3. Edit event in one hall and different days
+            else if(oldIdHall== eventForm.getHall_number() && !oldDatestr.equals(newDatestr)){
+                int ordernumber = 0 ;
+                    try {
+                        ordernumber = eventRepository.findMaxOrderNumberByDate(eventForm.getDate(), eventForm.getHall_number());
+                        ordernumber++;
+                    }
+                    catch (NullPointerException e){
+
+                }
+                newEvent = fillEventfromEventForm(eventForm,ordernumber);
+
+                eventRepository.saveEvent(newEvent);
+
+                List<Event> eventList = eventRepository.findAllWithDateandIdHallOrdered(oldDate,oldIdHall);
+                if(eventList.size()==1){
+                    Event event = eventList.get(0);
+                    event.setOrdernumber(0);
+                    int id = event.getId();
+                    eventRepository.deleteEventbyId(event.getId());
+                    eventRepository.saveEvent(event);
+
+                }
+                else {
+                    for (int i = oldorderNumber; i < eventList.size(); i++) {
+                        Event event = eventList.get(i);
+                        int eventOrdernumber = event.getOrdernumber();
+                        eventOrdernumber--;
+                        event.setOrdernumber(eventOrdernumber);
+                        eventRepository.deleteEventbyId(event.getId());
+                        eventRepository.saveEvent(event);
+                    }
+                }
+
+            }
+
+            eventsresponse = fillEventRenspose(eventRepository.findAllWithDateandIdHallOrdered(currentdate, idHall));
+            return new ModelAndView("redirect:/hallEvents");
     }
 
     //
@@ -390,7 +491,7 @@ public class timeTableController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username =new String();
         if(principal instanceof UserDetails){
-            username = ((UserDetails) principal).getUsername();
+            username = ((UserDetails) principal). getUsername();
         }
         else{
             username = principal.toString();
@@ -708,18 +809,11 @@ public class timeTableController {
         return buffer.toString();
     }
 
-    private Event fillEventfromEventForm(EventForm eventForm) {
-        int idHall =  eventForm.getHall_number();
-        Date date = eventForm.getDate();
-
-        Integer lastordernumber = eventRepository.findMaxOrderNumberByDate(date,idHall);
+    private Event fillEventfromEventForm(EventForm eventForm,Integer lastordernumber) {
 
         if(lastordernumber == null){
                 lastordernumber =0;
             }
-        else {
-            lastordernumber++;
-        }
         Event newEvent = new Event();
         newEvent.setId(eventForm.getIdEvent());
         newEvent.setNumber(eventForm.getNumber());
@@ -731,9 +825,6 @@ public class timeTableController {
         newEvent.setDefendant(eventForm.getDefendant());
         newEvent.setPlaintiff(eventForm.getPlaintiff());
         newEvent.setAdditionalstatus(eventForm.getAdditionalstatus());
-        newEvent.setOrdernumber(lastordernumber);
-
-
         Date time = eventForm.getDate();
         String[] hours = (eventForm.getTime().split(timePivot));
         time.setHours(Integer.parseInt(hours[0]));
@@ -741,6 +832,7 @@ public class timeTableController {
         newEvent.setTime(time);
         newEvent.setHide(eventForm.isHide());
         newEvent.setDate(eventForm.getDate());
+        newEvent.setOrdernumber(lastordernumber);
         return newEvent;
     }
 
@@ -782,7 +874,13 @@ public class timeTableController {
 
     private String timeformater (Event event){
         String time = new String();
-            time = time+event.getTime().getHours()+":"+event.getTime().getMinutes();
+            time = time+event.getTime().getHours()+":";//+event.getTime().getMinutes();
+            if( event.getTime().getMinutes()<10){
+                time = time+"0"+ event.getTime().getMinutes();
+            }
+            else {
+                time =time+ event.getTime().getMinutes();
+            }
         return time;
     }
 

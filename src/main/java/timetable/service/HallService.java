@@ -14,4 +14,6 @@ public interface HallService {
     void updateHall(int id, String name, Date date, Set<Event> events,String hiddencolloms);
     List<Hall> findAll();
     List<Event> findHallEvents(Integer id);
+    Hall findHallById(int id);
+
 }

@@ -1,31 +1,30 @@
 <div th:with="count=${1}" xmlns:th="http://www.w3.org/1999/xhtml">
         <table border="1" >
             <tr >
-                <th class="tablesettingTitle" >№ з/п</th>
-                <th class="tablesettingTitle" name ="number">№ проведення</th>
-                <th class="tablesettingTitle" name ="composition">Склад суду</th>
-                <th class="tablesettingTitle" name ="time">Час слухання</th>
-                <th class="tablesettingTitle" name ="defendant">Позивач</th>
-                <th class="tablesettingTitle" name ="plaintiff">Вiдповидач</th>
-                <th class="tablesettingTitle" name ="contestation">Предмет позиву</th>
-                <th class="tablesettingTitle" name ="description">Сторони у справі та предмет спору</th>
-                <th class="tablesettingTitle showHallStatus" name = "status">Статус</th>
-                <th class="tablesettingTitle" name = "additionalstatus">Доповнення до статусу</th>
+                <th class="tablesettingTitle colum1" >№</th>
+                <th class="tablesettingTitle composition" name ="composition">Суддя</th>
+                <th class="tablesettingTitle columtime" name ="time">Час слухання</th>
+                <th class="tablesettingTitle number" name ="number">Справа №</th>
+                <th class="tablesettingTitle description" name ="description">№ провадження</th>
+                <th class="tablesettingTitle defendant" name ="defendant">Позивач</th>
+                <th class="tablesettingTitle plaintiff" name ="plaintiff">Вiдповидач</th>
+                <th class="tablesettingTitle contestation" name ="contestation">Предмет позиву</th>
+                <th class="tablesettingTitle showHallStatus status" name = "status">Статус</th>
+                <th class="tablesettingTitle additionalstatus" name = "additionalstatus">Доповнення до статусу</th>
             </tr>
             <tr th:each ="event,iter : ${events}" >
-					<td class="tablesettingText"
+					<td class="tablesettingText colum1"
 						th:style="'background-color : '+${event.color}"
 						th:utext="${iter.count}"></td>
-					<td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="number" th:utext="${event.number}">...</td>
-                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="composition" th:utext="${event.composition}">...</td>
-                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="time" th:utext="${event.time}">...</td>
-                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="defendant" th:utext="${event.defendant}">...</td>
-                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="plaintiff" th:utext="${event.plaintiff}">...</td>
-                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="contestation" th:utext="${event.contestation}">...</td>
-                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="description" th:utext="${event.description}">...</td>
-                <td class="tablesettingText showHallStatus" th:style="'background-color : '+${event.color}" th:utext="${event.status}"  name="status">...</td>
-                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="additionalstatus" th:utext="${event.additionalstatus}">...</td>
+               <td class="tablesettingText composition" th:style="'background-color : '+${event.color}" name ="composition" th:utext="${event.composition}">...</td>
+               <td class="tablesettingText columtime" th:style="'background-color : '+${event.color}" name ="time" th:utext="${event.time}">...</td>
+               <td class="tablesettingText number" th:style="'background-color : '+${event.color}" name ="number" th:utext="${event.number}">...</td>
+               <td class="tablesettingText description" th:style="'background-color : '+${event.color}" name ="description" th:utext="${event.description}">...</td>
+                <td class="tablesettingText defendant" th:style="'background-color : '+${event.color}" name ="defendant" th:utext="${event.defendant}">...</td>
+                <td class="tablesettingText plaintiff" th:style="'background-color : '+${event.color}" name ="plaintiff" th:utext="${event.plaintiff}">...</td>
+                <td class="tablesettingText contestation" th:style="'background-color : '+${event.color}" name ="contestation" th:utext="${event.contestation}">...</td>
+                <td class="tablesettingText showHallStatus status" th:style="'background-color : '+${event.color}" th:utext="${event.status}"  name="status">...</td>
+                <td class="tablesettingText additionalstatus" th:style="'background-color : '+${event.color}" name ="additionalstatus" th:utext="${event.additionalstatus}">...</td>
             </tr>
         </table>
-    </div>           
- 
+    </div>

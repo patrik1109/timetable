@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import timetable.entities.Event;
 import timetable.entities.Hall;
+
 import timetable.repository.EventRepository;
 import timetable.repository.HallRepository;
 
@@ -82,5 +83,10 @@ public class HallServiceImpl implements HallService {
             System.out.println(e.fillInStackTrace());
         }
         return results;
+    }
+
+    @Override
+    public Hall findHallById(int id) {
+        return repository.findHallById(id);
     }
 }
