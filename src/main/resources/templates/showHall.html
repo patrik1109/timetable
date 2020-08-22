@@ -99,18 +99,21 @@
 <script type="text/javascript"  th:inline="javascript">
 
 
-$(document).ready(function() {  
+$(document).ready(function scroller() {  
 	
 	hideColumns();
 	$("html, body").animate({ 
         scrollTop: $('html, body').get(0).scrollHeight 
     }, 40000, function() {
     	setTimeout(function(){
+    		refreshTable();
+    		
     		$("html, body").animate({ scrollTop:0 }, 0);   
     		//window.location.reload(true);
-    		refreshTable();
+    		
     		},100);
-        }); 
+        });
+	scroller();
 });
 
  function hideColumns(){
