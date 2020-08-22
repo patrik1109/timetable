@@ -19,27 +19,26 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/Table1/css/util.css}">
 
 
-  <link th:href="@{/css/editUser.css}" rel="stylesheet" />
-	<link th:href="@{/css/main.css}" rel="stylesheet" />
+  <link th:href="@{/css/indexUser.css}" rel="stylesheet">
 
 </head>
 
 
 <body th:style="'background:url('+ @{/img/klov.jpg} +') no-repeat center fixed; background-size: cover;'">
 	<a class="navbar-logo" th:href="@{'/index'}"><img th:src="@{/img/img.png}"  height="60"/></a>
-<!--	<ul class="menu-main">
-	<li><a th:href="@{'/hallEvents'}">Розклад</a></li>
-	<li><a th:href="@{'/idexHall'}">Додати зал</a></li>
-	<li><a th:href="@{'/inexUser'}">користувач</a></li>
-	<li><a th:href="@{'/settings/{id}'(id=${idhall})}">Налаштування</a></li>
-</ul> -->
+	<ul class="menu-main">
+		<li><a th:href="@{'/hallEvents'}">Розклад</a></li>
+		<li><a th:href="@{'/indexHall'}">Додати зал</a></li>
+		<li><a th:href="@{'/indexUser'}">користувач</a></li>
+		<li><a th:href="@{'/settings/{id}'(id=${idhall})}">Налаштування</a></li>
+</ul>
 
 
   <div id="footer">
      &copy; All rights reserved. E.O.I
     </div>
 
-<a href = "/indexUser"><button ><div class="vozvrat">&#10150;</button></a>
+<!--<a href = "/indexUser"><button ><div class="vozvrat">&#10150;</button></a>-->
 
 	<!--tabl1-->
 	<form th:action="@{/editUser}" th:object="${userForm}" method="POST">

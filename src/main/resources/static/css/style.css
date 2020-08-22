@@ -27,18 +27,18 @@ height : 80px;
   position: fixed;
   top: 0;
   width: 100%
-  
+
 }
 
 /* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
 .sticky + .content {
-  padding-top: 0px;
+  padding-top: 100px;
 }
 
 body {
 	padding : 0;
 	margin : 0;
-	
+
 }
 /* высота столбцов */
 table, td, th {
@@ -54,7 +54,7 @@ table {
 
 th, td {
 	height : 50px;
-  padding: 5px;
+  /*padding: 5px;*/
 }
 /* index табл*/
 tr:nth-child(even){
@@ -68,7 +68,7 @@ th {
   color: white;
   text-align: center;
 }
-/* ----- */	
+/* ----- */
 
 /*clock and title*/
 .right_title
@@ -77,7 +77,7 @@ th {
 	width :20%;
   /*background:  #0080ff;*/
   text-align: center;
-	
+
 }
 
 .center_title
@@ -86,7 +86,7 @@ th {
 	width : 60%;
   /*background:  #0080ff;*/
   text-align: center;
-	
+
 }
 
 .current_date_time
@@ -164,12 +164,12 @@ position: absolute;
 
 .numcol_admin{
 	width :3%;
-	 
+
 }
 
 .casenumcol_admin{
 	width :7%;
-	
+
 }
 
 .casedesccol_admin{
@@ -178,22 +178,22 @@ position: absolute;
 
 .casedatecol_admin{
 	width :5%;
-	
+
 }
 
 .casestatuscol_admin{
-	width :5%;	
-	 
+	width :5%;
+
 }
 
 .casedeletecol_admin{
-	width :5%;	
-	
+	width :5%;
+
 }
 
 .caseeditcol_admin{
 	width :5%;
-	
+
 }
 */
 .desctext{
@@ -204,17 +204,17 @@ position: absolute;
 
 
 .index_hall{
-	
+
 	text-align: right;
 }
 
 .index_deletehall{
-	
+
 	text-align: right;
 }
 
 .index_edithall{
-	
+
 	text-align: right;
 }
 
@@ -225,7 +225,7 @@ position: absolute;
         top: 130px;
     }
 
-   
+
 .buttons_top{
    width : 100%;
    }
@@ -242,14 +242,14 @@ position: absolute;
     float:left;
     width : 49%;
     padding:3px;
-}                   
+}
 
  .deleteButton
        {
            <!-- position: fixed; top: 40%; left: 40%;-->
        }
  /* размер колонок showholl and text-align: centre */
- 
+
  .kpz /* зп */
  {
    width: 3%;
@@ -290,11 +290,11 @@ position: absolute;
  {
    width: 25px;
  }
- 
+
  /*-----------*/
- 
+
  /* размещения текста showholl*/
- 
+
  .tablesettingText_cpz /* зп */
  {
    color : [[${parameterText.textcolor}]];
@@ -385,6 +385,5 @@ position: absolute;
       white-space: pre-wrap;
       text-align: right;
  }
- 
- /*-----------*/
- 
+
+ /*-----tadlrefresh---*/

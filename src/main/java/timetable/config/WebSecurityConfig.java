@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
 
                 .authorizeRequests()
-                    .antMatchers("/showHall/**","/refreshTable").permitAll()
+                    .antMatchers("/showHall/**","/refreshTable","/hidencoloms/**").permitAll()
                    // .anyRequest().authenticated()
                   //  .antMatchers("/indexUser").access("hasRole('SADMIN')")
                     .antMatchers("hallEvents").access("hasRole('SADMIN')")

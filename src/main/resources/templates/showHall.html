@@ -9,9 +9,9 @@
   	<meta http-equiv="cache-control" content="max-age=0" />
     <meta http-equiv="cache-control" content="no-cache" />
     <meta http-equiv="expires" content="0" />
-    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00 GMT" />
     <meta http-equiv="pragma" content="no-cache" />
-     
+
      <link th:href="@{/css/style.css}" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>Monitor</title>
@@ -31,6 +31,41 @@
       font-family : "[[${parameterText.textfont}]]";
       text-align : left;
       white-space: pre-wrap;
+    }
+    .colum1 {
+    width: 5px;
+    text-align: center;
+    }
+    .columnumber {
+    width: 6%;
+    text-align: center;
+    }
+    .columtime {
+    width: 10px;
+    text-align: center;
+    }
+    .columcomposition {
+    width: 18px;
+    text-align: center;
+    }
+    .columdefendant {
+    width: 18px;
+    text-align: center
+    }
+    .columplaintiff {
+    width: 20%;
+    }
+    .columcontestation {
+    width: 20%;
+    }
+    .columdescription {
+    width: auto;
+    }
+    .columstatus {
+    width: 25px;
+    }
+    .columadditionalstatus {
+    width: 10%
     }
 
 
@@ -62,59 +97,35 @@
 
     <!--th:style="'color : '+${parameterTableTitle.textcolor}+';'"-->
 
-<div class="subheader_placeholder">&nbsp;</div>
+<div class="subheader_placeholder"></div>
 <div id="eventTable">
-    <div th:with="count=${1}">
-        <table border="1" >
-            <tr >
-                <th class="tablesettingTitle" >№ з/п</th>
-                <th class="tablesettingTitle" name ="number">№ проведення</th>
-                <th class="tablesettingTitle" name ="composition">Склад суду</th>
-                <th class="tablesettingTitle" name ="time">Час слухання</th>
-                <th class="tablesettingTitle" name ="defendant">Позивач</th>
-                <th class="tablesettingTitle" name ="plaintiff">Вiдповидач</th>
-                <th class="tablesettingTitle" name ="contestation">Предмет позиву</th>
-                <th class="tablesettingTitle" name ="description">Сторони у справі та предмет спору</th>
-                <th class="tablesettingTitle showHallStatus" name = "status">Статус</th>
-                <th class="tablesettingTitle" name = "additionalstatus">Доповнення до статусу</th>
-            </tr>
-            <tr th:each ="event,iter : ${events}" >
-					<td class="tablesettingText"
-						th:style="'background-color : '+${event.color}"
-						th:utext="${iter.count}"></td>
-					<td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="number" th:utext="${event.number}">...</td>
-                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="composition" th:utext="${event.composition}">...</td>
-                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="time" th:utext="${event.time}">...</td>
-                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="defendant" th:utext="${event.defendant}">...</td>
-                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="plaintiff" th:utext="${event.plaintiff}">...</td>
-                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="contestation" th:utext="${event.contestation}">...</td>
-                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="description" th:utext="${event.description}">...</td>
-                <td class="tablesettingText showHallStatus" th:style="'background-color : '+${event.color}" th:utext="${event.status}"  name="status">...</td>
-                <td class="tablesettingText" th:style="'background-color : '+${event.color}" name ="additionalstatus" th:utext="${event.additionalstatus}">...</td>
-            </tr>
-        </table>
-    </div>
+
 </div>
 </div>
+
+
+
+
+</body>
+</html>
 <script type="text/javascript"  th:inline="javascript">
 
 
-$(document).ready(function scroller() {  
-	
+$(document).ready(function srolltabl() {
+
+	refreshTable();
 	hideColumns();
-	$("html, body").animate({ 
-        scrollTop: $('html, body').get(0).scrollHeight 
+	$("html, body").animate({
+        scrollTop: $('html, body').get(0).scrollHeight
     }, 40000, function() {
     	setTimeout(function(){
-    		refreshTable();
-    		
-    		$("html, body").animate({ scrollTop:0 }, 0);   
-    		//window.location.reload(true);
-    		
+    		$("html, body").animate({ scrollTop:0 }, 0);
+    		srolltabl();
     		},100);
         });
-	scroller();
 });
+
+
 
  function hideColumns(){
  var hiddenColomns  = [[${hiddenColomns}]];
@@ -124,31 +135,43 @@ $(document).ready(function scroller() {
 		 $('td[name*="'+hiddenColomns[index]+'"]').hide();
 		 $('th[name*="'+hiddenColomns[index]+'"]').hide();
 	            }
-}
+
+    }
+
+setInterval(function () {
+		refreshTable();
+
+        }, 2000);
+
+
 
 function refreshTable(){
-	
+
 	var xhr = new XMLHttpRequest();
  	var base_url = window.location.origin;
  	var pathArray = window.location.pathname.split( '/' );
-	var hallId = pathArray[pathArray.length-1]; 
+	var hallId = pathArray[pathArray.length-1];
 	const url=base_url+'/refreshTable/'+hallId;
-	
+
 	console.log("url: "+url);
 	xhr.open("GET", url);
-	 
+
 	 xhr.send();
 	 xhr.onload = function () {
 		    if (xhr.readyState === xhr.DONE) {
 		        if (xhr.status === 200) {
 
 		           document.getElementById('eventTable').innerHTML = xhr.response;
-		           hideColumns();
+                   hideColumns();
+
 		        }
+
 		    }
 		};
-		hideColumns();
+
 }
+
+
 
 setInterval(function () {
 		date_time();
@@ -156,26 +179,26 @@ setInterval(function () {
 
  function date_time()
     {
-	 
+
 	 var current_datetime = new Date();
-	 
+
 	 var xhr = new XMLHttpRequest();
-	 
+
 	 var base_url = window.location.origin;
-	 
+
 	 var path_name = window.location.pathname;
-	 
+
 	 var href = window.location.href;
-	 
+
 	 //var host = window.location.host;
-	 
+
 	 //var pathArray = window.location.pathname.split( '/' );
-	 
+
 	 const url=base_url+'/getTime';
 	 xhr.open("GET", url);
-	 
+
 	 xhr.responseType = 'text';
-	 
+
 	 xhr.send();
 	 xhr.onload = function () {
 		    if (xhr.readyState === xhr.DONE) {
@@ -185,9 +208,9 @@ setInterval(function () {
 		        }
 		    }
 		};
-		
-		
-		
+
+
+
       /*  var current_datetime = new Date();
         var day = zero_first_format(current_datetime.getDate());
         var month = zero_first_format(current_datetime.getMonth()+1);
@@ -209,8 +232,3 @@ setInterval(function () {
     }
 
 </script>
-
-
-
-</body>
-</html>
