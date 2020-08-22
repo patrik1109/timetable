@@ -714,7 +714,7 @@ public class timeTableController {
     @RequestMapping(value = { "/getTime" }, method = RequestMethod.GET)
     public String getTime() {
         Date dateNow = new Date();
-        SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd");
+        SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy");
         SimpleDateFormat formatForTimeNow = new SimpleDateFormat("HH:mm:ss");
         return  formatForDateNow.format(dateNow)+"<br>"+formatForTimeNow.format(dateNow);
     }
