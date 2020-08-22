@@ -32,6 +32,11 @@ public interface EventRepository extends JpaRepository<Event,Integer> {
     @Query(value= "select e from Event e where e.date = :date AND e.idHall =:idHall  order by e.ordernumber")
     List<Event> findAllWithDateandIdHallOrdered(@Param("date") Date date, @Param("idHall") int idHall);
 
+    @Query(value= "select e from Event e where  e.number =:number")
+    Event findEventByNumber(@Param("number") String number);
+
+    @Query(value= "select e from Event e where  e.id =:id")
+    Event findEventById(@Param("id") int id);
 
 
 }

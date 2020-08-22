@@ -55,6 +55,11 @@ public class EventServiceImpl implements EventService{
         repository.save(newEvent);
     }
 
+    @Override
+    public void updateEvent(Event event) {
+
+    }
+
 
     @Override
     public List<Event> findAll() {
@@ -119,6 +124,16 @@ public class EventServiceImpl implements EventService{
     @Override
     public Integer findMaxOrderNumberByDate(Date date, int idHall) {
         return repository.findMaxOrderNumberByDate(date,idHall);
+    }
+
+    @Override
+    public Event findEventByNumber(String number) {
+        return repository.findEventByNumber(number);
+    }
+
+    @Override
+    public Event findEventById(int id) {
+        return repository.findEventById(id);
     }
 
 

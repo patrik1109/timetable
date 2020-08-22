@@ -34,7 +34,6 @@
 		<li><a th:href="@{'/indexHall'}">Додати зал</a></li>
 		<li><a th:href="@{'/indexUser'}">користувач</a></li>
 		<li><a th:href="@{'/settings/{id}'(id=${idhall})}">Налаштування</a></li>
-		<li><form th:action="@{/logout}" method="post"><button class="emptyButton"><a type="submit">Разлогінітся</a></button></form></li>
 	</ul>
 
 <div id="footer">
@@ -77,37 +76,37 @@
 								<tr class="row100">
 									<td class="column100 column1" data-column="column20">Час слухання</td>
 									<td class="column100 column2" data-column="column21"><input type="checkbox" unchecked th:field="*{time}"/></td>
-									<td class="column100 column3" data-column="column22"></td>
+									<td class="column100 column3" data-column="column22"><input type="number"  field="*{column1tsize}" />px</td>
 		 					 </tr>
 							 <tr class="row100">
 							 	<td class="column100 column1" data-column="column20">Позивач</td>
 							 	<td class="column100 column2" data-column="column21"><input type="checkbox" unchecked th:field="*{defendant}"/></td>
-							 	<td class="column100 column3" data-column="column22"></td>
+							 	<td class="column100 column3" data-column="column22"><input type="number"  field="*{column2tsize}" />px</td>
 							 </tr>
 							 <tr class="row100">
 							 	<td class="column100 column1" data-column="column20">Вiдповiдач</td>
 							 	<td class="column100 column2" data-column="column21"><input type="checkbox" unchecked th:field="*{plaintiff}"/></td>
-							 	<td class="column100 column3" data-column="column22"></td>
+							 	<td class="column100 column3" data-column="column22"><input type="number"  field="*{column3tsize}" />px</td>
 							 </tr>
 							 <tr class="row100">
 							 	<td class="column100 column1" data-column="column20">Предмет позиву</td>
 							 	<td class="column100 column2" data-column="column21"><input type="checkbox" unchecked th:field="*{contestation}"/></td>
-							 	<td class="column100 column3" data-column="column22"></td>
+							 	<td class="column100 column3" data-column="column22"><input type="number"  field="*{column4tsize}" />px</td>
 							 </tr>
 							 <tr class="row100">
-								 <td class="column100 column1" data-column="column20">Скдад суду</td>
+								 <td class="column100 column1" data-column="column20">Суддя</td>
 								 <td class="column100 column2" data-column="column21"><input type="checkbox" unchecked th:field="*{composition}"/></td>
-								 <td class="column100 column3" data-column="column22"></td>
+								 <td class="column100 column3" data-column="column22"><input type="number"  field="*{column5tsize}" />px</td>
 							</tr>
 							<tr class="row100">
 								<td class="column100 column1" data-column="column20">Сторони у справi та предмет спору</td>
 								<td class="column100 column2" data-column="column21"><input type="checkbox" unchecked th:field="*{description}"/></td>
-								<td class="column100 column3" data-column="column22"></td>
+								<td class="column100 column3" data-column="column22"><input type="number"  field="*{column6tsize}" />px</td>
 						 </tr>
 						 <tr class="row100">
 							 <td class="column100 column1" data-column="column20">Доповнення до статусу</td>
 							 <td class="column100 column2" data-column="column21"><input type="checkbox" unchecked th:field="*{additionalStatus}"/></td>
-							 <td class="column100 column3" data-column="column22"></td>
+							 <td class="column100 column3" data-column="column22"><input type="number"  field="*{column7tsize}" />px</td>
 						</tr>
 
 	            </tbody>
