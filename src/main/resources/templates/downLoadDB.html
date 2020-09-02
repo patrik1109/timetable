@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>DownLoadDB</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+<body>
+
+
+<h2>Завантажити фаiл</h2>
+<!--<form  id="dateForm" name="dateForm" th:action="@{'/hallEvents'}" th:object="${hallEventsForm}" method="POST">-->
+<form id="downloadDB" name="downloadDB"   th:action="@{'/downloadDB'}" th:object="${downLoadForm}" method="POST">
+
+    Виберiть файл:
+
+  <!--  <input type="file" id="inputfile"  th:field="*{path}" />-->
+    <input type="file" id="your-files" multiple >
+
+
+    <br/>
+    <br/>
+    <input type="text" id="path" hidden="true" th:field="*{path}">
+    Дата розгляду справ:
+    <input required type="date"  th:field="*{date}" value=0  />
+    <br/>
+    <br/>
+    Оберiть номер зали:
+    <select  th:field="*{idHall}">
+        <option  th:each ="hall : ${halls}" th:value="${hall.id}"><h2 th:utext="${hall.name}"></h2></option>
+    </select>
+    <br/>
+    <br/>
+
+   <!-- <input type="submit" onclick="return showFileName();" value="Завантажити" />-->
+    <input type="submit"  value="Завантажити" />
+    <br>
+
+</form>
+<br>
+</body>
+</html>
+
+<script type="text/javascript">
+
+
+
+
+document.getElementById('your-files').onchange = function(){
+
+  var file = this.files[0];
+
+  var reader = new FileReader();
+  reader.onload = function(progressEvent){
+    // Entire file
+    //console.log(this.result);
+
+    // By lines
+    var lines = this.result.split('/n');
+    var string = '';
+    for(var line = 0; line < lines.length; line++){
+       //document.getElementById("path").value = this.result;
+       //document.getElementById("path").value = lines;
+
+       string = string.concat(lines[line]);
+       string = string.concat('##');
+       console.log(string);
+    }
+    document.getElementById("path").value = string;
+  };
+  reader.readAsText(file);
+};
+
+
+ </script>

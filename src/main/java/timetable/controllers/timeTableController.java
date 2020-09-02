@@ -1,6 +1,8 @@
 package timetable.controllers;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import timetable.entities.*;
 import timetable.responses.EventResponse;
@@ -24,6 +27,9 @@ import timetable.thymeleaf_form.HallEventsForm;
 import timetable.thymeleaf_form.HallForm;
 import timetable.utils.FillForms;
 
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -703,6 +709,39 @@ public class timeTableController {
         return model;
     }
 
+
+    @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" )
+    @RequestMapping(value = { "/downloadDB" }, method = RequestMethod.GET)
+    public ModelAndView downloadDB() {
+        List<HallResponse> halls = FillForms.fillHallResponse(hallRepository.findAll());
+        ModelAndView model = new ModelAndView("downLoadDB");
+        DownLoadForm downLoadForm = new DownLoadForm();
+        model.addObject("halls",halls);
+        model.addObject("downLoadForm",downLoadForm);
+        return model;
+    }
+
+
+    @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" )
+    @RequestMapping(value = { "/downloadDB" }, method = RequestMethod.POST)
+    public ModelAndView downloadDB(ModelAndView model,    @ModelAttribute("downLoadForm") DownLoadForm downloadDB) {
+        Date date = downloadDB.getDate();
+        String path = downloadDB.getPath();
+        String[] strings = path.split("\\n");
+        int idHall = downloadDB.getIdHall();
+        try {
+            Reader reader = Files.newBufferedReader(Paths.get(path));
+           /* CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT
+                    .withFirstRecordAsHeader()
+                    .withIgnoreHeaderCase()
+                    .withTrim());*/
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        return model;
+    }
 
 //===========================================================================================================================
   //

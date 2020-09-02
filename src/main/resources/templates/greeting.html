@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Верховний суд Украiни</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}">
+</head>
+<style>
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css');
+.Privet{ font-family: roboto;
+   font-size: 100%; /* Размер шрифта в процентах */
+   text-align: center;
+}
+</style>
+
+<body th:style="'background:url('+ @{/img/klov.jpg} +') no-repeat center fixed; background-size: cover;'">
+<!--<div>
+    <h3 th:utext="Hello"></h3>
+    <h3 th:utext= "${username}"></h3>
+</div>-->
+
+<a class="navbar-logo" th:href="@{'index'}"><img th:src="@{/img/img.png}"  height="60"/></a>
+<ul class="menu-main">
+    <li><a th:href="@{'hallEvents'}">Розклад</a></li>
+    <li><a th:href="@{'indexHall'}">Додати зал</a></li>
+    <li><a th:href="@{'indexUser'}">користувач</a></li>
+   <!-- <li><a th:href="@{'settings/{id}'(id=${idhall})}">Налаштування</a></li> -->
+
+</ul>
+
+<div class="Privet">
+    Привіт,  <h3 th:utext= "${username}"></h3>
+      <br> В даний час ви під'єднані до сервера Верховного Суду
+      <br> Також відомо як Розклад пристрій E.O.I
+      <br>Виберіть опцію в верхньому меню, щоб почати.
+      <br>
+      <a th:href="@{'index'}">Продовжити</a>
+    </div>
+
+        <div id="footer">
+            &copy; All rights reserved. E.O.I
+        </div>
+
+
+</body>
+</html>
