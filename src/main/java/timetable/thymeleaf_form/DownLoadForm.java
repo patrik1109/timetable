@@ -5,6 +5,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 public class DownLoadForm {
+
+    
     public String path;
     public int idHall;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
