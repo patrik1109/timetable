@@ -1,23 +1,25 @@
 package timetable.thymeleaf_form;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
 public class DownLoadForm {
 
-    
-    public String path;
+
+
+    MultipartFile file;
     public int idHall;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date date;
 
-    public String getPath() {
-        return path;
+    public MultipartFile getFile() {
+        return file;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 
     public int getIdHall() {
