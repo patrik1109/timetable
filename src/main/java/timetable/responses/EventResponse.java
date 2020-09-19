@@ -15,7 +15,9 @@ public class EventResponse {
     //public Date date;
     public String date;
     public int idHall;
+
     public String status;
+   // public int status;
     public String color;
     public String composition;      // склад суду
 

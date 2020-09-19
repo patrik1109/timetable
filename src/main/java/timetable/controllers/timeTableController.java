@@ -1,9 +1,9 @@
 package timetable.controllers;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-import org.apache.tomcat.jni.Time;
+import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -27,9 +27,13 @@ import timetable.thymeleaf_form.HallEventsForm;
 import timetable.thymeleaf_form.HallForm;
 import timetable.utils.FillForms;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -68,6 +72,7 @@ public class timeTableController {
     final private String hold = "hold";
     final private String pivot ="#";
     final private String timePivot=":";
+    private static String UPLOADED__FOLDER = "D://temp//";
 
 
     private String errorMessage;
@@ -213,11 +218,13 @@ public class timeTableController {
         List<HallResponse> halls = FillForms.fillHallResponse(hallRepository.findAll());
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
         HallEventsForm hallEventsForm = new HallEventsForm();
+        StatusEventForm statusEventForm = new StatusEventForm();
         EventForm eventForm = new EventForm();
         String hallName = new String();
 
         Date today = new Date();
          eventForm.setDate(today);
+         hallEventsForm.setDateStart(today);
 
         int hallid = halls.get(0).getId();
 
@@ -237,6 +244,7 @@ public class timeTableController {
         NewModel.addObject("statuses",statuses);
         NewModel.addObject("idhall",hallid);
         NewModel.addObject("hallName",hallName);
+        NewModel.addObject("statusEventForm",statusEventForm);
 
         return NewModel;
     }
@@ -247,6 +255,7 @@ public class timeTableController {
    @RequestMapping(value = { "/hallEvents" }, method = RequestMethod.POST)
    public ModelAndView HallEvents( ModelAndView model,
                                        @ModelAttribute ("hallEventsForm") HallEventsForm halleventsForm,
+                                       @ModelAttribute("statusEventForm") StatusEventForm statusEventForm,
                                        @ModelAttribute ("eventForm") EventForm eventForm) {
 
         HallEventsForm newEventsForm = new HallEventsForm();
@@ -259,6 +268,7 @@ public class timeTableController {
         EventForm neweventForm = new EventForm();
             Date today = new Date();
             neweventForm.setDate(today);
+            newEventsForm.setDateStart(today);
 
        if(halleventsForm.getDateStart()!=null) {
           currentdate = halleventsForm.getDateStart();
@@ -272,6 +282,9 @@ public class timeTableController {
            model.addObject("events",eventsresponse);
            model.addObject("hallName",hallName);
            model.addObject("idhall",hallid);
+       }
+       else if(statusEventForm.getEstatus()!=null){
+
        }
        else if(eventForm.getDate()!=null){
            int idHall = eventForm.getHall_number();
@@ -298,13 +311,14 @@ public class timeTableController {
            model.addObject("events",eventsresponse);
            model.addObject("hallName",hallName);
            model.addObject("idhall",idHall);
+
        }
 
        model.addObject("hallEventsForm",newEventsForm);
        model.addObject("halls",halls);
        model.addObject("statuses",statuses);
        model.addObject("hallName",hallName);
-
+       model.addObject("statusEventForm",statusEventForm);
        return model;
    }
 
@@ -726,21 +740,73 @@ public class timeTableController {
     @RequestMapping(value = { "/downloadDB" }, method = RequestMethod.POST)
     public ModelAndView downloadDB(ModelAndView model,    @ModelAttribute("downLoadForm") DownLoadForm downloadDB) {
         Date date = downloadDB.getDate();
-        String path = downloadDB.getPath();
-        String[] strings = path.split("\\n");
         int idHall = downloadDB.getIdHall();
-        try {
-            Reader reader = Files.newBufferedReader(Paths.get(path));
-           /* CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT
-                    .withFirstRecordAsHeader()
-                    .withIgnoreHeaderCase()
-                    .withTrim());*/
-        }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-        }
+        MultipartFile file = downloadDB.getFile();
+        DateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+        int i=0;
+        Path path = null;
+        Integer  lastOrderNumber = eventRepository.findMaxOrderNumberByDate(date,idHall);
+            if(lastOrderNumber == null){
+                lastOrderNumber = 0;
+            }
+            else{
+                lastOrderNumber++;
+            }
 
-        return model;
+            try
+            {
+                byte[]bytes = file.getBytes();
+                path = Paths.get(UPLOADED__FOLDER + file.getOriginalFilename());
+                Files.write(path, bytes);
+                Reader reader = Files.newBufferedReader(path);
+
+
+                CSVParser csvParser = new CSVParser(reader, CSVFormat.EXCEL
+                        .withHeader("number","defendant","plantiff","contestation","description","time","composition","additionalstatus","idStatus","hide")
+                        .withIgnoreHeaderCase()
+                        .withDelimiter(';')
+                        .withTrim());
+
+                for (CSVRecord csvRecord : csvParser) {
+                    if (i != 0) {
+                        Event checkevent = eventRepository.findEventByNumber(csvRecord.get("number"));
+                        if (checkevent == null) {
+                            Event event = new Event();
+                            event.setIdHall(idHall);
+                            event.setDate(date);
+                            event.setNumber(csvRecord.get("number"));
+                            event.setDefendant(csvRecord.get("defendant"));
+                            event.setPlaintiff(csvRecord.get("plantiff"));
+                            event.setContestation(csvRecord.get("contestation"));
+                            event.setDescription(csvRecord.get("description"));
+                            event.setComposition(csvRecord.get("composition"));
+                            event.setAdditionalstatus(csvRecord.get("additionalstatus"));
+                            event.setIdStatus(Integer.parseInt(csvRecord.get("idStatus")));
+                            event.setHide(Boolean.parseBoolean(csvRecord.get("hide")));
+                            event.setOrdernumber(lastOrderNumber++);
+                                try {
+                                    event.setTime(sdf.parse(csvRecord.get("time")));
+                                }
+                                catch (ParseException e) {
+                                    System.out.println("Format of time is not correct");
+                                }
+                                    eventRepository.saveEvent(event);
+                        }
+
+                    }
+                    else {
+                        i++;
+                    }
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+
+        return new ModelAndView("redirect:/hallEvents");
     }
 
 //===========================================================================================================================
@@ -752,10 +818,12 @@ public class timeTableController {
    // @DateTimeFormat(pattern = "yyyy-MM-dd")
     @RequestMapping(value = { "/getTime" }, method = RequestMethod.GET)
     public String getTime() {
+
         Date dateNow = new Date();
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy");
         SimpleDateFormat formatForTimeNow = new SimpleDateFormat("HH:mm:ss");
         return  formatForDateNow.format(dateNow)+"<br>"+formatForTimeNow.format(dateNow);
+
     }
 
     private  List<?> fillRes(Class clazz,List<?>tlist){

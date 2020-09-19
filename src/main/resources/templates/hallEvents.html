@@ -85,7 +85,7 @@
 										<th class="column100 column6" data-column="column6">Вiдповидач</th>
 										<th class="column100 column7" data-column="column7">Предмет позиву</th>
 										<th class="column100 column9" data-column="column9">Статус</th>
-                    <th class="column100 column11" data-column="column11">Доповнення до статусу</th>
+                   						<th class="column100 column11" data-column="column11">Доповнення до статусу</th>
 										<th class="column100 column10" data-column="column10">Дата</th>
 										<th class="column100 column12" data-column="column12">№Зали</th>
 										<th class="column100 column13" data-column="column13"></th>
@@ -101,24 +101,34 @@
 
 									<tr class="row100" th:each ="event,iter : ${events}">
 										<td class="column100 column1 numcol_admin" data-column="column1" th:utext="${iter.count}">...</td>
-                    <td class="column100 column3" data-column="column3" th:utext="${event.composition}" >...</td>
+                   						<td class="column100 column3" data-column="column3" th:utext="${event.composition}" >...</td>
 										<td class="column100 column4" data-column="column4" th:utext="${event.time}" >...</td>
 										<td class="column100 column2" data-column="column2" th:utext="${event.number}" ></td>
 										<td class="column100 column8" data-column="column8" th:utext="${event.description}">...</td>
 										<td class="column100 column5" data-column="column5" th:utext="${event.defendant}">...</td>
 										<td class="column100 column6" data-column="column6" th:utext="${event.plaintiff}">...</td>
 										<td class="column100 column7" data-column="column7" th:utext="${event.contestation}">...</td>
-										<td class="column100 column9" data-column="column9" th:utext="${event.status}">...</td>
-                    <td class="column100 column11" data-column="column11" th:utext="${event.additionalstatus}">...</td>
+
+									<!--	<td class="column100 column9" data-column="column9" th:utext="${event.status}">...</td>-->
+
+
+										<td class="column100 column9" data-column="column9">
+											<form th:action="@{/hallEvents}" th:object="${statusEventForm}" name="statusEventForm" id="statusEventForm" method="POST">
+												<!--<a th:href="@{'/upevent/{id}'(id=${event.id})}">-->
+												<input  type="text"  hidden="true" th:field="*{idEvent}" th:value="${event.id}">
+												<h3 th:utext="${event.status}"></h3>
+												<select  th:field="*{estatus}">
+														<option  th:each ="state : ${statuses}" th:value="${state.id}">
+																<h2 th:utext="${state.status}"></h2>
+															</option>
+												</select>
+
+										</td>
+										<td class="column100 column11" data-column="column11" th:utext="${event.additionalstatus}">...</td>
 										<td class="column100 column10" data-column="column10" th:utext="${event.date}">...</td>
-
-
-
-
 										<td class="column100 column12" data-column="column12" th:utext="${hallName}"></td>
-
 										<td class="column100 column13" data-column="column13"  hidden="true" th:utext="${event.ordernymber}">...</td>
-									</td>
+
 
 										<!-- SWAP EVENT BLOCK START-->
 
@@ -138,7 +148,9 @@
 										<!-- SWAP EVENT BLOCK END-->
 
 										<td class="column100 column13" data-column="column14">
-											<input type="checkbox"  th:checked="${event.hide}" />
+
+											<input type="checkbox" disabled  th:checked="${event.hide}" />
+
 										</td>
 
 										<td class="column100 column15" data-column="column16">
@@ -149,17 +161,20 @@
 											<button><div class="krest1">&#10008;</div></button></a>
 										</td>
 										<td class="column100 column17" data-column="column18">
-											<button ><div type="submit" class="galka">&#10004;</div></button>
+											<button >
+												<div type="submit"  class="galka">&#10004;</div>
+											</button>
 										</td>
-							</tr>
+										</form>
+							       </tr>
 
 							<tr class="row100">
 								<form th:action="@{/hallEvents}" th:object="${eventForm}" id="myform" method="POST">
 										<td class="column100 column1" data-column="column1">+</td>
-                    <td class="column100 column3" data-column="column3"><textarea placeholder="Суддя" class="txta" th:field="*{composition}"></textarea></td>
-                    <td class="column100 column4" data-column="column4"><input required type="time" th:field="*{time}" value=0/></td>
+                   						<td class="column100 column3" data-column="column3"><textarea placeholder="Суддя" class="txta" th:field="*{composition}"></textarea></td>
+                    					<td class="column100 column4" data-column="column4"><input required type="time" th:field="*{time}" value=0/></td>
 										<td class="column100 column2" data-column="column2"><textarea placeholder="Справа №" class="txta" th:field="*{Number}"></textarea></td>
-                    <td class="column100 column8" data-column="column8"><textarea placeholder="№ провадження" class="txta" th:field="*{Description}"></textarea></td>
+                   						<td class="column100 column8" data-column="column8"><textarea placeholder="№ провадження" class="txta" th:field="*{Description}"></textarea></td>
 										<td class="column100 column5" data-column="column5"><textarea placeholder="Позивач" class="txta" th:field="*{defendant}"></textarea></td>
 										<td class="column100 column6" data-column="column6"><textarea placeholder="Відповідач" class="txta" th:field="*{plaintiff}"></textarea></td>
 										<td class="column100 column7" data-column="column7"><textarea placeholder="Предмет позову" class="txta" th:field="*{contestation}"></textarea></td>
@@ -168,7 +183,7 @@
 													<option  th:each ="state : ${statuses}" th:value="${state.id}"><h2 th:utext="${state.status}"></h2></option>
 											</select>
 										</td>
-                    <td class="column100 column11" data-column="column11"><textarea placeholder="Доповненя до статусу" class="txta" th:field="*{additionalstatus}"></textarea></td>
+                    					<td class="column100 column11" data-column="column11"><textarea placeholder="Доповненя до статусу" class="txta" th:field="*{additionalstatus}"></textarea></td>
 										<td class="column100 column10" data-column="column10"><input required type="date" th:field="*{date}" value=0 /></td>
 										
                    					    <td class="column100 column11" data-column="column11">
@@ -193,8 +208,9 @@
 											<button>&#10008;</button></a>
 										</td>
 										<td class="column100 column17" data-column="column17"><button ><div type="submit" class="galka">&#10004;</div></button></td>
+								</form>
 							</tr>
-					</form>
+
 		</table>
 	 </div>
     </div>
@@ -282,12 +298,12 @@ for(let i of textareas) {
     var setColor = function(id){
         <!--debugger;-->
 
-         if(temp!=0){
+         if(temp!=0){ <!-- change color in hall button -->
             document.getElementById(temp).style.background = "#f2f2ff";
             document.getElementById(id).style.background = "LightGreen";
             document.getElementById("hidden_id").setAttribute('value',id);
          }
-         else{
+         else{     <!-- change color in date button -->
             document.getElementById(id).style.background = "LightGreen";
             document.getElementById("hidden_id").setAttribute('value',id);
          }
@@ -310,6 +326,8 @@ for(let i of textareas) {
         	document.dateForm.submit();
     	}
  	}
+
+
 
 </script>
 <!--оберить дату и зал-->
