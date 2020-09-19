@@ -818,10 +818,12 @@ public class timeTableController {
    // @DateTimeFormat(pattern = "yyyy-MM-dd")
     @RequestMapping(value = { "/getTime" }, method = RequestMethod.GET)
     public String getTime() {
-            Date dateNow = new Date();
-            SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy");
-            SimpleDateFormat formatForTimeNow = new SimpleDateFormat("HH:mm:ss");
-            return formatForDateNow.format(dateNow) + "<br>" + formatForTimeNow.format(dateNow);
+
+        Date dateNow = new Date();
+        SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat formatForTimeNow = new SimpleDateFormat("HH:mm:ss");
+        return  formatForDateNow.format(dateNow)+"<br>"+formatForTimeNow.format(dateNow);
+
     }
 
     private  List<?> fillRes(Class clazz,List<?>tlist){
