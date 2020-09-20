@@ -98,8 +98,10 @@
 
 
 
-
+				
 									<tr class="row100" th:each ="event,iter : ${events}">
+										<form th:action="@{/hallEvents}" th:object="${statusEventForm}" name="statusEventForm" id="statusEventForm" method="POST">
+					
 										<td class="column100 column1 numcol_admin" data-column="column1" th:utext="${iter.count}">...</td>
                    						<td class="column100 column3" data-column="column3" th:utext="${event.composition}" >...</td>
 										<td class="column100 column4" data-column="column4" th:utext="${event.time}" >...</td>
@@ -112,11 +114,17 @@
 									<!--	<td class="column100 column9" data-column="column9" th:utext="${event.status}">...</td>-->
 
 
+
 										<td class="column100 column9" data-column="column9">
-											<form th:action="@{/hallEvents}" th:object="${statusEventForm}" name="statusEventForm" id="statusEventForm" method="POST">
-												<input  type="text"  hidden="true" th:field="*{idEvent}" th:value="${event.id}">
+
+										
+											
+
+												<!--<a th:href="@{'/upevent/{id}'(id=${event.id})}">-->
+												<input hidden=true type="text" th:name="idEvent" th:attr="value = ${event.id}" />
+
 												<h3 th:utext="${event.status}"></h3>
-												<select  th:field="*{estatus}">
+												<select onchange="changeStatus()" th:field="*{estatus}">
 														<option  th:each ="state : ${statuses}" th:value="${state.id}">
 																<h2 th:utext="${state.status}"></h2>
 														</option>
@@ -309,7 +317,10 @@ for(let i of textareas) {
 
          temp = id;
    }
-
+	function changeStatus(){
+	    //document.statusEventForm.submit();
+	    alert("changeStatus reached!");
+	}
 
     function checkform(){
 
