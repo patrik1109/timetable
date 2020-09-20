@@ -114,15 +114,14 @@
 
 										<td class="column100 column9" data-column="column9">
 											<form th:action="@{/hallEvents}" th:object="${statusEventForm}" name="statusEventForm" id="statusEventForm" method="POST">
-												<!--<a th:href="@{'/upevent/{id}'(id=${event.id})}">-->
 												<input  type="text"  hidden="true" th:field="*{idEvent}" th:value="${event.id}">
 												<h3 th:utext="${event.status}"></h3>
 												<select  th:field="*{estatus}">
 														<option  th:each ="state : ${statuses}" th:value="${state.id}">
 																<h2 th:utext="${state.status}"></h2>
-															</option>
+														</option>
 												</select>
-
+											</form>
 										</td>
 										<td class="column100 column11" data-column="column11" th:utext="${event.additionalstatus}">...</td>
 										<td class="column100 column10" data-column="column10" th:utext="${event.date}">...</td>
@@ -165,7 +164,7 @@
 												<div type="submit"  class="galka">&#10004;</div>
 											</button>
 										</td>
-										</form>
+
 							       </tr>
 
 							<tr class="row100">
