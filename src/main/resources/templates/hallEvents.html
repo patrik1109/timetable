@@ -117,15 +117,22 @@
 
 												<input hidden=true type="text"  th:attr="value = ${event.id}" />
 
-												<h3 th:utext="${event.status}"></h3>
+
+										<td class="column100 column9" data-column="column9">
+
+												<input hidden=true type="text" th:name="idEvent" th:attr="value = ${event.id}" />
+											<h3 th:utext="${event.status}"></h3>
 												<select id="estatus"  th:field="*{estatus}">
 														<option  th:each ="state : ${statuses}" th:value="${state.id}">
 																<h2 th:utext="${state.status}"></h2>
 														</option>
 												</select>
 
+
 											</td>
 										</form>
+
+										</td>
 
 										<td class="column100 column11" data-column="column11" th:utext="${event.additionalstatus}">...</td>
 										<td class="column100 column10" data-column="column10" th:utext="${event.date}">...</td>
@@ -170,7 +177,7 @@
 												</button>
 											</div>
 										</td>
-
+</form>
 							       </tr>
 
 							<tr class="row100">
