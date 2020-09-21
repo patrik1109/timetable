@@ -283,8 +283,15 @@ public class TimeTableController {
            model.addObject("hallName",hallName);
            model.addObject("idhall",hallid);
        }
-       else if(statusEventForm.getEstatus()!=null){
-
+       else if(statusEventForm.getIdEvent()!=0){
+            Event event = eventRepository.findEventById(statusEventForm.getIdEvent());
+            event.setIdStatus(statusEventForm.getEstatus());
+            eventRepository.saveEvent(event);
+           eventsresponse = fillEventRenspose(eventRepository.findAllWithDateandIdHallOrdered(currentdate,hall.getId()));
+           model.addObject("eventForm",neweventForm);
+           model.addObject("idhall",hall.getId());
+           model.addObject("hallName",hallName);
+           model.addObject("events",eventsresponse);
        }
        else if(eventForm.getDate()!=null){
            int idHall = eventForm.getHall_number();

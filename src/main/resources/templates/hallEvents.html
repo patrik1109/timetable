@@ -100,7 +100,7 @@
 
 				
 									<tr class="row100" th:each ="event,iter : ${events}">
-										<form th:action="@{/hallEvents}" th:object="${statusEventForm}" name="statusEventForm" id="statusEventForm" method="POST">
+
 					
 										<td class="column100 column1 numcol_admin" data-column="column1" th:utext="${iter.count}">...</td>
                    						<td class="column100 column3" data-column="column3" th:utext="${event.composition}" >...</td>
@@ -111,26 +111,29 @@
 										<td class="column100 column6" data-column="column6" th:utext="${event.plaintiff}">...</td>
 										<td class="column100 column7" data-column="column7" th:utext="${event.contestation}">...</td>
 
-									<!--	<td class="column100 column9" data-column="column9" th:utext="${event.status}">...</td>-->
+									    	<!-- change status event block -->
+										<form th:action="@{/hallEvents}" th:object="${statusEventForm}" id="statusEventForm" method="POST">
+											<td class="column100 column9" data-column="column9">
 
+												<input hidden=true type="text"  th:attr="value = ${event.id}" />
 
 
 										<td class="column100 column9" data-column="column9">
 
-										
-											
-
-												<!--<a th:href="@{'/upevent/{id}'(id=${event.id})}">-->
 												<input hidden=true type="text" th:name="idEvent" th:attr="value = ${event.id}" />
-
-												<h3 th:utext="${event.status}"></h3>
-												<select onchange="changeStatus()" th:field="*{estatus}">
+											<h3 th:utext="${event.status}"></h3>
+												<select id="estatus"  th:field="*{estatus}">
 														<option  th:each ="state : ${statuses}" th:value="${state.id}">
 																<h2 th:utext="${state.status}"></h2>
 														</option>
 												</select>
-											
+
+
+											</td>
+										</form>
+
 										</td>
+
 										<td class="column100 column11" data-column="column11" th:utext="${event.additionalstatus}">...</td>
 										<td class="column100 column10" data-column="column10" th:utext="${event.date}">...</td>
 										<td class="column100 column12" data-column="column12" th:utext="${hallName}"></td>
@@ -168,9 +171,11 @@
 											<button><div class="krest1">&#10008;</div></button></a>
 										</td>
 										<td class="column100 column17" data-column="column18">
-											<button >
-												<div type="submit"  class="galka">&#10004;</div>
-											</button>
+											<div>
+												<button >
+													<div type="submit" onclick="changeStatus()"  class="galka">&#10004;</div>
+												</button>
+											</div>
 										</td>
 </form>
 							       </tr>
@@ -228,6 +233,7 @@
 
 
 
+<!--
 <script>
 // Targets all textareas with class "txta"
 let textareas = document.querySelectorAll('.txta'),
@@ -295,6 +301,7 @@ for(let i of textareas) {
   })(i);
 }
 </script>
+-->
 
 </body>
 </html>
@@ -318,9 +325,15 @@ for(let i of textareas) {
          temp = id;
    }
 	function changeStatus(){
-	    //document.statusEventForm.submit();
-	    alert("changeStatus reached!");
+
+	   if(document.statusEventForm.estatus == "0") {
+        	alert("Будь ласка оберiть статус");
+        	return false;
+       }
+       alert("changeStatus reached!");
 	}
+
+
 
     function checkform(){
 
@@ -337,7 +350,15 @@ for(let i of textareas) {
     	}
  	}
 
-
+function refreshStatus(eventId,eventStatusId){
+	 alert("changeStatus reached!");
+	var xhr = new XMLHttpRequest();
+ 	var base_url = window.location.origin;
+	const url=base_url+'/refreshEvent/'+eventId;
+	console.log("url: "+url);
+	xhr.open("GET", url);
+    xhr.send(eventStatusId);
+}
 
 </script>
 <!--оберить дату и зал-->
