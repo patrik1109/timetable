@@ -113,26 +113,25 @@
 
 									    	<!-- change status event block -->
 										<form th:action="@{/hallEvents}" th:object="${statusEventForm}" id="statusEventForm" method="POST">
-											<td class="column100 column9" data-column="column9">
+												<td class="column100 column9" data-column="column9">
 
-												<input hidden=true type="text"  th:attr="value = ${event.id}" />
-
-
-										<td class="column100 column9" data-column="column9">
-
-												<input hidden=true type="text" th:name="idEvent" th:attr="value = ${event.id}" />
-											<h3 th:utext="${event.status}"></h3>
-												<select id="estatus"  th:field="*{estatus}">
-														<option  th:each ="state : ${statuses}" th:value="${state.id}">
-																<h2 th:utext="${state.status}"></h2>
-														</option>
-												</select>
+													<input hidden=true type="text"  th:attr="value = ${event.id}" />
 
 
-											</td>
-										</form>
 
-										</td>
+														<input hidden=true type="text" th:name="idEvent" th:attr="value = ${event.id}" />
+															<h3 th:utext="${event.status}"></h3>
+														<select id="estatus"  th:field="*{estatus}">
+															<option  th:each ="state : ${statuses}" th:value="${state.id}">
+																	<h2 th:utext="${state.status}"></h2>
+															</option>
+														</select>
+
+												
+												</td>
+
+
+
 
 										<td class="column100 column11" data-column="column11" th:utext="${event.additionalstatus}">...</td>
 										<td class="column100 column10" data-column="column10" th:utext="${event.date}">...</td>
@@ -145,13 +144,13 @@
 
 										<td class="column100 column12" data-column="column13">
 											<a th:href="@{'/upevent/{id}'(id=${event.id})}">
-												<span class="table-up glyphicon glyphicon-arrow-up"><button>&#11014;</button></span></a>
+												<span class="table-up glyphicon glyphicon-arrow-up">&#11014;</span></a>
 										</td>
 
 
 										<td class="column100 column13" data-column="column14">
 											<a th:href="@{'/downevent/{id}'(id=${event.id})}">
-												<span class="table-down glyphicon glyphicon-arrow-down"><button >&#11015;</button></span></a>
+												<span class="table-down glyphicon glyphicon-arrow-down">&#11015;</span></a>
 										</td>
 
 
@@ -164,11 +163,11 @@
 										</td>
 
 										<td class="column100 column15" data-column="column16">
-											<a th:href="@{'/editEvent/{id}'(id=${event.id})}" class="caseeditcol_admin redog"><button>&#9998;</button></a>
+											<a th:href="@{'/editEvent/{id}'(id=${event.id})}" class="caseeditcol_admin redog">&#9998;</a>
 										</td>
 										<td class="column100 column16" data-column="column17">
 											<a th:href="@{'/delete/{id}'(id=${event.id})}" onclick="return confirm('Ви дiйсно хочите видалити засiдання ?')" class="table-remove glyphicon glyphicon-remove">
-											<button><div class="krest1">&#10008;</div></button></a>
+											<div class="krest1">&#10008;</div></a>
 										</td>
 										<td class="column100 column17" data-column="column18">
 											<div>
@@ -177,7 +176,7 @@
 												</button>
 											</div>
 										</td>
-</form>
+          							</form>
 							       </tr>
 
 							<tr class="row100">
