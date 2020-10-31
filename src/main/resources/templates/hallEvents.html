@@ -5,23 +5,76 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<link rel="stylesheet" type="text/css" th:href="@{/Table1/css/util.css}">
-	    <link th:href="@{/css/hallEvents.css}" rel="stylesheet" />
+	<link th:href="@{/css/hallEvents.css}" rel="stylesheet" />
+	<link th:href="@{/jquery-side-menu/style.css}" rel="stylesheet">
 </head>
 
 
 
 	<body th:style="'background:url('+ @{/img/klov.jpg} +') no-repeat center fixed; background-size: cover;'">
+
+		<table th:style="'position: fixed; top: 0%; z-index: 4;'">
+				<tr>
+		 			<th>
+		 				Обраний Вами: <h4 th:style="'color: #0b0;'" th:utext="${hallName}" ></h4>
+				    	Обрана дата: <h4 class="current_date_time" th:style="'color: #0b0;'" th:utext="${currentdate}" />
+					</th>
+				</tr>
+		</table>
+
+
 		<a class="navbar-logo" th:href="@{'/index'}"><img th:src="@{/img/img.png}"  height="60"/></a>
 		<ul class="menu-main">
 		<li><a th:href="@{'/hallEvents'}">Розклад</a></li>
-		<li><a th:href="@{'/indexHall'}">Додати зал</a></li>
+		<!-- <li><a th:href="@{'/indexHall'}">Додати зал</a></li>
 		<li><a th:href="@{'/indexUser'}">користувач</a></li>
 		<li><a th:href="@{'/downloadDB'}">Завантажити БД</a></li>
-		<li><a th:href="@{'/settings/{id}'(id=${idhall})}">Налаштування</a></li>
+		<li><a th:href="@{'/settings/{id}'(id=${idhall})}">Налаштування</a></li>-->
+		<li><a class="icon-menu">Імпорт</a></li>
 			<li><form th:action="@{/logout}" method="post"><button class="emptyButton"><a type="submit">Вихід</a></button></form></li>
 	</ul>
 
+
+
+
+<div class="menu">
+
+
+	<div class="icon-close">
+		<img th:src="@{/jquery-side-menu/images/close-btn.png}">
+	</div>
+
+	 Меню
+	<form id="downloadDB" name="downloadDB"   th:action="@{'/downloadDB'}" th:object="${downLoadForm}" method="POST" enctype="multipart/form-data">
+		Виберiть файл:
+
+
+		<input required type="file"  accept=".csv"  th:field="*{file}">
+
+
+		<br/>
+		<br/>
+
+		Дата розгляду справ:
+		<input required type="date"  th:field="*{date}" value=0  />
+		<br/>
+		<br/>
+		Оберiть номер зали:
+		<select required th:field="*{idHall}">
+			<option  th:each ="hall : ${halls}" th:value="${hall.id}"><h2 th:utext="${hall.name}"></h2></option>
+		</select>
+		<br/>
+		<br/>
+
+		<!-- <input type="submit" onclick="return showFileName();" value="Завантажити" />-->
+		<input type="submit"  value="Завантажити" />
+		<br>
+
+	</form>
+
+</div>
+	<script th:src="@{/jquery-side-menu/jquery-3.3.1.min.js}"></script>
+	<script th:src="@{/jquery-side-menu/menu.js}"></script>
 
 	  <div id="footer">
 	   &copy; All rights reserved. E.O.I
@@ -49,14 +102,15 @@
 					<tr class="row100">
 						<td class="column101 column101" data-column="column101" >
 							<div>
-					       Виберiть дату:<br><input  type="date" name="dateStart" th:field="*{dateStart}" value=0 />
+					       Оберiть дату:<br><input  type="date" name="dateStart" th:field="*{dateStart}" value=0 />
 					    </div>
 					    <input required type="text" name="hidden_id" hidden="true" id="hidden_id"    th:field="*{id}"/>
-					    <div id="according_to">
+					   <!-- <div id="according_to">
 					        <input type="submit" onclick="return checkform();" value="&#10004;" class="galka" style="position: center"/>
-					    </div>
+					    </div>-->
 					 </td>
-						<td class="column100 column200" data-column="column200" th:each ="hall,stats : ${halls}" th:id="${hall.id}" onclick="setColor(this.id)"><h3 th:utext="${hall.name}"></h3></td>
+						<td type="submit" class="column100 column200" data-column="column200"  th:each ="hall,stats : ${halls}" th:id="${hall.id}" onclick="setColor(this.id); return checkform();" ><h3 th:utext="${hall.name}" ></h3></td>
+
 
 					</tr>
         </tbody>
@@ -73,7 +127,6 @@
 		<div class="wrap-table100">
 			 <div class="table100 ver5 m-b-30">
 					<table data-vertable="ver5">
-
 
 									<tr class="row100 head">
 										<th class="column100 column1" data-column="column1">№</th>
@@ -93,17 +146,17 @@
 										<th class="column100 column15" data-column="column15">Рядок Ст.</th>
 										<th class="column100 column16" data-column="column16"></th>
 										<th class="column100 column17" data-column="column17"></th>
-										<th class="column100 column18" data-column="column18"></th>
+										<!--  <th class="column100 column18" data-column="column18"></th> -->
 									</tr>
 
 
 
-				
+
 									<tr class="row100" th:each ="event,iter : ${events}">
 
-					
+
 										<td class="column100 column1 numcol_admin" data-column="column1" th:utext="${iter.count}">...</td>
-                   						<td class="column100 column3" data-column="column3" th:utext="${event.composition}" >...</td>
+                   	<td class="column100 column3" data-column="column3" th:utext="${event.composition}" >...</td>
 										<td class="column100 column4" data-column="column4" th:utext="${event.time}" >...</td>
 										<td class="column100 column2" data-column="column2" th:utext="${event.number}" ></td>
 										<td class="column100 column8" data-column="column8" th:utext="${event.description}">...</td>
@@ -112,23 +165,24 @@
 										<td class="column100 column7" data-column="column7" th:utext="${event.contestation}">...</td>
 
 									    	<!-- change status event block -->
-										<form th:action="@{/hallEvents}" th:object="${statusEventForm}" id="statusEventForm" method="POST">
-												<td class="column100 column9" data-column="column9">
+												<form th:action="@{/hallEvents}" th:object="${statusEventForm}" id="statusEventForm" method="POST">
+														<td class="column100 column9" data-column="column9">
 
-													<input hidden=true type="text"  th:attr="value = ${event.id}" />
+															<input hidden=true type="text"  th:attr="value = ${event.id}" />
 
 
 
-														<input hidden=true type="text" th:name="idEvent" th:attr="value = ${event.id}" />
-															<h3 th:utext="${event.status}"></h3>
-														<select id="estatus"  th:field="*{estatus}">
-															<option  th:each ="state : ${statuses}" th:value="${state.id}">
-																	<h2 th:utext="${state.status}"></h2>
-															</option>
-														</select>
+																<input hidden=true type="text" th:name="idEvent" th:attr="value = ${event.id}" />
+						    	<span th:style="'position: absolute; background: #fff; background-size: contain; text-align: center; width: 80px; margin: 3px;'">
+									   <a th:style="'color: black;'" th:utext="${event.status}"/>
+								       </span>
+		 											<select id="estatus"  th:field="*{estatus}" onchange="this.form.submit()">
+						                              <option th:each ="state : ${statuses}" th:value="${state.id}">
+														<h2 th:utext="${state.status}"></h2>
+													  </option>
+													</select>
+								       </td>
 
-												
-												</td>
 
 
 
@@ -142,13 +196,13 @@
 										<!-- SWAP EVENT BLOCK START-->
 
 
-										<td class="column100 column12" data-column="column13">
+										<td class="column100 column14" data-column="column13">
 											<a th:href="@{'/upevent/{id}'(id=${event.id})}">
 												<span class="table-up glyphicon glyphicon-arrow-up">&#11014;</span></a>
 										</td>
 
 
-										<td class="column100 column13" data-column="column14">
+										<td class="column100 column15" data-column="column14">
 											<a th:href="@{'/downevent/{id}'(id=${event.id})}">
 												<span class="table-down glyphicon glyphicon-arrow-down">&#11015;</span></a>
 										</td>
@@ -156,26 +210,26 @@
 
 										<!-- SWAP EVENT BLOCK END-->
 
-										<td class="column100 column13" data-column="column14">
+										<td class="column100 column16" data-column="column14">
 
 											<input type="checkbox" disabled  th:checked="${event.hide}" />
 
 										</td>
 
-										<td class="column100 column15" data-column="column16">
+										<td class="column100 column17" data-column="column16">
 											<a th:href="@{'/editEvent/{id}'(id=${event.id})}" class="caseeditcol_admin redog">&#9998;</a>
 										</td>
-										<td class="column100 column16" data-column="column17">
+										<td class="column100 column18" data-column="column17">
 											<a th:href="@{'/delete/{id}'(id=${event.id})}" onclick="return confirm('Ви дiйсно хочите видалити засiдання ?')" class="table-remove glyphicon glyphicon-remove">
 											<div class="krest1">&#10008;</div></a>
 										</td>
-										<td class="column100 column17" data-column="column18">
+									<!--	<td class="column100 column19" data-column="column18">
 											<div>
 												<button >
-													<div type="submit" onclick="changeStatus()"  class="galka">&#10004;</div>
+													<div type="submit" onclick="changeStatus()"  class="galka">&#10004;></div>
 												</button>
 											</div>
-										</td>
+										</td> -->
           							</form>
 							       </tr>
 
@@ -196,29 +250,29 @@
 										</td>
                     					<td class="column100 column11" data-column="column11"><textarea placeholder="Доповненя до статусу" class="txta" th:field="*{additionalstatus}"></textarea></td>
 										<td class="column100 column10" data-column="column10"><input required type="date" th:field="*{date}" value=0 /></td>
-										
+
                    					    <td class="column100 column11" data-column="column11">
 											<select  th:field="*{Hall_number}">
 													<option  th:each ="hall : ${halls}" th:value="${hall.id}"><h2 th:utext="${hall.name}"></h2></option>
 											</select>
                     					</td>
 										<td class="column100 column12" data-column="column12">
-											<span class="table-up glyphicon glyphicon-arrow-up"><button >&#11014;</button></span>
+											<span class="table-up glyphicon glyphicon-arrow-up"><!--<button >&#11014;</button>--></span>
 										</td>
 										<td class="column100 column13" data-column="column13">
-											<span class="table-down glyphicon glyphicon-arrow-down"><button >&#11015;</button></span>
+											<span class="table-down glyphicon glyphicon-arrow-down"><!--<button >&#11015;</button>--></span>
 										</td>
 										<td class="column100 column14" data-column="column14">
 											<input type="checkbox" unchecked th:field="*{hide}">
 										</td>
-										<td class="column100 column15" data-column="column15">
+										<!--<td class="column100 column15" data-column="column15">
 											<a href="@{'/editEvent/{id}'(id=${event.id})}  th:!!!!!!!!!!!!" class="caseeditcol_admin redog"><button>&#9998;</button></a>
 										</td>
 										<td class="column100 column16" data-column="column16">
 											<a href="@{'/delete/{id}'(id=${event.id})}  th:!!!!!!!!!" onclick="return confirm('Ви дiйсно хочите видалити засiдання ?')" class="table-remove glyphicon glyphicon-remove">
 											<button>&#10008;</button></a>
-										</td>
-										<td class="column100 column17" data-column="column17"><button ><div type="submit" class="galka">&#10004;</div></button></td>
+										</td>-->
+										<td class="column100 column17" data-column="column17" colspan="2"><button ><div type="submit" class="galka">&#10004;</div></button></td>
 								</form>
 							</tr>
 
@@ -226,7 +280,7 @@
 	 </div>
     </div>
   </div>
-</div>
+
 
 
 
@@ -358,6 +412,34 @@ function refreshStatus(eventId,eventStatusId){
 	xhr.open("GET", url);
     xhr.send(eventStatusId);
 }
+// оберіть дату
 
+// інер доунлодДБ
+function DownLoadDB(){
+
+	var xhr = new XMLHttpRequest();
+ 	var base_url = window.location.origin;
+ 	var pathArray = window.location.pathname.split( '/' );
+	var hallId = pathArray[pathArray.length-1];
+	const url=base_url+'/timetable/downLoadDB';
+
+	console.log("url: "+url);
+	xhr.open("GET", url);
+
+	 xhr.send();
+	 xhr.onload = function () {
+		    if (xhr.readyState === xhr.DONE) {
+		        if (xhr.status === 200) {
+
+		           document.getElementById('DownLoad').innerHTML = xhr.response;
+
+
+		        }
+
+		    }
+		};
+
+}
+// інер доунлодДБ
 </script>
 <!--оберить дату и зал-->

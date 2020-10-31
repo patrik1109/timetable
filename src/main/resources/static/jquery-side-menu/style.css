@@ -1,0 +1,85 @@
+/* Body
+
+body {
+  left: 0;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+}
+*/
+
+/* Menu */
+
+.menu {
+  background: #555 url('images/menu-bg.jpg') repeat left top;
+  left: -285px;
+  height: 100%;
+  position: fixed;
+  width: 285px;
+  top: 0px;
+  z-index: 4;
+}
+
+
+/* Basic CSS */
+
+.background {
+  background-image: url('images/chicago-night.jpg');
+  height: 100%;
+  width: 100%;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+}
+
+.menu  ul {
+  border-top: 1px solid #555;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu  li{
+  border-bottom: 1px solid #555;
+  font-family: 'Open Sans', sans-serif;
+  line-height: 45px;
+  padding-bottom: 3px;
+  padding-left: 20px;
+  padding-top: 3px;
+}
+
+.menu li:hover {
+  cursor: pointer;
+  background-color: #555;
+  }
+
+.menu  {
+  color: #fff;
+  font-size: 15px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.icon-close {
+  cursor: pointer;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 6px;
+}
+
+.icon-menu {
+  color: #000;
+  cursor: pointer;
+  font-family: 'Open Sans', sans-serif;
+  /*font-size: 20px;*/
+  padding-bottom: 0px;
+  padding-left: 0px;
+  padding-top: 0px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.icon-menu img {
+  margin-right: 5px;
+}

@@ -27,6 +27,7 @@ import timetable.thymeleaf_form.HallEventsForm;
 import timetable.thymeleaf_form.HallForm;
 import timetable.utils.FillForms;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
@@ -64,6 +65,7 @@ public class TimeTableController {
 
     private volatile List<EventResponse> eventsresponse ;
     private volatile Date currentdate ;
+    private ModelAndView model = null;
 
     private Integer idHallbydefault;
 
@@ -73,7 +75,7 @@ public class TimeTableController {
     final private String pivot ="#";
     final private String timePivot=":";
     private static String UPLOADED__FOLDER = "D://temp//";
-
+    SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy");
 
     private String errorMessage;
 
@@ -214,23 +216,31 @@ public class TimeTableController {
     @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" +"|| hasAuthority('USER')")
     @RequestMapping(value = { "/hallEvents" }, method = RequestMethod.GET)
     public ModelAndView HallEvents() {
-        ModelAndView NewModel = new ModelAndView("hallEvents");
+
+        //ModelAndView NewModel = new ModelAndView("hallEvents");
+        if(model==null){
+            model = new ModelAndView("hallEvents");
+        }
         List<HallResponse> halls = FillForms.fillHallResponse(hallRepository.findAll());
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
         HallEventsForm hallEventsForm = new HallEventsForm();
         StatusEventForm statusEventForm = new StatusEventForm();
         EventForm eventForm = new EventForm();
         String hallName = new String();
+        DownLoadForm downLoadForm = new DownLoadForm();
 
         Date today = new Date();
          eventForm.setDate(today);
          hallEventsForm.setDateStart(today);
+        if(currentdate==null){
+            currentdate=today;
+        }
 
         int hallid = halls.get(0).getId();
 
                 if(eventsresponse != null ){
                     eventsresponse = fillEventRenspose(eventRepository.findAllWithDateandIdHallOrdered(currentdate,hall.getId()));
-                    NewModel.addObject("events",eventsresponse);
+                    model.addObject("events",eventsresponse);
 
                 }
 
@@ -238,33 +248,34 @@ public class TimeTableController {
             hallName = hall.getName();
         }
 
-        NewModel.addObject("hallEventsForm",hallEventsForm);
-        NewModel.addObject("eventForm",eventForm);
-        NewModel.addObject("halls",halls);
-        NewModel.addObject("statuses",statuses);
-        NewModel.addObject("idhall",hallid);
-        NewModel.addObject("hallName",hallName);
-        NewModel.addObject("statusEventForm",statusEventForm);
-
-        return NewModel;
+        model.addObject("hallEventsForm",hallEventsForm);
+        model.addObject("eventForm",eventForm);
+        model.addObject("halls",halls);
+        model.addObject("statuses",statuses);
+        model.addObject("idhall",hallid);
+        model.addObject("hallName",hallName);
+        model.addObject("statusEventForm",statusEventForm);
+        model.addObject("downLoadForm",downLoadForm);
+        model.addObject("currentdate",formatForDateNow.format(currentdate));
+        return model;
     }
 
 
    @DateTimeFormat(pattern = "yyyy-MM-dd")
    @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" +"|| hasAuthority('USER')")
    @RequestMapping(value = { "/hallEvents" }, method = RequestMethod.POST)
-   public ModelAndView HallEvents( ModelAndView model,
+   public ModelAndView HallEvents( ModelAndView modelAndView,
                                        @ModelAttribute ("hallEventsForm") HallEventsForm halleventsForm,
-                                       @ModelAttribute("statusEventForm") StatusEventForm statusEventForm,
-                                       @ModelAttribute ("eventForm") EventForm eventForm) {
+                                       @ModelAttribute ("statusEventForm") StatusEventForm statusEventForm,
+                                       @ModelAttribute ("eventForm") EventForm eventForm,
+                                       @ModelAttribute("downLoadForm") DownLoadForm  downLoadForm)
+                                       {
 
         HallEventsForm newEventsForm = new HallEventsForm();
         List<StatusResponse> statuses = fillStatusResponse(statusEventRepository.findAll());
         List<HallResponse> halls = FillForms.fillHallResponse(hallRepository.findAll());
 
-
         String hallName = new String();
-
         EventForm neweventForm = new EventForm();
             Date today = new Date();
             neweventForm.setDate(today);
@@ -278,10 +289,10 @@ public class TimeTableController {
            eventsresponse = fillEventRenspose(eventRepository.findAllWithDateandIdHallOrdered(currentdate, id));
            hall =  hallRepository.getHallById(id);
            Integer hallid = id;
-           model.addObject("eventForm",neweventForm);
-           model.addObject("events",eventsresponse);
-           model.addObject("hallName",hallName);
-           model.addObject("idhall",hallid);
+           modelAndView.addObject("eventForm",neweventForm);
+           //model.addObject("events",eventsresponse);
+           //model.addObject("hallName",hallName);
+           modelAndView.addObject("idhall",hallid);
        }
        else if(statusEventForm.getIdEvent()!=0){
 
@@ -290,18 +301,16 @@ public class TimeTableController {
             eventRepository.saveEvent(event);
             eventsresponse = fillEventRenspose(eventRepository.findAllWithDateandIdHallOrdered(currentdate,hall.getId()));
             hallName = hallRepository.getHallById(event.getIdHall()).getName();
-            model.addObject("eventForm",neweventForm);
-           model.addObject("idhall",hall.getId());
-           model.addObject("hallName",hallName);
-           model.addObject("events",eventsresponse);
+            modelAndView.addObject("eventForm",neweventForm);
+           modelAndView.addObject("idhall",hall.getId());
+           //model.addObject("hallName",hallName);
+           //model.addObject("events",eventsresponse);
        }
        else if(eventForm.getDate()!=null){
            int idHall = eventForm.getHall_number();
            currentdate = eventForm.getDate();
            hall = hallRepository.getHallById(idHall);
            hallName = hall.getName();
-           Event oldevent = eventRepository.findEventByNumber(eventForm.getNumber());
-                 if(oldevent == null){
                      Integer lastnumber = eventRepository.findMaxOrderNumberByDate(eventForm.getDate(),eventForm.getHall_number());
                         if(lastnumber == null){
                              lastnumber=0;
@@ -309,26 +318,29 @@ public class TimeTableController {
                         else {
                             lastnumber++;
                         }
-                     Event newEvent = fillEventfromEventForm(eventForm,lastnumber);
-                     eventRepository.saveEvent(newEvent);
-                 }
+            Event newEvent = fillEventfromEventForm(eventForm,lastnumber);
+            eventRepository.saveEvent(newEvent);
+
 
            eventsresponse = fillEventRenspose(eventRepository.findAllWithDateandIdHallOrdered(currentdate, idHall));
            halleventsForm.setDateStart(currentdate);
            halleventsForm.setId(idHall);
-           model.addObject("eventForm",neweventForm);
-           model.addObject("events",eventsresponse);
-           model.addObject("hallName",hallName);
-           model.addObject("idhall",idHall);
+           modelAndView.addObject("eventForm",neweventForm);
+           //model.addObject("events",eventsresponse);
+           //model.addObject("hallName",hallName);
+           modelAndView.addObject("idhall",idHall);
 
        }
 
-       model.addObject("hallEventsForm",newEventsForm);
-       model.addObject("halls",halls);
-       model.addObject("statuses",statuses);
-       model.addObject("hallName",hallName);
-       model.addObject("statusEventForm",statusEventForm);
-       return model;
+       modelAndView.addObject("hallEventsForm",newEventsForm);
+       modelAndView.addObject("halls",halls);
+       modelAndView.addObject("statuses",statuses);
+       modelAndView.addObject("hallName",hallName);
+       modelAndView.addObject("statusEventForm",statusEventForm);
+       modelAndView.addObject("currentdate",formatForDateNow.format(currentdate));
+       modelAndView.addObject("events",eventsresponse);
+       model = modelAndView;
+       return new ModelAndView("redirect:/hallEvents");
    }
 
 
@@ -748,12 +760,15 @@ public class TimeTableController {
     @PreAuthorize("hasAuthority('SUPERADMIN')" + " || hasAuthority('ADMIN')" )
     @RequestMapping(value = { "/downloadDB" }, method = RequestMethod.POST)
     public ModelAndView downloadDB(ModelAndView model,    @ModelAttribute("downLoadForm") DownLoadForm downloadDB) {
+        String OS = "";
+        File UP_File = null;
         Date date = downloadDB.getDate();
         int idHall = downloadDB.getIdHall();
         MultipartFile file = downloadDB.getFile();
         DateFormat sdf = new SimpleDateFormat("hh:mm:ss");
         int i=0;
         Path path = null;
+
         Integer  lastOrderNumber = eventRepository.findMaxOrderNumberByDate(date,idHall);
             if(lastOrderNumber == null){
                 lastOrderNumber = 0;
@@ -762,10 +777,21 @@ public class TimeTableController {
                 lastOrderNumber++;
             }
 
+          OS = System.getProperty("os.name");
+
+                if(OS.startsWith("Windows")){
+                    UP_File = new File("temp");
+                }
+                else {
+                    UP_File = new File("temp");
+                    UP_File.mkdir();
+                }
+
             try
             {
                 byte[]bytes = file.getBytes();
-                path = Paths.get(UPLOADED__FOLDER + file.getOriginalFilename());
+                path = Paths.get( UP_File.getAbsolutePath()+ file.getOriginalFilename());
+
                 Files.write(path, bytes);
                 Reader reader = Files.newBufferedReader(path);
 
@@ -778,8 +804,7 @@ public class TimeTableController {
 
                 for (CSVRecord csvRecord : csvParser) {
                     if (i != 0) {
-                        Event checkevent = eventRepository.findEventByNumber(csvRecord.get("number"));
-                        if (checkevent == null) {
+
                             Event event = new Event();
                             event.setIdHall(idHall);
                             event.setDate(date);
@@ -802,18 +827,16 @@ public class TimeTableController {
                                     eventRepository.saveEvent(event);
                         }
 
-                    }
+
                     else {
                         i++;
                     }
                 }
-
-
-            } catch (IOException e) {
+                Files.delete(path);
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
-
-
 
         return new ModelAndView("redirect:/hallEvents");
     }
