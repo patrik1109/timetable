@@ -768,6 +768,7 @@ public class TimeTableController {
         DateFormat sdf = new SimpleDateFormat("hh:mm:ss");
         int i=0;
         Path path = null;
+        Path path1 = null;
 
         Integer  lastOrderNumber = eventRepository.findMaxOrderNumberByDate(date,idHall);
             if(lastOrderNumber == null){
@@ -783,21 +784,22 @@ public class TimeTableController {
                     UP_File = new File("temp");
                 }
                 else {
-                    UP_File = new File("temp");
-                    UP_File.mkdir();
+                    UP_File = new File("test");
+                   // UP_File.mkdir();
                 }
 
             try
             {
                 byte[]bytes = file.getBytes();
-                path = Paths.get( UP_File.getAbsolutePath()+ file.getOriginalFilename());
+                path = Paths.get( UP_File.getAbsolutePath()+ "/"  + file.getOriginalFilename());
+
 
                 Files.write(path, bytes);
                 Reader reader = Files.newBufferedReader(path);
 
 
                 CSVParser csvParser = new CSVParser(reader, CSVFormat.EXCEL
-                        .withHeader("number","defendant","plantiff","contestation","description","time","composition","additionalstatus","idStatus","hide")
+                        .withHeader("number","defendant","plantiff","contestation","description","time","composition","additionalstatus",/*"idStatus",*/"hide")
                         .withIgnoreHeaderCase()
                         .withDelimiter(';')
                         .withTrim());
@@ -815,7 +817,8 @@ public class TimeTableController {
                             event.setDescription(csvRecord.get("description"));
                             event.setComposition(csvRecord.get("composition"));
                             event.setAdditionalstatus(csvRecord.get("additionalstatus"));
-                            event.setIdStatus(Integer.parseInt(csvRecord.get("idStatus")));
+                            //event.setIdStatus(Integer.parseInt(csvRecord.get("idStatus")));
+                            event.setIdStatus(1);
                             event.setHide(Boolean.parseBoolean(csvRecord.get("hide")));
                             event.setOrdernumber(lastOrderNumber++);
                                 try {
@@ -832,7 +835,7 @@ public class TimeTableController {
                         i++;
                     }
                 }
-                Files.delete(path);
+                //Files.delete(path);
             }
             catch (IOException e) {
                 e.printStackTrace();
