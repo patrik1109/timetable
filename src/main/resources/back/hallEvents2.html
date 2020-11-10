@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Table V04</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="stylesheet" type="text/css" th:href="@{/Table1/css/util.css}">
+	    <link th:href="@{/css/hallEvents.css}" rel="stylesheet" />
+</head>
+
+
+
+	<body th:style="'background:url('+ @{/img/klov.jpg} +') no-repeat center fixed; background-size: cover;'">
+
+	<table th:style="'position: fixed; top: 0%; z-index: 4;'">
+		<tr>
+			<th>
+				Обраний Вами: <h3 th:style="'color: #0b0;'" th:utext="${hallName}" ></h3>
+				Обрана дата: <h3 class="current_date_time" th:style="'color: #0b0;'" th:utext="${currentdate}" />
+			</th>
+		</tr>
+	</table>
+
+
+	<a class="navbar-logo" th:href="@{'/index'}"><img th:src="@{/img/img.png}"  height="60"/></a>
+		<ul class="menu-main">
+		<li><a th:href="@{'/hallEvents'}">Розклад</a></li>
+		<li><a th:href="@{'/indexHall'}">Додати зал</a></li>
+		<li><a th:href="@{'/indexUser'}">користувач</a></li>
+		<li><a th:href="@{'/downloadDB'}">Завантажити БД</a></li>
+		<li><a th:href="@{'/settings/{id}'(id=${idhall})}">Налаштування</a></li>
+			<li><form th:action="@{/logout}" method="post"><button class="emptyButton"><a type="submit">Вихід</a></button></form></li>
+	</ul>
+
+
+	  <div id="footer">
+	   &copy; All rights reserved. E.O.I
+	  </div>
+
+
+	<!--tabl1-->
+	<form  id="dateForm" name="dateForm" th:action="@{'/hallEvents'}" th:object="${hallEventsForm}" method="POST">
+
+		<div class="table100 ver1	 m-b-0">
+			<table data-vertable="ver1">
+				<thead>
+					<tr class="row100 head">
+						<th class="column100 column101" data-column="column101" hidden="true"></th>
+						<th class="column100 column102" data-column="column102" hidden="true">1</th>
+						<th class="column100 column103" data-column="column103" hidden="true">2</th>
+						<th class="column100 column104" data-column="column104" hidden="true">3</th>
+						<th class="column100 column105" data-column="column105" hidden="true">4</th>
+						<th class="column100 column106" data-column="column106" hidden="true">5</th>
+					</tr>
+				</thead>
+
+
+				<tbody>
+					<tr class="row100">
+						<td class="column101 column101" data-column="column101" >
+							<div>
+					       Виберiть дату:<br><input  type="date" name="dateStart" th:field="*{dateStart}" value=0 />
+					    </div>
+					    <input required type="text" name="hidden_id" hidden="true" id="hidden_id"    th:field="*{id}"/>
+					    <div id="according_to">
+					        <input type="submit" onclick="return checkform();" value="&#10004;" class="galka" style="position: center"/>
+					    </div>
+					 </td>
+						<td class="column100 column200" data-column="column200" th:each ="hall,stats : ${halls}" th:id="${hall.id}" onclick="setColor(this.id)"><h3 th:utext="${hall.name}"></h3></td>
+
+					</tr>
+        </tbody>
+				</table>
+
+			</div>
+		</form>
+
+	<!--tabl1-->
+
+		<!--tabl2-->
+
+	<div id="eventsTable">
+		<div class="wrap-table100">
+			 <div class="table100 ver5 m-b-30">
+					<table data-vertable="ver5">
+
+
+									<tr class="row100 head">
+										<th class="column100 column1" data-column="column1">№</th>
+										<th class="column100 column3" data-column="column3">Суддя</th>
+										<th class="column100 column4" data-column="column4">Час слухання</th>
+										<th class="column100 column2" data-column="column2">Справа №</th>
+										<th class="column100 column8" data-column="column8">№ провадження</th>
+										<th class="column100 column5" data-column="column5">Позивач</th>
+										<th class="column100 column6" data-column="column6">Вiдповидач</th>
+										<th class="column100 column7" data-column="column7">Предмет позиву</th>
+										<th class="column100 column9" data-column="column9">Статус</th>
+                   						<th class="column100 column11" data-column="column11">Доповнення до статусу</th>
+										<th class="column100 column10" data-column="column10">Дата</th>
+										<th class="column100 column12" data-column="column12">№Зали</th>
+										<th class="column100 column13" data-column="column13"></th>
+										<th class="column100 column14" data-column="column14"></th>
+										<th class="column100 column15" data-column="column15">Рядок Ст.</th>
+										<th class="column100 column16" data-column="column16"></th>
+										<th class="column100 column17" data-column="column17"></th>
+										<th class="column100 column18" data-column="column18"></th>
+									</tr>
+
+
+
+				
+									<tr class="row100" th:each ="event,iter : ${events}">
+
+					
+										<td class="column100 column1 numcol_admin" data-column="column1" th:utext="${iter.count}">...</td>
+                   						<td class="column100 column3" data-column="column3" th:utext="${event.composition}" >...</td>
+										<td class="column100 column4" data-column="column4" th:utext="${event.time}" >...</td>
+										<td class="column100 column2" data-column="column2" th:utext="${event.number}" ></td>
+										<td class="column100 column8" data-column="column8" th:utext="${event.description}">...</td>
+										<td class="column100 column5" data-column="column5" th:utext="${event.defendant}">...</td>
+										<td class="column100 column6" data-column="column6" th:utext="${event.plaintiff}">...</td>
+										<td class="column100 column7" data-column="column7" th:utext="${event.contestation}">...</td>
+
+									    	<!-- change status event block -->
+										<form th:action="@{/hallEvents}" th:object="${statusEventForm}" id="statusEventForm" method="POST">
+												<td class="column100 column9" data-column="column9">
+
+													<input hidden=true type="text"  th:attr="value = ${event.id}" />
+
+
+
+														<input hidden=true type="text" th:name="idEvent" th:attr="value = ${event.id}" />
+															<h3 th:utext="${event.status}"></h3>
+														<select id="estatus"  th:field="*{estatus}">
+															<option  th:each ="state : ${statuses}" th:value="${state.id}">
+																	<h2 th:utext="${state.status}"></h2>
+															</option>
+														</select>
+
+												
+												</td>
+
+
+
+
+										<td class="column100 column11" data-column="column11" th:utext="${event.additionalstatus}">...</td>
+										<td class="column100 column10" data-column="column10" th:utext="${event.date}">...</td>
+										<td class="column100 column12" data-column="column12" th:utext="${hallName}"></td>
+										<td class="column100 column13" data-column="column13"  hidden="true" th:utext="${event.ordernymber}">...</td>
+
+
+										<!-- SWAP EVENT BLOCK START-->
+
+
+										<td class="column100 column12" data-column="column13">
+											<a th:href="@{'/upevent/{id}'(id=${event.id})}">
+												<span class="table-up glyphicon glyphicon-arrow-up">&#11014;</span></a>
+										</td>
+
+
+										<td class="column100 column13" data-column="column14">
+											<a th:href="@{'/downevent/{id}'(id=${event.id})}">
+												<span class="table-down glyphicon glyphicon-arrow-down">&#11015;</span></a>
+										</td>
+
+
+										<!-- SWAP EVENT BLOCK END-->
+
+										<td class="column100 column13" data-column="column14">
+
+											<input type="checkbox" disabled  th:checked="${event.hide}" />
+
+										</td>
+
+										<td class="column100 column15" data-column="column16">
+											<a th:href="@{'/editEvent/{id}'(id=${event.id})}" class="caseeditcol_admin redog">&#9998;</a>
+										</td>
+										<td class="column100 column16" data-column="column17">
+											<a th:href="@{'/delete/{id}'(id=${event.id})}" onclick="return confirm('Ви дiйсно хочите видалити засiдання ?')" class="table-remove glyphicon glyphicon-remove">
+											<div class="krest1">&#10008;</div></a>
+										</td>
+										<td class="column100 column17" data-column="column18">
+											<div>
+												<button >
+													<div type="submit" onclick="changeStatus()"  class="galka">&#10004;</div>
+												</button>
+											</div>
+										</td>
+          							</form>
+							       </tr>
+
+							<tr class="row100">
+								<form th:action="@{/hallEvents}" th:object="${eventForm}" id="myform" method="POST">
+										<td class="column100 column1" data-column="column1">+</td>
+                   						<td class="column100 column3" data-column="column3"><textarea placeholder="Суддя" class="txta" th:field="*{composition}"></textarea></td>
+                    					<td class="column100 column4" data-column="column4"><input required type="time" th:field="*{time}" value=0/></td>
+										<td class="column100 column2" data-column="column2"><textarea placeholder="Справа №" class="txta" th:field="*{Number}"></textarea></td>
+                   						<td class="column100 column8" data-column="column8"><textarea placeholder="№ провадження" class="txta" th:field="*{Description}"></textarea></td>
+										<td class="column100 column5" data-column="column5"><textarea placeholder="Позивач" class="txta" th:field="*{defendant}"></textarea></td>
+										<td class="column100 column6" data-column="column6"><textarea placeholder="Відповідач" class="txta" th:field="*{plaintiff}"></textarea></td>
+										<td class="column100 column7" data-column="column7"><textarea placeholder="Предмет позову" class="txta" th:field="*{contestation}"></textarea></td>
+										<td class="column100 column9" data-column="column9">
+											<select  th:field="*{estatus}">
+													<option  th:each ="state : ${statuses}" th:value="${state.id}"><h2 th:utext="${state.status}"></h2></option>
+											</select>
+										</td>
+                    					<td class="column100 column11" data-column="column11"><textarea placeholder="Доповненя до статусу" class="txta" th:field="*{additionalstatus}"></textarea></td>
+										<td class="column100 column10" data-column="column10"><input required type="date" th:field="*{date}" value=0 /></td>
+										
+                   					    <td class="column100 column11" data-column="column11">
+											<select  th:field="*{Hall_number}">
+													<option  th:each ="hall : ${halls}" th:value="${hall.id}"><h2 th:utext="${hall.name}"></h2></option>
+											</select>
+                    					</td>
+										<td class="column100 column12" data-column="column12">
+											<span class="table-up glyphicon glyphicon-arrow-up"><button >&#11014;</button></span>
+										</td>
+										<td class="column100 column13" data-column="column13">
+											<span class="table-down glyphicon glyphicon-arrow-down"><button >&#11015;</button></span>
+										</td>
+										<td class="column100 column14" data-column="column14">
+											<input type="checkbox" unchecked th:field="*{hide}">
+										</td>
+										<td class="column100 column15" data-column="column15">
+											<a href="@{'/editEvent/{id}'(id=${event.id})}  th:!!!!!!!!!!!!" class="caseeditcol_admin redog"><button>&#9998;</button></a>
+										</td>
+										<td class="column100 column16" data-column="column16">
+											<a href="@{'/delete/{id}'(id=${event.id})}  th:!!!!!!!!!" onclick="return confirm('Ви дiйсно хочите видалити засiдання ?')" class="table-remove glyphicon glyphicon-remove">
+											<button>&#10008;</button></a>
+										</td>
+										<td class="column100 column17" data-column="column17"><button ><div type="submit" class="galka">&#10004;</div></button></td>
+								</form>
+							</tr>
+
+		</table>
+	 </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!--
+<script>
+// Targets all textareas with class "txta"
+let textareas = document.querySelectorAll('.txta'),
+    hiddenDiv = document.createElement('div'),
+    content = null;
+
+// Adds a class to all textareas
+for (let j of textareas) {
+  j.classList.add('txtstuff');
+}
+
+// Build the hidden div's attributes
+
+// The line below is needed if you move the style lines to CSS
+// hiddenDiv.classList.add('hiddendiv');
+
+// Add the "txta" styles, which are common to both textarea and hiddendiv
+// If you want, you can remove those from CSS and add them via JS
+hiddenDiv.classList.add('txta');
+
+// Add the styles for the hidden div
+// These can be in the CSS, just remove these three lines and uncomment the CSS
+hiddenDiv.style.display = 'none';
+hiddenDiv.style.whiteSpace = 'pre-wrap';
+hiddenDiv.style.wordWrap = 'break-word';
+
+// Loop through all the textareas and add the event listener
+for(let i of textareas) {
+  (function(i) {
+    // Note: Use 'keyup' instead of 'input'
+    // if you want older IE support
+    i.addEventListener('input', function() {
+
+      // Append hiddendiv to parent of textarea, so the size is correct
+      i.parentNode.appendChild(hiddenDiv);
+
+      // Remove this if you want the user to be able to resize it in modern browsers
+      i.style.resize = 'none';
+
+      // This removes scrollbars
+      i.style.overflow = 'hidden';
+
+      // Every input/change, grab the content
+      content = i.value;
+
+      // Add the same content to the hidden div
+
+      // This is for old IE
+      content = content.replace(/\n/g, '<br>');
+
+      // The <br ..> part is for old IE
+      // This also fixes the jumpy way the textarea grows if line-height isn't included
+      hiddenDiv.innerHTML = content + '<br style="line-height: 3px;">';
+
+      // Briefly make the hidden div block but invisible
+      // This is in order to read the height
+      hiddenDiv.style.visibility = 'hidden';
+      hiddenDiv.style.display = 'block';
+      i.style.height = hiddenDiv.offsetHeight + 'px';
+
+      // Make the hidden div display:none again
+      hiddenDiv.style.visibility = 'visible';
+      hiddenDiv.style.display = 'none';
+    });
+  })(i);
+}
+</script>
+-->
+
+</body>
+</html>
+
+<!--оберить дату и зал-->
+<script>
+    let temp = 0;
+    var setColor = function(id){
+        <!--debugger;-->
+
+         if(temp!=0){ <!-- change color in hall button -->
+            document.getElementById(temp).style.background = "#f2f2ff";
+            document.getElementById(id).style.background = "LightGreen";
+            document.getElementById("hidden_id").setAttribute('value',id);
+         }
+         else{     <!-- change color in date button -->
+            document.getElementById(id).style.background = "LightGreen";
+            document.getElementById("hidden_id").setAttribute('value',id);
+         }
+
+         temp = id;
+   }
+	function changeStatus(){
+
+	   if(document.statusEventForm.estatus == "0") {
+        	alert("Будь ласка оберiть статус");
+        	return false;
+       }
+       alert("changeStatus reached!");
+	}
+
+
+
+    function checkform(){
+
+    	if(document.dateForm.hidden_id.value == "0") {
+        	alert("Будь ласка оберiть залу");
+        	return false;
+    	}
+ 		else if(document.dateForm.dateStart.value == 0){
+        	alert("Будь ласка оберiть дату");
+        	return false;
+    	}
+    	else {
+        	document.dateForm.submit();
+    	}
+ 	}
+
+function refreshStatus(eventId,eventStatusId){
+	 alert("changeStatus reached!");
+	var xhr = new XMLHttpRequest();
+ 	var base_url = window.location.origin;
+	const url=base_url+'/refreshEvent/'+eventId;
+	console.log("url: "+url);
+	xhr.open("GET", url);
+    xhr.send(eventStatusId);
+}
+
+</script>
+<!--оберить дату и зал-->
