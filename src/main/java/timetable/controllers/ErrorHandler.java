@@ -12,7 +12,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class errorHandler implements ErrorController {
+public class ErrorHandler implements ErrorController {
     @Override
     public String getErrorPath() {
         return "/error";

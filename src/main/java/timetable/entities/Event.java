@@ -2,6 +2,7 @@ package timetable.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.TermVector;
@@ -16,7 +17,7 @@ import java.util.Date;
 
 @Entity
 @Indexed
-@Table(name="event", schema = "test", catalog = "" )
+@Table(name="event", schema = "public", catalog = "" )
 public class Event implements Serializable {
 
     @Id
@@ -55,11 +56,14 @@ public class Event implements Serializable {
     @Column(name="additionalstatus")
     String additionalstatus;  // доповнення до статусу
 
+    @Column(name="idstatus")
     private int  idStatus;
 
+	@Column(name="idhall")
 	private int idHall;
 
-	@Column(name="hide")
+	@Column(name="hide", columnDefinition = "SMALLINT")
+	@Type(type = "org.hibernate.type.NumericBooleanType")
 	private boolean hide;
 
 	@Column(name="ordernumber")

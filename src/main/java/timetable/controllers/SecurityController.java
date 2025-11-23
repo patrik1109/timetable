@@ -25,7 +25,7 @@ import static java.util.Collections.*;
 
 @RestController
 @PreAuthorize("hasAuthority('SUPERADMIN')")
-public class secyrityController {
+public class SecurityController {
     @Autowired
     UserRepo userRepo;
 

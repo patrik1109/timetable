@@ -16,7 +16,7 @@ public class User {
     private String username;
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "SMALLINT")
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean active;
 

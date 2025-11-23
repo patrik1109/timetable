@@ -3,7 +3,7 @@ package timetable.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name="parameter", schema = "test22", catalog = "" )
+@Table(name="parameter", schema = "public", catalog = "" )
 public class Parameter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

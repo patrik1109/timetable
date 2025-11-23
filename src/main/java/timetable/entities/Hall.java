@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name="hall", schema = "test", catalog = "" )
+@Table(name="hall", schema = "public", catalog = "" )
 public class Hall {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +18,8 @@ public class Hall {
     @Column(name = "date")
     Date date;
 
-    @OneToMany(fetch= FetchType.EAGER, mappedBy = "idHall")
+    @OneToMany(fetch= FetchType.EAGER)
+    @JoinColumn(name = "idhall")
     Set<Event> eventSet;
 
     @Column(name="hiddencolloms")
