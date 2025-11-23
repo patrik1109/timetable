@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Indexed
-@Table(name="status", schema = "test22", catalog = "" )
+@Table(name="status", schema = "public", catalog = "" )
 public class StatusEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,8 @@ public class StatusEvent {
 
 
 
-    @OneToMany(fetch= FetchType.EAGER, mappedBy = "idStatus")
+    @OneToMany(fetch= FetchType.EAGER)
+    @JoinColumn(name = "idstatus")
     Set<Event> eventSet;
 
     public StatusEvent() {
